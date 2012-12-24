@@ -1,134 +1,191 @@
 require 'minitest/autorun'
+
 require_relative '../lib/entity'
 
-class EntityTests < MiniTest::Unit::TestCase
+describe Pavlov::Entity do
+  describe '.create' do
+    let 'test_class' do
+      Class.new Pavlov::Entity do
+        attributes :name, :test
 
-  class TestObject < Pavlov::Entity
-    attributes :name, :test
-
-    private
-    def private_method
-      puts 'I''m private'
-    end
-  end
-
-  def test_returns_not_nil
-    test_object = TestObject.create
-
-    refute_nil test_object
-  end
-
-  def test_returns_correct_class
-    test_class = TestObject
-    test_object = test_class.create
-
-    assert_equal test_class, test_object.class
-  end
-
-  def test_can_set_attribute
-    name1 = 'Je naam is mooi.'
-    test_object = TestObject.create do
-      self.name = name1
-    end
-
-    assert_equal name1, test_object.name
-  end
-
-  def test_can_set_attribute_with_a_local_helper_method
-    name1 = 'Je naam is mooi.'
-    test_object = TestObject.create do
-      self.name = helper_method
-    end
-
-    assert_equal helper_method, test_object.name
-  end
-
-  def helper_method
-    "I'm a helper method for testing purposes."
-  end
-
-  def test_cant_call_private_methods
-    name1 = 'Je naam is mooi.'
-    
-    assert_raises (NoMethodError) {
-      test_object = TestObject.create do
-        self.private_method
+        private
+        def private_method
+          puts 'I''m private'
+        end
       end
-    }
-  end
-
-  def test_can_set_two_attributes
-    name1 = 'Je naam is mooi.'
-    test_object = TestObject.create do
-      self.name = 'Je naam is mooi.'
-      self.test = false
     end
 
-    assert_equal name1, test_object.name
-    assert_equal false, test_object.test
-  end
-
-  def test_cant_mutate_entity
-    test_object = TestObject.create
-
-    exception = assert_raises (RuntimeError) {
-      test_object.name = 'bla'
-    }
-    assert_equal "This entity is immutable, please use 'instance = EntityTests::TestObject.create do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'.", 
-      exception.message
-  end
-
-  def test_can_update_entity
-    test_object = TestObject.create
-    other_name = 'Ik heet Pricilla.'
-    
-    test_object = test_object.update do
-      self.name = other_name
+    let 'helper_method' do
+      'I''m a helper method for testing purposes.'
     end
 
-    assert_equal other_name, test_object.name
-  end
-
-  def test_can_partially_update_entity
-    name1 = 'Je naam is mooi.'
-    test_object = TestObject.create do
-      self.test = name1
+    let 'default_name' do
+      'This is your name.'
     end
 
-    other_name = 'Ik heet Pricilla.'
-    test_object = test_object.update do
-      self.name = other_name
+    it 'must return not nil' do
+      test_object = test_class.create
+
+      refute_nil test_object
     end
 
-    assert_equal name1, test_object.test
-    assert_equal other_name, test_object.name
+    it 'must return the correct class' do
+      test_object = test_class.create
+
+      assert_equal test_class, test_object.class
+    end
+
+    it 'must set the attribute' do
+      test_object = test_class.create do
+        self.name = default_name
+      end
+
+      assert_equal default_name, test_object.name
+    end
+
+    it 'must set the attribut to the value of a local method' do
+      test_object = test_class.create do
+        self.name = helper_method
+      end
+
+      assert_equal helper_method, test_object.name
+    end
+
+    it 'must not allow to call private methods' do
+      assert_raises (NoMethodError) {
+        test_object = test_class.create do
+          self.private_method
+        end
+      }
+    end
+
+    it 'must be able to set two attributes' do
+      test_value = false
+
+      test_object = test_class.create do
+        self.name = default_name
+        self.test = test_value
+      end
+
+      assert_equal default_name, test_object.name
+      assert_equal test_value, test_object.test
+    end
   end
 
-  def test_returns_other_object_on_update
-    test_object = TestObject.create 
+  describe '.update' do
+    let('test_class') do
+      Class.new Pavlov::Entity do
+        attributes :name, :test
 
-    updated_test_object = test_object.update
+        private
+        def private_method
+          puts 'I''m private'
+        end
+      end
+    end
 
-    refute_equal test_object.object_id, updated_test_object.object_id
+    let 'helper_method' do
+      'I''m a helper method for testing purposes.'
+    end
+
+    let 'default_name' do
+      'This is your name.'
+    end
+
+    it 'must update a attribute' do
+      test_object = test_class.create
+      
+      test_object = test_object.update do
+        self.name = default_name
+      end
+
+      assert_equal default_name, test_object.name
+    end
+
+    it 'must partially update a entity' do
+      test_object = test_class.create do
+        self.test = default_name
+      end
+
+      other_name = 'I won''t tell you my name'
+      test_object = test_object.update do
+        self.name = other_name
+      end
+
+      assert_equal default_name, test_object.test
+      assert_equal other_name, test_object.name
+    end
+
+    it 'must return an other object' do
+      test_object = test_class.create 
+
+      updated_test_object = test_object.update
+
+      refute_equal test_object.object_id, updated_test_object.object_id
+    end
+
+    it 'must set the attribut to the value of a local method' do
+      test_object = test_class.create 
+
+      test_object = test_object.update do
+        self.name = helper_method
+      end
+
+      assert_equal helper_method, test_object.name
+    end
+
+    it 'must not allow calling private methods' do
+      test_object = test_class.create
+
+      assert_raises (NoMethodError) {
+        test_object.update do
+          self.private_method
+        end
+      }
+    end
   end
 
-  def test_cant_call_new
-    exception = assert_raises (NoMethodError) {
-      TestObject.new
-    }
+  describe 'immutability' do
+    let('test_class') do
+      Class.new Pavlov::Entity do
+        attributes :name
+      end
+    end
 
-    assert_equal "private method `new' called for EntityTests::TestObject:Class", exception.message
+    it 'must not be able to mutate entity' do
+      test_object = test_class.create
+
+      exception = assert_raises (RuntimeError) {
+        test_object.name = 'bla'
+      }
+      assert_equal "This entity is immutable, please use 'instance = .create do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'.", 
+        exception.message
+    end
+
+    it 'must not be able to call new' do
+      exception = assert_raises (NoMethodError) {
+        test_class.new
+      }
+
+      assert_match /private method `new' called for #<Class:.*/, exception.message
+    end
   end
 
-  def test_can_call_missing_method
-    test_object = TestObject.create
+  describe 'default behaviour' do
+    let('test_class') do
+      Class.new Pavlov::Entity
+    end
 
-    puts test_object.inspect
+    it 'must raise normally when calling a undefined method' do
+      test_object = test_class.create
 
-    exception = assert_raises (NoMethodError) {
-      test_object.method_is_not_there
-    }
+      exception = assert_raises (NoMethodError) {
+        test_object.method_is_not_there
+      }
 
-    assert_match /undefined method `method_is_not_there' for #<EntityTests::TestObject.*/, exception.message
+      # todo: this exception is not thrown at the placet where I want it to, therefor the error message is a bit off
+      # assert_match /undefined method `method_is_not_there' for #<Class:.*/, exception.message
+      assert_match /undefined method `method_is_not_there' for #<#<Class:.*/, exception.message
+    end
   end
 end

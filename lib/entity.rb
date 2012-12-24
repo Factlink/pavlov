@@ -21,13 +21,12 @@ module Pavlov
 
     private
     def method_missing(method, *args, &block)
-      # If metdhod isn't found here, look in the closure
-      if @block_binding_self.nil? 
+      if @block_binding_self.nil?
         super
       end
+      # If method isn't found here, look in the closure
       @block_binding_self.send method, *args, &block
     end
-
 
     def self.update_instance old_instance = nil, &block
       new_instance = new
@@ -38,7 +37,6 @@ module Pavlov
       
       new_instance
     end
-
 
     def self.safely_evaluate_against instance, &block
       instance.instance_variable_set :@mutable, true
