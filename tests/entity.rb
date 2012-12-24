@@ -3,7 +3,7 @@ require_relative '../lib/entity'
 
 class EntityTests < MiniTest::Unit::TestCase
 
-  class TestObject < Entity
+  class TestObject < Pavlov::Entity
     attr_accessor :name, :test
     private
     def private_method
