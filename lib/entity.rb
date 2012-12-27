@@ -3,85 +3,67 @@ module Pavlov
     private_class_method :new
 
     def self.attributes *args
-      @@attribute_names = []
       args.each do |attribute_name|
         define_attribute_setter attribute_name
         define_attribute_getter attribute_name
-        @@attribute_names << attribute_name
       end
     end
 
     def self.create &block
-      update_instance &block
+      safely_evaluate_against new, &block
     end
 
     def update &block
-      self.class.update_instance self, &block
+      self.class.safely_evaluate_against self.dup, &block
     end
 
     private
-    def method_missing(method, *args, &block)
-      if @block_binding_self.nil?
-        super
+    def self.safely_evaluate_against target_instance, &block
+      if block_given?
+        target_instance.instance_variable_set :@mutable, true
+        caller_instance = eval "self", block.binding
+        evaluator = SafeEvaluator.new(target_instance, caller_instance)
+        evaluator.instance_eval &block      
+        target_instance.instance_variable_set :@mutable, false
       end
-      # If method isn't found here, look in the closure
-      @block_binding_self.send method, *args, &block
-    end
-
-    def self.update_instance old_instance = nil, &block
-      new_instance = new
-
-      copy_attribute_values old_instance, new_instance
-
-      safely_evaluate_against(new_instance, &block) if block_given?
-      
-      new_instance
-    end
-
-    def self.safely_evaluate_against instance, &block
-      instance.instance_variable_set :@mutable, true
-      instance.instance_variable_set :@block_binding_self, (eval "self", block.binding)
-      evaluator = SafeEvaluator.new(instance)
-      evaluator.instance_eval &block      
-      instance.instance_variable_set :@mutable, false
+      target_instance
     end
 
     class SafeEvaluator < BasicObject
-      def initialize obj
-        @obj = obj
+      def initialize target_instance, caller_instance
+        @target_instance, @caller_instance = target_instance, caller_instance
       end
 
       def method_missing method_name, *args
-        @obj.public_send method_name, *args
-      end
-    end
-
-    def self.copy_attribute_values old_instance, new_instance
-      if not old_instance.nil?
-        @@attribute_names.each do |attribute_name|
-          attribute_instance_variable_name = "@#{attribute_name}".to_sym
-          old_value = old_instance.send attribute_name.to_sym
-          new_instance.instance_variable_set attribute_instance_variable_name, old_value
+        if method_name[-1] == '='
+          @target_instance.public_send method_name, *args
+        else
+          @caller_instance.send method_name, *args
         end
       end
     end
 
     def self.define_attribute_setter attribute_name
       define_method attribute_name do
-        attribute_instance_variable_name = "@#{attribute_name}".to_sym
-        instance_variable_get attribute_instance_variable_name
+        instance_variable_symbol = self.class.instance_variable_symbol attribute_name
+        instance_variable_get instance_variable_symbol
       end
     end
 
     def self.define_attribute_getter attribute_name
       define_method "#{attribute_name}=" do |new_value|
-        if @mutable
-          attribute_instance_variable_name = "@#{attribute_name}".to_sym
-          instance_variable_set attribute_instance_variable_name, new_value
-        else
-          raise "This entity is immutable, please use 'instance = #{self.class.name}.create do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'."
-        end
+        raise_immutable unless @mutable
+        instance_variable_symbol = self.class.instance_variable_symbol attribute_name
+        instance_variable_set instance_variable_symbol, new_value
       end
+    end
+
+    def self.instance_variable_symbol attribute_name
+      "@#{attribute_name}".to_sym
+    end
+
+    def raise_immutable
+      raise "This entity is immutable, please use 'instance = #{self.class.name}.create do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'."
     end
   end
 end

@@ -124,7 +124,7 @@ describe Pavlov::Entity do
       refute_equal test_object.object_id, updated_test_object.object_id
     end
 
-    it 'must set the attribut to the value of a local method' do
+    it 'must set the attribute to the value of a local method' do
       test_object = test_class.create 
 
       test_object = test_object.update do
