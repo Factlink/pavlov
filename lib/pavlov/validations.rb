@@ -27,5 +27,9 @@ module Pavlov
     def validate_not_nil param_name, param
       raise Pavlov::ValidationError, "#{param_name.to_s} should not be nil." if param.nil?
     end
+
+    def errors
+      @errors ||= Pavlov::Validations::Errors.new
+    end
   end
 end

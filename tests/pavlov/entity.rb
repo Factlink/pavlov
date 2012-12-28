@@ -216,25 +216,4 @@ describe Pavlov::Entity do
       assert_match /undefined method `method_is_not_there' for #<#<Class:.*/, exception.message
     end
   end
-
-  describe 'validation' do
-    let('test_class') do
-      Class.new Pavlov::Entity do
-        attributes :drink_type
-        attributes :alcohol_percentage
-
-        def validate 
-          raise 'alcahol percentage can''t be more than 100' if alcohol_percentage > 100
-          raise 'Wine can''t be that strong' if drink_type == 'wine' and alcohol_percentage > 13
-        end
-      end
-    end
-
-    # it 'must error when initialized to an invalid state' do
-    #   test_class.create do
-    #     self.drink_type = 'wine'
-    #     self.alcohol_percentage = 20
-    #   end
-    # end
-  end
 end
