@@ -35,13 +35,20 @@ describe Pavlov::Entity do
       assert_equal test_class, test_object.class
     end
 
-    it 'must set the attribute' do
+    it 'must set the attribute when given a block' do
       test_object = test_class.create do
         self.name = default_name
       end
 
       assert_equal default_name, test_object.name
     end
+
+    it 'must set the attribute when given a hash' do
+      test_object = test_class.create ({name: default_name})
+
+      assert_equal default_name, test_object.name
+    end
+
 
     it 'must set the attribut to the value of a local method' do
       test_object = test_class.create do
@@ -59,10 +66,31 @@ describe Pavlov::Entity do
       }
     end
 
-    it 'must be able to set two attributes' do
+    it 'must be able to set two attributes when given a block' do
       test_value = false
 
       test_object = test_class.create do
+        self.name = default_name
+        self.test = test_value
+      end
+
+      assert_equal default_name, test_object.name
+      assert_equal test_value, test_object.test
+    end
+
+    it 'must be able to set two attributes when given a hash' do
+      test_value = false
+
+      test_object = test_class.create ({name: default_name, test: test_value})
+
+      assert_equal default_name, test_object.name
+      assert_equal test_value, test_object.test
+    end
+
+    it 'gives precedence to the block when given a hash and a block' do
+      test_value = false
+
+      test_object = test_class.create ({name: 'string that is overwritten', test: true}) do
         self.name = default_name
         self.test = test_value
       end
