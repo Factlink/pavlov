@@ -1,5 +1,16 @@
+require_relative 'validations/errors'
+require_relative 'validations/not_valid'
+
 module Pavlov
   module Validations
+    def errors
+      @errors ||= Pavlov::Validations::Errors.new
+    end
+
+    def validate
+      throw Pavlov::Validations::NotValid.new
+    end
+
     def validate_hexadecimal_string param_name, param
       raise "#{param_name.to_s} should be an hexadecimal string." unless /\A[\da-fA-F]+\Z/.match param
     end
@@ -26,10 +37,6 @@ module Pavlov
 
     def validate_not_nil param_name, param
       raise Pavlov::ValidationError, "#{param_name.to_s} should not be nil." if param.nil?
-    end
-
-    def errors
-      @errors ||= Pavlov::Validations::Errors.new
     end
   end
 end
