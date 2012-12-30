@@ -100,6 +100,78 @@ describe Pavlov::Entity do
     end
   end
 
+  describe 'interactions with .validate' do
+    let :succes_class do
+      Class.new Pavlov::Entity do
+        def validate
+          @mock.validate_call unless @mock.nil?
+        end
+
+        attributes :mock
+      end
+    end
+
+    it 'calls validate after creating and returns the entity when validations is succesfull' do
+      mock = MiniTest::Mock.new
+
+      mock.expect :validate_call, nil
+      mock.expect :nil?, false
+
+      test_object = succes_class.create do
+        self.mock = mock
+      end
+
+      mock.verify
+      refute_nil test_object
+    end
+
+    it 'calls validate after update and returns the entity when validations is succesfull' do
+      mock = MiniTest::Mock.new
+      test_object = succes_class.create
+
+      mock.expect :validate_call, nil
+      mock.expect :nil?, false
+
+      test_object = test_object.update do
+        self.mock = mock
+      end
+
+      mock.verify
+      refute_nil test_object
+    end
+
+    let :error_class do
+      Class.new Pavlov::Entity do
+        def validate
+          throw @error_mock unless @error_mock.nil?
+        end
+
+        attributes :error_mock
+      end
+    end
+
+    it 'calls validate after creating and throws when validations is not succesfull' do
+      error = StandardError.new
+
+      assert_raises error do
+        test_object = error_class.create do
+          self.error_mock = error
+        end
+      end
+    end
+
+    it 'calls validate after update and throws when validations is not succesfull' do
+      error = StandardError.new
+      test_object = error_class.create
+
+      assert_raises error do
+        test_object = test_object.update do
+          self.error_mock = error
+        end
+      end
+    end
+  end
+
   describe '.update' do
     let('test_class') do
       Class.new Pavlov::Entity do
