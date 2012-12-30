@@ -1,6 +1,6 @@
 module Pavlov
   module Validations
-    class Errors
+    module Errors
       include Enumerable
 
       def initialize 

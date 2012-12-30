@@ -4,13 +4,14 @@ require_relative '../../../lib/pavlov/validations/errors'
 
 describe Pavlov::Validations::Errors do
   it 'intitializes correctly' do
-    instance = Pavlov::Validations::Errors.new
+    instance = (class Test; include Pavlov::Validations::Errors; end;).new
     refute_nil instance
   end
 
   describe '.add' do
-    it 'an error with the attribute as a string' do
-      instance = Pavlov::Validations::Errors.new
+    let (:instance){instance = (class Test; include Pavlov::Validations::Errors; end;).new}
+    
+    it 'an error with the attribute as a string' do  
       test_attribute = 'bla'
       test_error_message = 'test'
       instance.add test_attribute, test_error_message
@@ -26,7 +27,6 @@ describe Pavlov::Validations::Errors do
     end
 
     it 'an error with the attribute as a symbol' do
-      instance = Pavlov::Validations::Errors.new
       test_attribute = 'bla'
       test_error_message = 'test'
       instance.add test_attribute.to_sym, test_error_message
@@ -43,8 +43,9 @@ describe Pavlov::Validations::Errors do
   end
 
   describe '.each' do
+    let (:instance){instance = (class Test; include Pavlov::Validations::Errors; end;).new}
+
     it 'returns nothing when empty' do
-      instance = Pavlov::Validations::Errors.new
       number_of_errors = 0
 
       instance.each do |attribute, error_message|
@@ -55,7 +56,6 @@ describe Pavlov::Validations::Errors do
     end
 
     it 'returns one item' do
-      instance = Pavlov::Validations::Errors.new
       test_attribute = 'test1'
       test_error_message = 'messsage1'
       instance.add(test_attribute, test_error_message)
@@ -70,7 +70,6 @@ describe Pavlov::Validations::Errors do
     end
 
     it 'returns two items fifo' do
-      instance = Pavlov::Validations::Errors.new
       instance.add('test1','message1')
       instance.add('test2','message2')
       

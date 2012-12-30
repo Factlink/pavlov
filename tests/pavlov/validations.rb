@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 
-require_relative '../../lib/pavlov/entity'
+require_relative '../../lib/pavlov/validations'
 
 describe Pavlov::Validations do
   describe '.errors' do
