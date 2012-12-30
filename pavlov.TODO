@@ -1,0 +1,15 @@
+Before fit for use in Hacker1/open sourcing:
+ ☐ Make sure validate is called after create and returns the result of validat in the error.
+ ☐ Make sure validate is called after update and returns the result of validate in the error.
+ ☐ Make sure you can initialize/update a entity with a list of arguments like interactors work, atm
+ ☐ Make sure you can initialize entities with objects, mapping property to property.
+ ☐ make validations operational and make sure it is compatablish with rail.
+ ☐ Convert all test to minitests
+ ☐ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly.
+ ☐ Remove all rails/factlink specific code. (mixpanel,cancan)
+ ☐ Fix the readme.
+ ☐ Make it possible to mount interactors in entities.
+ ☐ (re-)Integrate into Factlink.
+ ☐ Figure out how to do logging.
+ ☐ Add inline documentation like rails has.
+ ☐ Make a gem of it.
