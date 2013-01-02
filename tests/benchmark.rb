@@ -1,4 +1,4 @@
-require_relative '../lib/entity'
+require_relative '../lib/pavlov/entity'
 
 require 'benchmark/ips'
 require 'benchmark'
@@ -11,9 +11,9 @@ class User2
   attr_accessor :username, :bla, :bla2, :bla3
 end
 
-Benchmark.ips do |r|   
+Benchmark.ips do |r|
   r.report("immutable create") do |times|
-    user = User.create do
+    user = User.new do
       self.username = times.to_s
       self.bla = 'eouaou'
       self.bla2 = 'ouaoue'
@@ -31,7 +31,7 @@ Benchmark.ips do |r|
     user2.bla = 'eouaou'
     user2.bla2 = 'ouaoue'
     user2.bla3 = 'ouaeuao'
-    
+
     user3 = user2.dup
 
     user3.username = user2.bla + user2.bla2+user2.bla3+user2.username+times.to_s

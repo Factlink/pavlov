@@ -3,7 +3,7 @@ require 'minitest/autorun'
 require_relative '../../lib/pavlov/entity'
 
 describe Pavlov::Entity do
-  describe '.create' do
+  describe '.new' do
     let 'test_class' do
       Class.new Pavlov::Entity do
         attributes :name, :test
@@ -24,19 +24,19 @@ describe Pavlov::Entity do
     end
 
     it 'must return not nil' do
-      test_object = test_class.create
+      test_object = test_class.new
 
       refute_nil test_object
     end
 
     it 'must return the correct class' do
-      test_object = test_class.create
+      test_object = test_class.new
 
       assert_equal test_class, test_object.class
     end
 
     it 'must set the attribute when given a block' do
-      test_object = test_class.create do
+      test_object = test_class.new do
         self.name = default_name
       end
 
@@ -44,14 +44,14 @@ describe Pavlov::Entity do
     end
 
     it 'must set the attribute when given a hash' do
-      test_object = test_class.create ({name: default_name})
+      test_object = test_class.new({name: default_name})
 
       assert_equal default_name, test_object.name
     end
 
 
     it 'must set the attribut to the value of a local method' do
-      test_object = test_class.create do
+      test_object = test_class.new do
         self.name = helper_method
       end
 
@@ -59,8 +59,8 @@ describe Pavlov::Entity do
     end
 
     it 'must not allow to call private methods' do
-      assert_raises (NoMethodError) {
-        test_object = test_class.create do
+      assert_raises(NoMethodError) {
+        test_object = test_class.new do
           self.private_method
         end
       }
@@ -69,7 +69,7 @@ describe Pavlov::Entity do
     it 'must be able to set two attributes when given a block' do
       test_value = false
 
-      test_object = test_class.create do
+      test_object = test_class.new do
         self.name = default_name
         self.test = test_value
       end
@@ -81,7 +81,7 @@ describe Pavlov::Entity do
     it 'must be able to set two attributes when given a hash' do
       test_value = false
 
-      test_object = test_class.create ({name: default_name, test: test_value})
+      test_object = test_class.new({name: default_name, test: test_value})
 
       assert_equal default_name, test_object.name
       assert_equal test_value, test_object.test
@@ -90,7 +90,7 @@ describe Pavlov::Entity do
     it 'gives precedence to the block when given a hash and a block' do
       test_value = false
 
-      test_object = test_class.create ({name: 'string that is overwritten', test: true}) do
+      test_object = test_class.new({name: 'string that is overwritten', test: true}) do
         self.name = default_name
         self.test = test_value
       end
@@ -117,7 +117,7 @@ describe Pavlov::Entity do
       mock.expect :validate_call, nil
       mock.expect :nil?, false
 
-      test_object = succes_class.create do
+      test_object = succes_class.new do
         self.mock = mock
       end
 
@@ -127,7 +127,7 @@ describe Pavlov::Entity do
 
     it 'calls validate after update and returns the entity when validations is succesfull' do
       mock = MiniTest::Mock.new
-      test_object = succes_class.create
+      test_object = succes_class.new
 
       mock.expect :validate_call, nil
       mock.expect :nil?, false
@@ -143,7 +143,7 @@ describe Pavlov::Entity do
     let :error_class do
       Class.new Pavlov::Entity do
         def validate
-          throw @error_mock unless @error_mock.nil?
+          raise @error_mock unless @error_mock.nil?
         end
 
         attributes :error_mock
@@ -151,18 +151,18 @@ describe Pavlov::Entity do
     end
 
     it 'calls validate after creating and throws when validations is not succesfull' do
-      error = StandardError.new
+      error = StandardError
 
       assert_raises error do
-        test_object = error_class.create do
+        test_object = error_class.new do
           self.error_mock = error
         end
       end
     end
 
     it 'calls validate after update and throws when validations is not succesfull' do
-      error = StandardError.new
-      test_object = error_class.create
+      error = StandardError
+      test_object = error_class.new
 
       assert_raises error do
         test_object = test_object.update do
@@ -193,8 +193,8 @@ describe Pavlov::Entity do
     end
 
     it 'must update a attribute' do
-      test_object = test_class.create
-      
+      test_object = test_class.new
+
       test_object = test_object.update do
         self.name = default_name
       end
@@ -203,7 +203,7 @@ describe Pavlov::Entity do
     end
 
     it 'must partially update a entity' do
-      test_object = test_class.create do
+      test_object = test_class.new do
         self.test = default_name
       end
 
@@ -217,7 +217,7 @@ describe Pavlov::Entity do
     end
 
     it 'must return an other object' do
-      test_object = test_class.create 
+      test_object = test_class.new
 
       updated_test_object = test_object.update
 
@@ -225,7 +225,7 @@ describe Pavlov::Entity do
     end
 
     it 'must set the attribute to the value of a local method' do
-      test_object = test_class.create 
+      test_object = test_class.new
 
       test_object = test_object.update do
         self.name = helper_method
@@ -235,9 +235,9 @@ describe Pavlov::Entity do
     end
 
     it 'must not allow calling private methods' do
-      test_object = test_class.create
+      test_object = test_class.new
 
-      assert_raises (NoMethodError) {
+      assert_raises(NoMethodError) {
         test_object.update do
           self.private_method
         end
@@ -253,21 +253,13 @@ describe Pavlov::Entity do
     end
 
     it 'must not be able to mutate entity' do
-      test_object = test_class.create
+      test_object = test_class.new
 
-      exception = assert_raises (RuntimeError) {
+      exception = assert_raises(RuntimeError) {
         test_object.name = 'bla'
       }
-      assert_equal "This entity is immutable, please use 'instance = .create do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'.", 
+      assert_equal "This entity is immutable, please use 'instance = .new do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'.",
         exception.message
-    end
-
-    it 'must not be able to call new' do
-      exception = assert_raises (NoMethodError) {
-        test_class.new
-      }
-
-      assert_match /private method `new' called for #<Class:.*/, exception.message
     end
   end
 
@@ -277,15 +269,15 @@ describe Pavlov::Entity do
     end
 
     it 'must raise normally when calling a undefined method' do
-      test_object = test_class.create
+      test_object = test_class.new
 
-      exception = assert_raises (NoMethodError) {
+      exception = assert_raises(NoMethodError) {
         test_object.method_is_not_there
       }
 
       # todo: this exception is not thrown at the placet where I want it to, therefor the error message is a bit off
       # assert_match /undefined method `method_is_not_there' for #<Class:.*/, exception.message
-      assert_match /undefined method `method_is_not_there' for #<#<Class:.*/, exception.message
+      assert_match(/undefined method `method_is_not_there' for #<#<Class:.*/, exception.message)
     end
   end
 end
