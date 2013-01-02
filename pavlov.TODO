@@ -1,17 +1,17 @@
 Before fit for use in Hacker1/Factlink:
- ☐ Make sure validate is called after create and returns the result of validat in the error.
- ☐ Make sure validate is called after update and returns the result of validate in the error.
- ☐ Make sure you can initialize/update a entity with a list of arguments like interactors work, atm
- ☐ Make sure you can initialize entities with objects, mapping property to property.
+ ✔ Make sure validate is called after create and returns the result of validat in the error. @done (13-01-02 16:07)
+ ✔ Make sure validate is called after update and returns the result of validate in the error. @done (13-01-02 16:07)
+ ☐ Do we need options to be send to an object (?)
  ☐ Make validations operational and make sure it is compatablish with rail.
- ☐ Convert all test to minitests
+ ☐ Convert all test to minitests and minitests expectations.
  ☐ Remove all rails/factlink specific code. (mixpanel,cancan)
- ☐ Make it possible to mount interactors in entities.
+ ☐ Make it possible to mount interactors with as only argument the entity in that entity
  ☐ Figure out how to do logging.
  ☐ Authorize, validate in the execute (?)
  ☐ (re-)Integrate into Factlink.
  ☐ Dependecy injection.
  ☐ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly.
+ ☐ How are we going to do authentication?
  ☐ Fix the readme.
  ☐ Make a gem of it.
 
