@@ -10,16 +10,17 @@ class User < Pavlov::Entity do
   attributes :name, :username, :email
 end
 
-my_entitiy = User.create do
+my_entitiy = User.new do
   self.name = 'jan'
   self.username = 'jjoos'
   self.email = 'jan@deelstra.org'
 end
 
-my_entity = my_entity.update do
-  self.name = 'joop'
-  self.email = 'joop@deelstra.org'
-end
+or
+
+my_entitiy = User.new({name: 'jan', username: 'jjoos', email: 'jan@deelstra.org'})
+
+my_entity = my_entity.update({name: 'joop', email: 'joop@deelstra.org'})
 
 puts my_entity.username
 ```
@@ -32,7 +33,7 @@ After create/update call validate so an entity is always valid.
 ## Make validation compatible with rails
 Make sure the binding and error messages are compatible with rails.
 ## Make it possible to mount interactors in the entity if they have a first argument that accepts the entity.
-The need for a lot of the duplicated validation in these interactors dissapears 
+The need for a lot of the duplicated validation in these interactors dissapears
 ## Make it possible to mount interactors in the class.
 Make a logical place to find these interactors.
 
