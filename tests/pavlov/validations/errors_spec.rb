@@ -86,9 +86,9 @@ describe Pavlov::Validations::Errors do
       number_of_errors = 0
 
       instance.each do |attribute, error_message|
+        number_of_errors +=1
         attribute.must_equal 'test'+number_of_errors.to_s
         error_message.must_equal 'message'+number_of_errors.to_s
-        number_of_errors +=1
       end
 
       number_of_errors.must_equal 2
