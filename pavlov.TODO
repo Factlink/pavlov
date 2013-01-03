@@ -5,22 +5,28 @@ Before fit for use in Hacker1/Factlink:
  ☐ Add guard.
  ☐ Convert all test to minitests and minitests expectations.
 http://www.rubyinside.com/a-minitestspec-tutorial-elegant-spec-style-testing-that-comes-with-ruby-5354.html
- ☐ Make validations operational and make sure it is compatablish with rail.
- ☐ Do we need options to be send to an object (?)
  ☐ Remove all rails/factlink specific code. (mixpanel,cancan)
- ☐ Make it possible to mount interactors with as only argument the entity in that entity
- ☐ Figure out how to do logging.
- ☐ Authorize, validate in the execute (?)
  ☐ (re-)Integrate into Factlink.
- ☐ Dependecy injection.
- ☐ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly.
- ☐ How are we going to do authentication?
  ☐ automate tasks in rake file.
- ☐ Fix the readme.
-
-Steps before public availability/open sourcing:
+Steps before public availability:
  ☐ put on travis ci
+ ☐ Fix the readme.
+ ☐ check commit messages
+ ☐ add big warning to todo that this is very beta
+ ☐ update names in license to company name
+Steps before publicizing:
+ ☐ Add configuration (even if it does nothing or little)
+ ☐ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly.
  ☐ Add inline documentation like rails has.
  ☐ Add it to rubygems.org
  ☐ website
  ☐ blog post
+Wanted features:
+ ☐ Figure out how to do logging.
+ ☐ How are we going to do authentication?
+ ☐ Dependecy injection.
+ ☐ Make validations operational and make sure it is compatablish with rail.
+ ☐ Authorize, validate in the execute (?)
+ ☐ Do we need options to be send to an object (?)
+ ☐ Make it possible to mount interactors with as only argument the entity in that entity
+
