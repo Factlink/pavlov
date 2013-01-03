@@ -60,7 +60,7 @@ describe Pavlov::Entity do
 
     it 'must not allow to call private methods' do
       assert_raises(NoMethodError) {
-        test_object = test_class.new do
+        test_class.new do
           self.private_method
         end
       }
@@ -103,11 +103,15 @@ describe Pavlov::Entity do
   describe 'interactions with .validate' do
     let :succes_class do
       Class.new Pavlov::Entity do
-        def validate
-          @mock.validate_call unless @mock.nil?
+        def initialize
+          @validation_mock ||= nil
         end
 
-        attributes :mock
+        def validate
+          @validation_mock.validate_call unless @validation_mock.nil?
+        end
+
+        attributes :validation_mock
       end
     end
 
@@ -118,7 +122,7 @@ describe Pavlov::Entity do
       mock.expect :nil?, false
 
       test_object = succes_class.new do
-        self.mock = mock
+        self.validation_mock = mock
       end
 
       mock.verify
@@ -133,7 +137,7 @@ describe Pavlov::Entity do
       mock.expect :nil?, false
 
       test_object = test_object.update do
-        self.mock = mock
+        self.validation_mock = mock
       end
 
       mock.verify
@@ -142,11 +146,15 @@ describe Pavlov::Entity do
 
     let :error_class do
       Class.new Pavlov::Entity do
-        def validate
-          raise @error_mock unless @error_mock.nil?
+        def initialize
+          @error ||= nil
         end
 
-        attributes :error_mock
+        def validate
+          raise @error unless @error.nil?
+        end
+
+        attributes :error
       end
     end
 
@@ -154,8 +162,8 @@ describe Pavlov::Entity do
       error = StandardError
 
       assert_raises error do
-        test_object = error_class.new do
-          self.error_mock = error
+        error_class.new do
+          self.error = error
         end
       end
     end
@@ -166,7 +174,7 @@ describe Pavlov::Entity do
 
       assert_raises error do
         test_object = test_object.update do
-          self.error_mock = error
+          self.error = error
         end
       end
     end

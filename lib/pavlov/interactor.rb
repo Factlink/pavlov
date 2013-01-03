@@ -13,7 +13,7 @@ module Pavlov
       end
 
       def queue
-        @queue || :interactor_operations
+        @queue ||= :interactor_operations
       end
     end
   end
