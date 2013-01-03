@@ -1,11 +1,13 @@
-require_relative '../../app/interactors/pavlov.rb'
+require 'minitest/autorun'
+require_relative '../lib/pavlov.rb'
+
 describe Pavlov do
   describe "#string_to_classname" do
     it "should return the camel cased class" do
-      expect(Pavlov.string_to_classname('foo')).to eq 'Foo'
+      Pavlov.string_to_classname('foo').must_equal 'Foo'
     end
     it "should expand '/' to '::'" do
-      expect(Pavlov.string_to_classname('foo/bar')).to eq 'Foo::Bar'
+      Pavlov.string_to_classname('foo/bar').must_equal 'Foo::Bar'
     end
   end
 end
