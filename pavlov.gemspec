@@ -19,10 +19,8 @@ Gem::Specification.new do |gem|
   rails_version = '>= 3.2.7'
   gem.add_dependency 'activesupport', rails_version
 
-  gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'guard'
-
   gem.add_development_dependency 'guard-bundler'
   gem.add_development_dependency 'guard-minitest'
-  gem.add_development_dependency 'guard-rspec'
+  gem.add_development_dependency 'rb-fsevent'
 end
