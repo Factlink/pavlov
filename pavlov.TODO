@@ -29,4 +29,5 @@ Wanted features:
  ☐ Authorize, validate in the execute (?)
  ☐ Do we need options to be send to an object (?)
  ☐ Make it possible to mount interactors with as only argument the entity in that entity
+ ☐ create attr_readers for arguments
 
