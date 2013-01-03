@@ -7,7 +7,8 @@ guard :bundler do
   watch(/^.+\.gemspec/)
 end
 
-guard 'minitest' do
+guard :minitest, test_folders: 'tests', test_file_patterns: '*.rb' do
   watch(%r{^tests/.+\.rb$})
-  watch(%r{^lib/(.+)\.rb$}) { |m| "spec/lib/#{m[1]}.rb" }
+  watch(%r{^lib/(.+)\.rb$}) { |m| "tests/lib/#{m[1]}.rb" }
+  watch(%r|^tests/pavlov\.rb|)    { "tests" }
 end
