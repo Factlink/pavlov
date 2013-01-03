@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Infrastructure for defining your Ruby architecture.}
   gem.description   = %q{Pavlov is a opinionated toolbox to help you architect your Ruby project.}
   gem.homepage      = 'https://github.com/Factlink/pavlov/'
-  gem.files         = `git ls-files`.split($/)
+  gem.files         = `git ls-files lib`.split($/)
   gem.test_files    = gem.files.grep(%r{^(tests)/})
   gem.require_paths = ['lib']
 
