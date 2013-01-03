@@ -1,8 +1,0 @@
-require_relative 'pavlov/helpers/safe_evaluator_spec'
-require_relative 'pavlov/validations/errors_spec'
-require_relative 'pavlov/entity_spec'
-require_relative 'pavlov/interactor_spec'
-require_relative 'pavlov/operation_spec'
-require_relative 'pavlov/utils_spec'
-require_relative 'pavlov/validations_spec'
-require_relative 'pavlov_spec'
