@@ -14,7 +14,7 @@ describe Pavlov::Helpers::SafeEvaluator do
 
     target_instance.expect :public_send, nil,[:test=, true]
 
-    safe_evaluator.test= true
+    safe_evaluator.test = true
   end
 
   it 'pipes getter method calls to caller_instance' do

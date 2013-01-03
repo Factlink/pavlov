@@ -26,13 +26,13 @@ describe Pavlov::Entity do
     it 'must return not nil' do
       test_object = test_class.new
 
-      refute_nil test_object
+      test_object.wont_be_nil
     end
 
     it 'must return the correct class' do
       test_object = test_class.new
 
-      assert_equal test_class, test_object.class
+      test_object.class.must_equal test_class
     end
 
     it 'must set the attribute when given a block' do
@@ -40,13 +40,13 @@ describe Pavlov::Entity do
         self.name = default_name
       end
 
-      assert_equal default_name, test_object.name
+      test_object.name.must_equal default_name
     end
 
     it 'must set the attribute when given a hash' do
       test_object = test_class.new({name: default_name})
 
-      assert_equal default_name, test_object.name
+      test_object.name.must_equal default_name
     end
 
 
@@ -55,7 +55,7 @@ describe Pavlov::Entity do
         self.name = helper_method
       end
 
-      assert_equal helper_method, test_object.name
+      test_object.name.must_equal helper_method
     end
 
     it 'must not allow to call private methods' do
@@ -74,8 +74,8 @@ describe Pavlov::Entity do
         self.test = test_value
       end
 
-      assert_equal default_name, test_object.name
-      assert_equal test_value, test_object.test
+      test_object.name.must_equal default_name
+      test_object.test.must_equal test_value
     end
 
     it 'must be able to set two attributes when given a hash' do
@@ -83,8 +83,8 @@ describe Pavlov::Entity do
 
       test_object = test_class.new({name: default_name, test: test_value})
 
-      assert_equal default_name, test_object.name
-      assert_equal test_value, test_object.test
+      test_object.name.must_equal default_name
+      test_object.test.must_equal test_value
     end
 
     it 'gives precedence to the block when given a hash and a block' do
@@ -95,8 +95,8 @@ describe Pavlov::Entity do
         self.test = test_value
       end
 
-      assert_equal default_name, test_object.name
-      assert_equal test_value, test_object.test
+      test_object.name.must_equal default_name
+      test_object.test.must_equal test_value
     end
   end
 
@@ -122,7 +122,7 @@ describe Pavlov::Entity do
       end
 
       mock.verify
-      refute_nil test_object
+      test_object.wont_be_nil
     end
 
     it 'calls validate after update and returns the entity when validations is succesfull' do
@@ -137,7 +137,7 @@ describe Pavlov::Entity do
       end
 
       mock.verify
-      refute_nil test_object
+      test_object.wont_be_nil
     end
 
     let :error_class do
@@ -199,7 +199,7 @@ describe Pavlov::Entity do
         self.name = default_name
       end
 
-      assert_equal default_name, test_object.name
+      test_object.name.must_equal default_name
     end
 
     it 'must partially update a entity' do
@@ -212,8 +212,8 @@ describe Pavlov::Entity do
         self.name = other_name
       end
 
-      assert_equal default_name, test_object.test
-      assert_equal other_name, test_object.name
+      test_object.test.must_equal default_name
+      test_object.name.must_equal other_name
     end
 
     it 'must return an other object' do
@@ -221,7 +221,7 @@ describe Pavlov::Entity do
 
       updated_test_object = test_object.update
 
-      refute_equal test_object.object_id, updated_test_object.object_id
+      updated_test_object.object_id.wont_equal test_object.object_id
     end
 
     it 'must set the attribute to the value of a local method' do
@@ -231,7 +231,7 @@ describe Pavlov::Entity do
         self.name = helper_method
       end
 
-      assert_equal helper_method, test_object.name
+      test_object.name.must_equal helper_method
     end
 
     it 'must not allow calling private methods' do
@@ -258,8 +258,8 @@ describe Pavlov::Entity do
       exception = assert_raises(RuntimeError) {
         test_object.name = 'bla'
       }
-      assert_equal "This entity is immutable, please use 'instance = .new do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'.",
-        exception.message
+
+      exception.message.must_equal "This entity is immutable, please use 'instance = .new do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'."
     end
   end
 
@@ -277,7 +277,7 @@ describe Pavlov::Entity do
 
       # todo: this exception is not thrown at the placet where I want it to, therefor the error message is a bit off
       # assert_match /undefined method `method_is_not_there' for #<Class:.*/, exception.message
-      assert_match(/undefined method `method_is_not_there' for #<#<Class:.*/, exception.message)
+      exception.message.must_match(/undefined method `method_is_not_there' for #<#<Class:.*/)
     end
   end
 end

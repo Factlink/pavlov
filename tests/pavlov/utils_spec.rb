@@ -1,23 +1,24 @@
+require 'minitest/autorun'
+require_relative '../../lib/pavlov.rb'
+
 describe Pavlov::Utils do
-  subject do
-    o = Object.new
-    o.extend Pavlov::Utils
-  end
+  let(:instance) { Object.new.extend Pavlov::Utils }
 
   describe :hash_with_index do
     it "wraps its input in a hash, with as index the id of the objects in the array" do
-      mocklist = [
-          mock('foo', id: 1),
-          mock('bar', id: 2)
-      ]
 
-      wrapped_mock_list = {
-        1 => mocklist[0],
-        2 => mocklist[1]
+      klass = Struct.new(:id)
+      stub1 = klass.new 1
+      stub2 = klass.new 2
+      stublist = [stub1, stub2]
+
+      wrapped_stub_list = {
+        1 => stublist[0],
+        2 => stublist[1]
       }
 
-      result = subject.hash_with_index(:id, mocklist)
-      expect(result).to eq wrapped_mock_list
+      result = instance.hash_with_index(:id, stublist)
+      result.must_equal wrapped_stub_list
     end
   end
 end

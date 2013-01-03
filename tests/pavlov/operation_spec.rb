@@ -1,4 +1,5 @@
-require_relative '../../../app/interactors/pavlov.rb'
+require 'minitest/autorun'
+require_relative '../../lib/pavlov.rb'
 
 describe Pavlov::Operation do
 
@@ -12,7 +13,7 @@ describe Pavlov::Operation do
         end
 
         x = dummy_class.new 'argument'
-        expect(x.send(:instance_variable_get,'@first_argument')).to eq('argument')
+        x.send(:instance_variable_get,'@first_argument').must_equal 'argument'
       end
 
       it "saves arguments passed to instance variables in order" do
@@ -23,8 +24,8 @@ describe Pavlov::Operation do
         end
 
         x = dummy_class.new 'VAR1', 'VAR2'
-        expect(x.send(:instance_variable_get,'@var1')).to eq('VAR1')
-        expect(x.send(:instance_variable_get,'@var2')).to eq('VAR2')
+        x.send(:instance_variable_get,'@var1').must_equal 'VAR1'
+        x.send(:instance_variable_get,'@var2').must_equal 'VAR2'
       end
 
       it "calls validate if it exists" do
@@ -40,7 +41,7 @@ describe Pavlov::Operation do
           def authorized?; true; end
         end
         x = dummy_class.new
-        expect(x.validate_was_called).to eq(:validate_was_called)
+        x.validate_was_called.must_equal :validate_was_called
       end
 
       it "calls check_authority" do
@@ -56,7 +57,7 @@ describe Pavlov::Operation do
           def authorized?; true; end
         end
         x = dummy_class.new
-        expect(x.check_authority_was_called).to eq(:check_authority_was_called)
+        x.check_authority_was_called.must_equal :check_authority_was_called
       end
     end
   end
@@ -66,7 +67,7 @@ describe Pavlov::Operation do
       dummy_class = Class.new do
         include Pavlov::Operation
       end
-      expect {dummy_class.new}.to raise_error(Pavlov::AccessDenied)
+      -> {dummy_class.new}.must_raise Pavlov::AccessDenied
     end
 
     it "raises no error when .authorized? returns true" do
@@ -76,7 +77,7 @@ describe Pavlov::Operation do
           true
         end
       end
-      expect {dummy_class.new}.not_to raise_error(Pavlov::AccessDenied)
+      dummy_class.new # wont_raise
     end
 
     it "raises an error when .authorized? returns false" do
@@ -86,7 +87,7 @@ describe Pavlov::Operation do
           false
         end
       end
-      expect {dummy_class.new}.to raise_error(Pavlov::AccessDenied)
+      -> {dummy_class.new}.must_raise Pavlov::AccessDenied
     end
   end
 end

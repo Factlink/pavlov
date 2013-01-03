@@ -7,10 +7,6 @@ module Pavlov
       @errors ||= Pavlov::Validations::Errors.new
     end
 
-    def validate
-      throw Pavlov::Validations::NotValid.new
-    end
-
     def validate_hexadecimal_string param_name, param
       raise "#{param_name.to_s} should be an hexadecimal string." unless /\A[\da-fA-F]+\Z/.match param
     end
