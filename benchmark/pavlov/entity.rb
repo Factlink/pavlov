@@ -1,4 +1,4 @@
-require_relative '../lib/pavlov/entity'
+require_relative '../../lib/pavlov/entity'
 
 require 'benchmark/ips'
 require 'benchmark'
