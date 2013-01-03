@@ -7,3 +7,17 @@ Rake::TestTask.new do |t|
   t.verbose = true
   t.test_files = FileList['tests/**/*.rb']
 end
+
+desc "Run the benchmarks for pavlov."
+task :benchmark do
+  ruby "benchmark/pavlov/entity.rb"
+end
+
+desc "Look for TODO, FIXME and TBD tags in the code. (not case sensitive)"
+task :todo do
+  RUBY_FILES = FileList['**/*.rb'].exclude('pkg')
+  RUBY_FILES.egrep(/#.*(FIXME|TODO|TBD)/i)
+end
+
+# Make running the tests the default task.
+task(default: :test)
