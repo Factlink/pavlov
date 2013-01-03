@@ -3,11 +3,11 @@ Before fit for use in Hacker1/Factlink:
  ✔ Make sure validate is called after update and returns the result of validate in the error. @done (13-01-02 16:07)
  ✔ Make a gem of it. @done (13-01-03 08:58)
  ☐ Add guard.
- ☐ Convert all test to minitests and minitests expectations.
+ ✔ Convert all test to minitests and minitests expectations. @done (13-01-03 14:38)
 http://www.rubyinside.com/a-minitestspec-tutorial-elegant-spec-style-testing-that-comes-with-ruby-5354.html
  ☐ Remove all rails/factlink specific code. (mixpanel,cancan)
  ☐ (re-)Integrate into Factlink.
- ☐ automate tasks in rake file.
+ ✔ automate tasks in rake file. @done (13-01-03 14:38)
 Steps before public availability:
  ☐ put on travis ci
  ☐ Fix the readme.
