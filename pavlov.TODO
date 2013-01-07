@@ -9,11 +9,12 @@ http://www.rubyinside.com/a-minitestspec-tutorial-elegant-spec-style-testing-tha
  ☐ (re-)Integrate into Factlink.
  ✔ automate tasks in rake file. @done (13-01-03 14:38)
 Steps before public availability:
- ☐ put on travis ci
+ ☐ put on travis ci.
  ☐ Fix the readme.
- ☐ check commit messages
- ☐ add big warning to todo that this is very beta
- ☐ update names in license to company name
+ ☐ check commit messages.
+ ☐ add big warning to todo that this is very beta.
+ ☐ update names in license to company name.
+ ☐ tag release to correct version and think about how to do this in the feature.
 Steps before publicizing:
  ☐ Add configuration (even if it does nothing or little)
  ☐ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly.
