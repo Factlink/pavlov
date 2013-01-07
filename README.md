@@ -2,7 +2,7 @@
 
 Gem that provides infrastructure for ruby.
 
-Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
+### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
 
 ## Installation
 
@@ -18,29 +18,6 @@ Or install it yourself as:
 
     $ gem install pavlov
 
-
-## Immutable objects
-These objects can be used to simplify your design by making sure your object is always valid.
-### Usage
-```ruby
-class User < Pavlov::Entity do
-  attributes :name, :username, :email
-end
-
-my_entitiy = User.new do
-  self.name = 'jan'
-  self.username = 'jjoos'
-  self.email = 'jan@deelstra.org'
-end
-
-or
-
-my_entitiy = User.new({name: 'jan', username: 'jjoos', email: 'jan@deelstra.org'})
-
-my_entity = my_entity.update({name: 'joop', email: 'joop@deelstra.org'})
-
-puts my_entity.username
-```
 
 ## Commands, Queries and Interactors
 Inspiration:
@@ -71,6 +48,28 @@ When a operation is executed on one object and this is not authorized, this is c
 
 When a operation is executed on a set of objects, the operation will only execute on the subset the user is authorized for.
 
+## Immutable objects
+These objects can be used to simplify your design by making sure your object is always valid.
+### Usage
+```ruby
+class User < Pavlov::Entity do
+  attributes :name, :username, :email
+end
+
+my_entitiy = User.new do
+  self.name = 'jan'
+  self.username = 'jjoos'
+  self.email = 'jan@deelstra.org'
+end
+
+or
+
+my_entitiy = User.new({name: 'jan', username: 'jjoos', email: 'jan@deelstra.org'})
+
+my_entity = my_entity.update({name: 'joop', email: 'joop@deelstra.org'})
+
+puts my_entity.username
+```
 
 ## Contributing
 
