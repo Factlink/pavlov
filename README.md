@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/Factlink/pavlov.png)](http://travis-ci.org/bgreenlee/pygtail)
+
 # Pavlov
 
 Gem that provides infrastructure for ruby.
