@@ -285,7 +285,7 @@ describe Pavlov::Entity do
 
       # todo: this exception is not thrown at the placet where I want it to, therefor the error message is a bit off
       # assert_match /undefined method `method_is_not_there' for #<Class:.*/, exception.message
-      exception.message.must_match(/undefined method `method_is_not_there' for #<#<Class:.*/)
+      exception.message.must_match(/undefined method `method_is_not_there'/)
     end
   end
 end

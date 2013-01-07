@@ -9,7 +9,7 @@ http://www.rubyinside.com/a-minitestspec-tutorial-elegant-spec-style-testing-tha
  ✔ (re-)Integrate into Factlink. @done (13-01-07 14:34)
  ✔ automate tasks in rake file. @done (13-01-03 14:38)
 Steps before public availability:
- ☐ put on travis ci.
+ ✔ put on travis ci. @done (13-01-07 15:35)
  ☐ Fix the readme.
  ✔ check commit messages. @done (13-01-07 14:35)
  ✔ add big warning to todo that this is very beta. @done (13-01-07 14:35)
