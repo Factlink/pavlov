@@ -2,6 +2,8 @@
 
 Gem that provides infrastructure for ruby.
 
+Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -16,11 +18,10 @@ Or install it yourself as:
 
     $ gem install pavlov
 
-## Usage
 
-# Pavlov entities
-What is done:
-
+## Immutable objects
+These objects can be used to simplify your design by making sure your object is always valid.
+### Usage
 ```ruby
 class User < Pavlov::Entity do
   attributes :name, :username, :email
@@ -41,25 +42,21 @@ my_entity = my_entity.update({name: 'joop', email: 'joop@deelstra.org'})
 puts my_entity.username
 ```
 
-## Atomic create, update functions
-## Immutable
-What still needs to be done:
-## Validation
-After create/update call validate so an entity is always valid.
-## Make validation compatible with rails
-Make sure the binding and error messages are compatible with rails.
-## Make it possible to mount interactors in the entity if they have a first argument that accepts the entity.
-The need for a lot of the duplicated validation in these interactors dissapears
-## Make it possible to mount interactors in the class.
-Make a logical place to find these interactors.
+## Commands, Queries and Interactors
+Inspiration:
+http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years
+http://martinfowler.com/bliki/CQRS.html
 
-Given:
+Frontend only calls interactors. Interactors call queries and commands.
+Queries never call commands, they can call queries.
+Commands can call commands and queries.
+But keep your design _simple_ (KISS).
 
-Rails only calls interactors, queries and commands are only called by Interactors.
+### Usage
 
+TODO
 
-
-How to do Authorization in Pavlov:
+### Authorization
 
 There are multiple facets to whether a user is authorized:
 
@@ -79,6 +76,9 @@ When a operation is executed on a set of objects, the operation will only execut
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+3. Run bundle, before starting development.
+4. Implement your feature/bugfix and corresponding tests.
+5. Make sure your tests run against the latest stable mri.
+6. Commit your changes (`git commit -am 'Add some feature'`)
+7. Push to the branch (`git push origin my-new-feature`)
+8. Create new Pull Request
