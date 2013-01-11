@@ -23,6 +23,9 @@ Steps before publicizing:
  ☐ website
  ☐ blog post
 Wanted features:
+ ☐ We probably want callbacks for interactors and not for queries and commands. Do we want to enforce this?
+ ☐ Give nice error message when interactors, queries and commands don't exist.
+ ☐ Adding authorized? function to module that throws NotImplemented exception.
  ☐ Figure out how to do logging.
  ☐ How are we going to do authentication?
  ☐ Dependecy injection.
