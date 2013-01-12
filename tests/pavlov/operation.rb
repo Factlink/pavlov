@@ -60,6 +60,16 @@ describe Pavlov::Operation do
         x.check_authority_was_called.must_equal :check_authority_was_called
       end
     end
+
+    it 'creates attribute readers' do
+      dummy_class = Class.new do
+        include Pavlov::Operation
+        arguments :foo
+        def authorized?; true; end
+      end
+      x = dummy_class.new 'value for foo'
+      x.foo.must_equal 'value for foo'
+    end
   end
 
   describe '.check_authority' do

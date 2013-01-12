@@ -57,6 +57,10 @@ module Pavlov
         define_method :arguments do
           keys
         end
+
+        class_eval do
+          attr_reader *keys
+        end
       end
 
       # make our interactors behave as Resque jobs
