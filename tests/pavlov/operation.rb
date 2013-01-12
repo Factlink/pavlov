@@ -77,7 +77,7 @@ describe Pavlov::Operation do
       dummy_class = Class.new do
         include Pavlov::Operation
       end
-      -> {dummy_class.new}.must_raise Pavlov::AccessDenied
+      -> {dummy_class.new}.must_raise NotImplementedError
     end
 
     it "raises no error when .authorized? returns true" do

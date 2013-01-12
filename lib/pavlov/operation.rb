@@ -15,7 +15,11 @@ module Pavlov
     end
 
     def check_authority
-      raise_unauthorized unless respond_to? :authorized? and authorized?
+      raise_unauthorized unless authorized?
+    end
+
+    def authorized?
+      raise NotImplementedError
     end
 
     def initialize *params
