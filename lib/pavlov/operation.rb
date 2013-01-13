@@ -24,7 +24,7 @@ module Pavlov
     end
 
     def call(*args, &block)
-      self.execute(*args, &block)
+      execute(*args, &block)
     end
 
     private
