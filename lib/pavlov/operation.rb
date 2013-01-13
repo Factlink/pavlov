@@ -24,13 +24,17 @@ module Pavlov
         instance_variable_set(name, value)
       end
 
-      validate if respond_to? :validate
+      validate
       check_authority
       finish_initialize if respond_to? :finish_initialize
 		end
 
 		def authorized?
 			raise NotImplementedError
+		end
+
+		def validate
+			true
 		end
 
 		def call(*args, &block)
