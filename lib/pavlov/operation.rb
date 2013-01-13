@@ -8,7 +8,7 @@ module Pavlov
     include Pavlov::Utils
 
     def initialize(*params)
-      keys, names = extract_arguments(params)
+      keys, names, @options = extract_arguments(params)
       set_instance_variables keys, names
       validate
       check_authority
@@ -38,14 +38,14 @@ module Pavlov
       names = params.first(keys.length)
 
       if params.length == keys.length + 1
-        @options = params.last
+        options = params.last
       elsif params.length == keys.length
-        @options = {}
+        options = {}
       else
         raise "wrong number of arguments."
       end
 
-      [keys, names]
+      [keys, names, options]
     end
 
     def set_instance_variables(keys, names)
