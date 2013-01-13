@@ -7,9 +7,36 @@ module Pavlov
     include Pavlov::Validations
     include Pavlov::Utils
 
-    def initialize *params
+    def initialize(*params)
+      keys, names = extract_arguments(params)
+      set_instance_variables keys, names
+      validate
+      check_authority
+      finish_initialize if respond_to? :finish_initialize
+    end
+
+    def authorized?
+      raise NotImplementedError
+    end
+
+    def validate
+      true
+    end
+
+    def call(*args, &block)
+      self.execute(*args, &block)
+    end
+
+    private
+
+    def pavlov_options
+      @options
+    end
+
+    def extract_arguments(params)
       keys = (respond_to? :arguments) ? arguments : []
       names = params.first(keys.length)
+
       if params.length == keys.length + 1
         @options = params.last
       elsif params.length == keys.length
@@ -18,33 +45,15 @@ module Pavlov
         raise "wrong number of arguments."
       end
 
+      [keys, names]
+    end
+
+    def set_instance_variables(keys, names)
       (keys.zip names).each do |pair|
         name = "@" + pair[0].to_s
         value = pair[1]
         instance_variable_set(name, value)
       end
-
-      validate
-      check_authority
-      finish_initialize if respond_to? :finish_initialize
-		end
-
-		def authorized?
-			raise NotImplementedError
-		end
-
-		def validate
-			true
-		end
-
-		def call(*args, &block)
-			self.execute(*args, &block)
-		end
-
-		private
-
-    def pavlov_options
-      @options
     end
 
     def raise_unauthorized(message='Unauthorized')
@@ -70,7 +79,7 @@ module Pavlov
         end
 
         class_eval do
-          attr_reader *keys
+          attr_reader(*keys)
         end
       end
 
