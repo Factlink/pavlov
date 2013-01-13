@@ -6,21 +6,6 @@ module Pavlov
     include Pavlov::Helpers
     include Pavlov::Validations
     include Pavlov::Utils
-    def pavlov_options
-      @options
-    end
-
-    def raise_unauthorized(message='Unauthorized')
-      raise Pavlov::AccessDenied, message
-    end
-
-    def check_authority
-      raise_unauthorized unless authorized?
-    end
-
-    def authorized?
-      raise NotImplementedError
-    end
 
     def initialize *params
       keys = (respond_to? :arguments) ? arguments : []
@@ -42,10 +27,28 @@ module Pavlov
       validate if respond_to? :validate
       check_authority
       finish_initialize if respond_to? :finish_initialize
+		end
+
+		def authorized?
+			raise NotImplementedError
+		end
+
+		def call(*args, &block)
+			self.execute(*args, &block)
+		end
+
+		private
+
+    def pavlov_options
+      @options
     end
 
-    def call
-      self.execute
+    def raise_unauthorized(message='Unauthorized')
+      raise Pavlov::AccessDenied, message
+    end
+
+    def check_authority
+      raise_unauthorized unless authorized?
     end
 
     module ClassMethods
