@@ -6,8 +6,54 @@ module Pavlov
     include Pavlov::Helpers
     include Pavlov::Validations
     include Pavlov::Utils
+
+    def initialize(*params)
+      keys, names, @options = extract_arguments(params)
+      set_instance_variables keys, names
+      validate
+      check_authority
+      finish_initialize if respond_to? :finish_initialize
+    end
+
+    def authorized?
+      raise NotImplementedError
+    end
+
+    def validate
+      true
+    end
+
+    def call(*args, &block)
+      execute(*args, &block)
+    end
+
+    private
+
     def pavlov_options
       @options
+    end
+
+    def extract_arguments(params)
+      keys = (respond_to? :arguments) ? arguments : []
+      names = params.first(keys.length)
+
+      if params.length == keys.length + 1
+        options = params.last
+      elsif params.length == keys.length
+        options = {}
+      else
+        raise "wrong number of arguments."
+      end
+
+      [keys, names, options]
+    end
+
+    def set_instance_variables(keys, names)
+      (keys.zip names).each do |pair|
+        name = "@" + pair[0].to_s
+        value = pair[1]
+        instance_variable_set(name, value)
+      end
     end
 
     def raise_unauthorized(message='Unauthorized')
@@ -15,33 +61,7 @@ module Pavlov
     end
 
     def check_authority
-      raise_unauthorized unless respond_to? :authorized? and authorized?
-    end
-
-    def initialize *params
-      keys = (respond_to? :arguments) ? arguments : []
-      names = params.first(keys.length)
-      if params.length == keys.length + 1
-        @options = params.last
-      elsif params.length == keys.length
-        @options = {}
-      else
-        raise "wrong number of arguments."
-      end
-
-      (keys.zip names).each do |pair|
-        name = "@" + pair[0].to_s
-        value = pair[1]
-        instance_variable_set(name, value)
-      end
-
-      validate if respond_to? :validate
-      check_authority
-      finish_initialize if respond_to? :finish_initialize
-    end
-
-    def call
-      self.execute
+      raise_unauthorized unless authorized?
     end
 
     module ClassMethods
@@ -56,6 +76,10 @@ module Pavlov
       def arguments *keys
         define_method :arguments do
           keys
+        end
+
+        class_eval do
+          attr_reader(*keys)
         end
       end
 
