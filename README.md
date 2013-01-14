@@ -1,4 +1,4 @@
-# Pavlov [![Build Status](https://api.travis-ci.org/Factlink/pavlov.png)](http://travis-ci.org/Factlink/pavlov) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/Factlink/pavlov)
+# Pavlov [![Build Status](https://api.travis-ci.org/Factlink/pavlov.png)](http://travis-ci.org/Factlink/pavlov) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/Factlink/pavlov) [![Gem Version](https://badge.fury.io/rb/pavlov.png)](http://badge.fury.io/rb/pavlov)
 
 Gem that provides infrastructure for ruby.
 
