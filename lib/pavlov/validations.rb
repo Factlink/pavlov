@@ -27,7 +27,7 @@ module Pavlov
       raise Pavlov::ValidationError, "#{param_name.to_s} should be a string." unless param.is_a? String
     end
 
-    def validate_nonemtpy_string param_name, param
+    def validate_nonempty_string param_name, param
       raise Pavlov::ValidationError, "#{param_name.to_s} should be a nonempty string." unless param.is_a?(String) && not(param.nil?) && not(param.empty?)
     end
 
