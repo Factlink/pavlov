@@ -27,6 +27,10 @@ module Pavlov
       raise Pavlov::ValidationError, "#{param_name.to_s} should be a string." unless param.is_a? String
     end
 
+    def validate_not_emtpy_string param_name, param
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be a nonempty string." unless param.is_a?(String) && not(param.nil?) && not(param.empty?)
+    end
+
     def validate_integer_string param_name, param
       raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer string." unless param.is_a? String and /\A\d+\Z/.match param
     end
