@@ -7,12 +7,12 @@ module Pavlov
 
     def query name, *args
       args = add_pavlov_options args
-      Pavlov.query name, *args, pavlov_options
+      Pavlov.query name, *args
     end
 
     def command name, *args
       args = add_pavlov_options args
-      Pavlov.command name, *args, pavlov_options
+      Pavlov.command name, *args
     end
 
     def pavlov_options
