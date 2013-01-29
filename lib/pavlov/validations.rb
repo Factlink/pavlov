@@ -15,7 +15,8 @@ module Pavlov
       raise Pavlov::ValidationError, "#{param_name.to_s} #{message}" unless regex.match param
     end
 
-    def validate_integer param_name, param
+    def validate_integer param_name, param, opts = {}
+      return if opts[:allow_blank] && param.blank?
       raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer." unless param.is_a? Integer
     end
 
