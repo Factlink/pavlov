@@ -1,0 +1,15 @@
+
+
+Entity:
+ ✔ add validations @done (13-02-11 17:27)
+ ☐ add to_model
+ ☐ add pavlov validation implementiations in active support
+ ☐ Seperate Model and Entity and their unit tests
+
+Active model compatablity:
+ ☐ 
+
+
+
+ ☐ Rewrite KillObject logic for a User
+ ☐ The returned User that should be rewritten is the one in the search result
