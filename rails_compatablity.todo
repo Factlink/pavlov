@@ -2,7 +2,7 @@
 
 Entity:
  ✔ add validations @done (13-02-11 17:27)
- ☐ add to_model
+ ✔ add to_model @done (13-02-11 17:57)
  ☐ add pavlov validation implementiations in active support
  ☐ Seperate Model and Entity and their unit tests
 
