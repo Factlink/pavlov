@@ -1,3 +1,5 @@
+require_relative 'entity'
+
 module Pavlov
   module RailsModel
     module ClassMethods
@@ -26,7 +28,6 @@ module Pavlov
     end    
 
     def to_partial_path
-      puts self.class.inspect
       self.class._to_partial_path
     end
   
