@@ -52,7 +52,7 @@ When a operation is executed on a set of objects, the operation will only execut
 These objects can be used to simplify your design by making sure your object is always valid.
 ### Usage
 ```ruby
-class User < Pavlov::Entity do
+class User < Pavlov::Entity
   attributes :name, :username, :email
 end
 
