@@ -149,14 +149,6 @@ describe Pavlov::Entity do
       test_object.name.must_equal other_name
     end
 
-    it 'must return an other object' do
-      test_object = test_class.new
-
-      updated_test_object = test_object.update
-
-      updated_test_object.object_id.wont_equal test_object.object_id
-    end
-
     it 'must set the attribute to the value of a local method' do
       test_object = test_class.new
 

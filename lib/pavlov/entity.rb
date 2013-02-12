@@ -18,7 +18,7 @@ module Pavlov
     end
 
     def update hash = {}, &block
-      self.dup.send :mutate, hash, &block
+      mutate hash, &block
     end
 
     private

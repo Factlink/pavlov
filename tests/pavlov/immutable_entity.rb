@@ -3,6 +3,28 @@ require 'minitest/autorun'
 require_relative '../../lib/pavlov/immutable_entity'
 
 describe Pavlov::ImmutableEntity do
+
+  describe '#update' do
+    let('test_class') do
+      Class.new Pavlov::ImmutableEntity do
+        attributes :name, :test
+
+        private
+        def private_method
+          puts 'I''m private'
+        end
+      end
+    end
+
+    it 'must return an new instance' do
+      test_object = test_class.new
+
+      updated_test_object = test_object.update
+
+      updated_test_object.object_id.wont_equal test_object.object_id
+    end
+  end
+
   describe 'immutability' do
     let('test_class') do
       Class.new Pavlov::ImmutableEntity do

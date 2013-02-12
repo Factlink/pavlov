@@ -11,6 +11,10 @@ module Pavlov
       end
     end
 
+    def update hash = {}, &block
+      self.dup.send :mutate, hash, &block
+    end
+
     private
     def mutate hash, &block
       make_temporary_mutatable do
