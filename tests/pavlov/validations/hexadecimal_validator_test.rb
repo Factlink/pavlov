@@ -76,5 +76,20 @@ describe ActiveModel::Validations::HexadecimalValidator do
       entity.update id: '9876543210abcdef', parentid: '9876543210abcdef'
       assert entity.valid?
     end
+
+    let('test_class_with_allow_blank') do
+      Class.new Pavlov::Entity do
+        attributes :id
+        validate_hexadecimal_string :id, allow_blank: true
+      end
+    end
+
+    it 'accepts allow blank' do
+      entity = test_class_with_allow_blank.new 
+      assert entity.valid?
+
+      entity.update id: 'ghijklmnopq'
+      assert entity.invalid?
+    end
   end
 end
