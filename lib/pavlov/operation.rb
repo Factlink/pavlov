@@ -5,7 +5,6 @@ module Pavlov
     extend ActiveSupport::Concern
     include Pavlov::Helpers
     include Pavlov::Validations
-    include Pavlov::Utils
 
     def initialize(*params)
       keys, names, @options = extract_arguments(params)
