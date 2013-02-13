@@ -10,7 +10,7 @@ module Pavlov
     end
 
     def validate_integer param_name, param, opts = {}
-      warn "[DEPRECATION] `validate_integer` is deprecated. Please use the ActiveModel validation instead."
+      warn "[DEPRECATION] `validate_integer` is deprecated. Please use the default numericality ActiveModel validator with the :only_integer option instead."
       return if opts[:allow_blank] && param.blank?
       raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer." unless param.is_a? Integer
     end
@@ -33,6 +33,7 @@ module Pavlov
     end
 
     def validate_not_nil param_name, param
+      warn "[DEPRECATION] `validate_string` is deprecated. Please use the ActiveModel validation instead."
       raise Pavlov::ValidationError, "#{param_name.to_s} should not be nil." if param.nil?
     end
   end
