@@ -12,21 +12,25 @@ describe ActiveModel::Validations::HexadecimalValidator do
 
     it 'returns false when the attribute is not set' do
       entity = test_class.new
+
       entity.valid?.must_equal false
     end
 
     it 'returns false when attribute id is nil' do
-      entity = test_class.new id: nil 
+      entity = test_class.new id: nil
+
       entity.valid?.must_equal false
     end
 
     it 'returns false when attribute id is a non-hexidecimal string' do
       entity = test_class.new id: 'ghjkl'
+
       entity.valid?.must_equal false
     end
 
     it 'returns true when attribute id is a valid hexadecimal string' do
       entity = test_class.new id: '9876543210abcdef'
+
       entity.valid?.must_equal true
     end
   end
@@ -41,9 +45,11 @@ describe ActiveModel::Validations::HexadecimalValidator do
 
     it 'errors contains correct error message' do
       entity = test_class.new id: 'ghjk'
+
       assert entity.invalid?
+      entity.errors.size.must_equal 1
       entity.errors[:id].must_equal ['should be an hexadecimal string.']
-    end    
+    end
   end
 
   describe '.validate_hexadecimal_string' do
@@ -56,9 +62,12 @@ describe ActiveModel::Validations::HexadecimalValidator do
 
     it 'works with multiple arguments' do
       entity = test_class_with_multiple_arguments.new
+
       assert entity.invalid?
+      entity.errors.size.must_equal 2
 
       entity.update id: '9876543210abcdef', parentid: '9876543210abcdef'
+
       assert entity.valid?
     end
 
@@ -70,10 +79,13 @@ describe ActiveModel::Validations::HexadecimalValidator do
     end
 
     it 'accepts array as argument' do
-      entity = test_class_with_array_arguments.new 
+      entity = test_class_with_array_arguments.new
+
       assert entity.invalid?
+      entity.errors.size.must_equal 2
 
       entity.update id: '9876543210abcdef', parentid: '9876543210abcdef'
+
       assert entity.valid?
     end
 
@@ -85,10 +97,12 @@ describe ActiveModel::Validations::HexadecimalValidator do
     end
 
     it 'accepts allow blank' do
-      entity = test_class_with_allow_blank.new 
+      entity = test_class_with_allow_blank.new
+
       assert entity.valid?
 
       entity.update id: 'ghijklmnopq'
+
       assert entity.invalid?
     end
   end

@@ -1,6 +1,7 @@
 module Pavlov
   module Validations
     def validate_hexadecimal_string param_name, param
+      warn "[DEPRECATION] `validate_hexadecimal_string` is deprecated. Please use the ActiveModel validation instead."
       raise Pavlov::ValidationError,  "#{param_name.to_s} should be an hexadecimal string." unless param.is_a? String and /\A[\da-fA-F]+\Z/.match param
     end
 
@@ -9,6 +10,7 @@ module Pavlov
     end
 
     def validate_integer param_name, param, opts = {}
+      warn "[DEPRECATION] `validate_integer` is deprecated. Please use the ActiveModel validation instead."
       return if opts[:allow_blank] && param.blank?
       raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer." unless param.is_a? Integer
     end
