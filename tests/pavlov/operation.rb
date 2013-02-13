@@ -48,16 +48,16 @@ describe Pavlov::Operation do
         dummy_class = Class.new do
           include Pavlov::Operation
           arguments
-          def check_authority
-            @x_val = :check_authority_was_called
+          def check_authorization
+            @was_check_authorization_called = :yes
           end
-          def check_authority_was_called
-            @x_val
+          def check_authorization_was_called
+            @was_check_authorization_called
           end
           def authorized?; true; end
         end
         x = dummy_class.new
-        x.check_authority_was_called.must_equal :check_authority_was_called
+        x.check_authorization_was_called.must_equal :yes
       end
     end
 
@@ -73,13 +73,6 @@ describe Pavlov::Operation do
   end
 
   describe '.check_authority' do
-    it "raises an error when .authorized? does not exist" do
-      dummy_class = Class.new do
-        include Pavlov::Operation
-      end
-      -> {dummy_class.new}.must_raise NotImplementedError
-    end
-
     it "raises no error when .authorized? returns true" do
       dummy_class = Class.new do
         include Pavlov::Operation

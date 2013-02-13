@@ -9,4 +9,11 @@ describe Pavlov::Interactor do
 
     i.queue.must_equal :interactor_operations
   end
+
+  it "raises an error when .authorized? does not exist" do
+    dummy_class = Class.new do
+      include Pavlov::Interactor
+    end
+    -> {dummy_class.new}.must_raise NotImplementedError
+  end
 end
