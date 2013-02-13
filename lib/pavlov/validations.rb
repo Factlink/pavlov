@@ -20,6 +20,7 @@ module Pavlov
     end
 
     def validate_string param_name, param
+      warn "[DEPRECATION] `validate_string` is deprecated. Please use the ActiveModel validation instead."
       raise Pavlov::ValidationError, "#{param_name.to_s} should be a string." unless param.is_a? String
     end
 
