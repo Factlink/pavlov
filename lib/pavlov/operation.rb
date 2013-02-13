@@ -17,7 +17,11 @@ module Pavlov
     end
 
     def validate
-      true
+      if respond_to? :valid?
+        valid?
+      else
+        true
+      end
     end
 
     def call(*args, &block)
