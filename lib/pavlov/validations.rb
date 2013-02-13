@@ -25,6 +25,7 @@ module Pavlov
     end
 
     def validate_nonempty_string param_name, param
+      warn "[DEPRECATION] `validate_string` is deprecated. Please use the ActiveModel validation with the :non_empty option instead."
       raise Pavlov::ValidationError, "#{param_name.to_s} should be a nonempty string." unless param.is_a?(String) && not(param.nil?) && not(param.empty?)
     end
 

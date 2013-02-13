@@ -121,5 +121,22 @@ describe ActiveModel::Validations::StringValidator do
 
       assert entity.invalid?
     end
+
+    let('test_class_with_non_empty') do
+      Class.new Pavlov::Entity do
+        attributes :id
+        validate_string :id, non_empty: true
+      end
+    end
+
+    it 'does not accept empty string when non_empty is set' do
+      entity = test_class_with_non_empty.new id: ''
+
+      assert entity.invalid?
+
+      entity.update id: 'test'
+
+      assert entity.valid?
+    end
   end
 end
