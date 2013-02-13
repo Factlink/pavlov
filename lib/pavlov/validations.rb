@@ -6,6 +6,7 @@ module Pavlov
     end
 
     def validate_regex param_name, param, regex, message
+      warn "[DEPRECATION] `validate_integer` is deprecated. Please use the default format_of ActiveModel validator instead."
       raise Pavlov::ValidationError, "#{param_name.to_s} #{message}" unless regex.match param
     end
 
