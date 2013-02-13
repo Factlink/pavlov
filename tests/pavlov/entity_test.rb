@@ -92,6 +92,15 @@ describe Pavlov::Entity do
       test_object.test.must_equal test_value
     end
 
+    it 'must be able to set two attributes when given two arguments' do
+      test_value = false
+
+      test_object = test_class.new(default_name, test_value)
+
+      test_object.name.must_equal default_name
+      test_object.test.must_equal test_value
+    end
+
     it 'gives precedence to the block when given a hash and a block' do
       test_value = false
 
