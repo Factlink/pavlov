@@ -1,7 +1,7 @@
 require 'minitest/autorun'
-require_relative '../../../lib/pavlov/validations/hexadecimal_validator'
+require_relative '../../../lib/pavlov/validations/hexadecimal_string_validator'
 
-describe ActiveModel::Validations::HexadecimalValidator do
+describe ActiveModel::Validations::HexadecimalStringValidator do
   describe '#valid?' do
     let('test_class') do
       Class.new Pavlov::Entity do
