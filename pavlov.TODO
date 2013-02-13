@@ -17,7 +17,11 @@ Steps before public availability:
  ✔ tag release to correct version and think about how to do this in the feature. @done (13-01-07 14:42)
 Steps before publicizing:
  ☐ Add configuration (even if it does nothing or little)
- ✔ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly. @done (13-02-13 10:56)
+ ☐ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly.
+     ☐ Operation should move to a sub folder
+     ☐ Validations should be removed.
+ ☐ Query/Command/Interactor should be a Entity
+ ☐ There should be a nested validation option (argument should response to valid? and be valid.
  ☐ Add inline documentation like rails has.
  ✔ Add it to rubygems.org @done (13-02-13 10:56)
  ☐ website
