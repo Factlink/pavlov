@@ -29,6 +29,7 @@ module Pavlov
     end
 
     def validate_integer_string param_name, param
+      warn "[DEPRECATION] `validate_integer_string` is deprecated. Please use the ActiveModel validation instead."
       raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer string." unless param.is_a? String and /\A\d+\Z/.match param
     end
 
