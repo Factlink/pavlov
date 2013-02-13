@@ -36,7 +36,7 @@ module Pavlov
     end
 
     def validate_not_nil param_name, param
-      warn "[DEPRECATION] `validate_string` is deprecated. Please use the ActiveModel validation instead."
+      warn "[DEPRECATION] `validate_not_nil` is deprecated. Please use the default presence ActiveModel validator instead."
       raise Pavlov::ValidationError, "#{param_name.to_s} should not be nil." if param.nil?
     end
   end
