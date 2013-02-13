@@ -3,8 +3,9 @@
 Entity:
  ✔ add validations @done (13-02-11 17:27)
  ✔ add to_model @done (13-02-11 17:57)
- ☐ add pavlov validation implementiations in active support
  ✔ Seperate Model and Entity and their unit tests @done (13-02-13 10:56)
+ ☐ add pavlov validation implementiations in active support
+ ☐ up gem version to 0.1.0
 
 Active model compatablity:
  ☐ Rewrite KillObject logic for a User
