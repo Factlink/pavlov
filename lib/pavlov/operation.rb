@@ -10,16 +10,18 @@ module Pavlov
       keys, names, @options = extract_arguments(params)
       set_instance_variables keys, names
       validate
-      check_authority
+
+      check_authorization
+
       finish_initialize if respond_to? :finish_initialize
     end
 
-    def authorized?
-      raise NotImplementedError
-    end
-
     def validate
-      true
+      if respond_to? :valid?
+        valid?
+      else
+        true
+      end
     end
 
     def call(*args, &block)
@@ -59,8 +61,8 @@ module Pavlov
       raise Pavlov::AccessDenied, message
     end
 
-    def check_authority
-      raise_unauthorized unless authorized?
+    def check_authorization
+      raise_unauthorized if respond_to? :authorized? and not authorized?
     end
 
     module ClassMethods

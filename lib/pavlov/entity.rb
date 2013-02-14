@@ -1,61 +1,70 @@
+require 'active_model'
 require_relative 'helpers/safe_evaluator'
 
 module Pavlov
   class Entity
+    include ActiveModel::Validations
+
+    attr_accessor :options
+
     def self.attributes *args
+      @attributes ||= []
       args.each do |attribute_name|
-        define_attribute_writer attribute_name
-        attr_reader attribute_name
+        @attributes << attribute_name
+        attr_accessor attribute_name
       end
     end
 
-    def self.new hash = {}, &block
-      super().send :mutate, hash, &block
+    def self.new *parameters, &block
+      # make backwards compatabli object creation possible.
+      parameters = self.compatability parameters
+      parameters = [parameters] if parameters.is_a? Hash
+
+      # setup default value
+      parameters = [{}] if parameters == []
+
+      super().send :mutate, *parameters, &block
     end
 
     def update hash = {}, &block
-      self.dup.send :mutate, hash, &block
+      mutate hash, &block
     end
 
     private
+    def self.compatability parameters
+      new_parameters = parameters
+      if parameters.size > 1 or (parameters.size == 1 and @attributes.size == 0)
+        if @attributes.size == parameters.size
+          new_parameters = {}
+          @attributes.each_with_index {|k,i| new_parameters[@attributes[i]] = parameters[i]}
+        elsif @attributes.size + 1 == parameters.size
+          new_parameters = {}
+          @attributes.each_with_index {|k,i| new_parameters[@attributes[i]] = parameters[i]}
+          new_parameters[:options] = parameters.last
+        end
+      elsif parameters.size == 1 and @attributes.size == 1
+        unless parameters.first.is_a? Hash and parameters.first.has_key?(@attributes.first)
+          new_parameters = {}
+          new_parameters[@attributes.first] = parameters.first
+        end
+      end
+      new_parameters
+    end
+
     def mutate hash, &block
       copy_hash_values hash
       safely_evaluate_against(&block) if block_given?
-      validate if respond_to? :validate
       self
     end
 
     def copy_hash_values hash
-      make_temporary_mutatable do
-        hash.each {|key,value| send("#{key}=",value)}
-      end
+      hash.each {|key,value| send("#{key}=",value)}
     end
 
     def safely_evaluate_against &block
-      make_temporary_mutatable do
-        caller_instance = eval "self", block.binding
-        evaluator = Pavlov::Helpers::SafeEvaluator.new(self, caller_instance)
-        evaluator.instance_eval(&block)
-      end
-      self
-    end
-
-    def make_temporary_mutatable &block
-      @mutable = true
-      block.call
-      @mutable = false
-    end
-
-    def self.define_attribute_writer attribute_name
-      define_method "#{attribute_name}=" do |new_value|
-        raise_not_mutable unless @mutable
-        instance_variable_symbol = "@#{attribute_name}".to_sym
-        instance_variable_set instance_variable_symbol, new_value
-      end
-    end
-
-    def raise_not_mutable
-      raise "This entity is immutable, please use 'instance = #{self.class.name}.new do; self.attribute = 'value'; end' or 'instance = instance.update do; self.attribute = 'value'; end'."
+      caller_instance = eval "self", block.binding
+      evaluator = Pavlov::Helpers::SafeEvaluator.new(self, caller_instance)
+      evaluator.instance_eval(&block)
     end
   end
 end

@@ -16,7 +16,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(tests)/})
   gem.require_paths = ['lib']
 
-  gem.add_dependency 'activesupport', '>= 3.2.7'
+  rails_version = '>= 3.2.7'
+  gem.add_dependency 'activesupport', rails_version
+  gem.add_dependency 'activemodel', rails_version
 
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'minitest-stub-const'
