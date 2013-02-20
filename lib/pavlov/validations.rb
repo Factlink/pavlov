@@ -32,5 +32,21 @@ module Pavlov
     def validate_not_nil param_name, param
       raise Pavlov::ValidationError, "#{param_name.to_s} should not be nil." if param.nil?
     end
+
+    def validate_greater_than param_name, param, compare
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be greater than #{compare}." unless param > compare
+    end
+
+    def validate_greater_than_or_equal_to param_name, param, compare
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be greater than or equal to #{compare}." unless param >= compare
+    end
+
+    def validate_less_than param_name, param, compare
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be less than #{compare}." unless param < compare
+    end
+
+    def validate_less_than_or_equal_to param_name, param, compare
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be less than or equal to #{compare}." unless param <= compare
+    end
   end
 end
