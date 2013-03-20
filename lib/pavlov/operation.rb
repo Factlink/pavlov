@@ -6,14 +6,23 @@ module Pavlov
     include Pavlov::Helpers
     include Pavlov::Validations
 
-    def initialize(*params)
-      keys, names, @options = extract_arguments(params)
-      set_instance_variables keys, names
+    def initialize(args = {})
+      set_instance_variables(args)
       validate
-
       check_authorization
-
       finish_initialize if respond_to? :finish_initialize
+    end
+
+    def set_instance_variables(args)
+      self.class.arguments.each do |key, options|
+        value   = args.fetch(key) do
+          options.fetch(:default) do
+            raise ArgumentError, "Missing argument: #{key}" unless value or options.has_key?(:default)
+          end
+        end
+
+        instance_variable_set("@#{key}", value)
+      end
     end
 
     def validate
@@ -34,29 +43,6 @@ module Pavlov
       @options
     end
 
-    def extract_arguments(params)
-      keys = (respond_to? :arguments) ? arguments : []
-      names = params.first(keys.length)
-
-      if params.length == keys.length + 1
-        options = params.last
-      elsif params.length == keys.length
-        options = {}
-      else
-        raise "wrong number of arguments."
-      end
-
-      [keys, names, options]
-    end
-
-    def set_instance_variables(keys, names)
-      (keys.zip names).each do |pair|
-        name = "@" + pair[0].to_s
-        value = pair[1]
-        instance_variable_set(name, value)
-      end
-    end
-
     def raise_unauthorized(message='Unauthorized')
       raise Pavlov::AccessDenied, message
     end
@@ -66,22 +52,14 @@ module Pavlov
     end
 
     module ClassMethods
-      # arguments :foo, :bar
-      #
-      # results in
-      #
-      # def initialize(foo, bar)
-      #   @foo = foo
-      #   @bar = bar
-      # end
-      def arguments *keys
-        define_method :arguments do
-          keys
-        end
+      def argument key, options = {}
+        @arguments ||= {}
+        @arguments[key] = options
+        class_eval { attr_reader key }
+      end
 
-        class_eval do
-          attr_reader(*keys)
-        end
+      def arguments
+        @arguments || {}
       end
 
       # make our interactors behave as Resque jobs
