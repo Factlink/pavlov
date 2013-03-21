@@ -30,7 +30,7 @@ module Pavlov
     private
 
     def pavlov_options
-      @options
+      @options ||= {}
     end
 
     def extract_arguments(params)
