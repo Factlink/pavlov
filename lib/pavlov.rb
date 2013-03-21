@@ -28,6 +28,8 @@ module Pavlov
   end
 end
 
+require_relative 'pavlov/engine' if defined?(Rails)
+
 require_relative 'pavlov/helpers'
 require_relative 'pavlov/access_denied'
 require_relative 'pavlov/validation_error'
