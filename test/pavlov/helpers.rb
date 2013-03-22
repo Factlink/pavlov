@@ -8,7 +8,7 @@ describe Pavlov::Helpers do
         include Pavlov::Helpers
 
         def test
-          interactor :interactor_name, 'argument1', 'argument2'
+          interactor :interactor_name, arg1: 'argument1', arg2: 'argument2'
         end
       end
       instance = dummy_class.new
@@ -17,7 +17,7 @@ describe Pavlov::Helpers do
       original = Pavlov.send(:const_get, :Pavlov)
       Pavlov.send(:const_set, :Pavlov, mock)
 
-      mock.expect :interactor, nil, [:interactor_name, 'argument1', 'argument2']
+      mock.expect :interactor, nil, [:interactor_name, {arg1: 'argument1', arg2: 'argument2'}]
 
       instance.test
 
@@ -35,7 +35,7 @@ describe Pavlov::Helpers do
         end
 
         def test
-          interactor :interactor_name, 'argument1', 'argument2'
+          interactor :interactor_name, arg1: 'argument1', arg2: 'argument2'
         end
       end
       instance = dummy_class.new
@@ -43,7 +43,7 @@ describe Pavlov::Helpers do
       original = Pavlov.send(:const_get, :Pavlov)
       Pavlov.send(:const_set, :Pavlov, mock)
 
-      mock.expect :interactor, nil, [:interactor_name, 'argument1', 'argument2', hash]
+      mock.expect :interactor, nil, [:interactor_name, {arg1: 'argument1', arg2: 'argument2', key: 'value'}]
 
       instance.test
 
