@@ -16,6 +16,11 @@ Steps before public availability:
  ✔ update names in license to company name. @done (13-01-07 14:38)
  ✔ tag release to correct version and think about how to do this in the feature. @done (13-01-07 14:42)
 Steps before publicizing:
+ ✔ rails compatability branch merge into default @done (13-04-26 10:17)
+ ☐ convert minitest => rspec
+ ☐ remove or move to mixin controversial/unused functionality 
+    (block initializaties, immutable, oude initializatie support)
+ ☐ authorized? en has_access? => authenticated?, authorized? refactoren.
  ☐ Add configuration (even if it does nothing or little)
  ☐ Make sure all toplevel (/lib/pavlov) modules and classes are for public use and can be used seperatly.
      ☐ Operation should move to a sub folder
@@ -23,19 +28,20 @@ Steps before publicizing:
  ☐ Query/Command/Interactor should be a Entity
  ☐ There should be a nested validation option (argument should response to valid? and be valid.
  ☐ Add inline documentation like rails has.
+ ☐ create event source mixin that overwrites execute with data mutate and side-effects.
  ✔ Add it to rubygems.org @done (13-02-13 10:56)
  ☐ website
+ ☐ release gem with 0.x++.y
  ☐ blog post
 Wanted features:
  ☐ We probably want callbacks for interactors and not for queries and commands. Do we want to enforce this?
  ☐ Give nice error message when interactors, queries and commands don't exist.
  ✔ Adding authorized? function to module that throws NotImplemented exception.
  ☐ Figure out how to do logging.
- ☐ How are we going to do authentication?
+ ☐ How are we going to do authorization for returning data
  ☐ Dependecy injection?
  ☐ Make validations operational and make sure it is compatablish with rail.
  ☐ Authorize, validate in the execute (?)
  ☐ Do we need options to be send to an object (?)
  ☐ Make it possible to mount interactors with as only argument the entity in that entity
  ☐ create attr_readers for arguments
-
