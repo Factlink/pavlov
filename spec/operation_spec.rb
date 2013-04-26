@@ -1,32 +1,33 @@
-require 'minitest/autorun'
-require_relative '../test_helper'
-require_relative '../../lib/pavlov.rb'
+require 'spec_helper'
+require 'pavlov/operation'
 
 describe Pavlov::Operation do
 
   describe '#arguments' do
     describe "creates an initializer which" do
-      it "saves arguments passed to instance variables" do
+      it "saves arguments and retrieve via getter" do
         dummy_class = Class.new do
           include Pavlov::Operation
           arguments :first_argument
           def authorized?; true; end
         end
 
-        x = dummy_class.new 'argument'
-        x.send(:instance_variable_get,'@first_argument').must_equal 'argument'
+        operation = dummy_class.new 'argument'
+
+        expect( operation.first_argument ).to eq 'argument'
       end
 
-      it "saves arguments passed to instance variables in order" do
+      it "saves arguments and retrieves them via getters" do
         dummy_class = Class.new do
           include Pavlov::Operation
           arguments :var1, :var2
           def authorized?; true; end
         end
 
-        x = dummy_class.new 'VAR1', 'VAR2'
-        x.send(:instance_variable_get,'@var1').must_equal 'VAR1'
-        x.send(:instance_variable_get,'@var2').must_equal 'VAR2'
+        operation = dummy_class.new 'VAR1', 'VAR2'
+
+        expect( operation.var1 ).to eq 'VAR1'
+        expect( operation.var2 ).to eq 'VAR2'
       end
 
       it "calls validate if it exists" do
@@ -41,8 +42,8 @@ describe Pavlov::Operation do
           end
           def authorized?; true; end
         end
-        x = dummy_class.new
-        x.validate_was_called.must_equal :validate_was_called
+        operation = dummy_class.new
+        expect( operation.validate_was_called ).to equal :validate_was_called
       end
 
       it "calls check_authority" do
@@ -57,23 +58,18 @@ describe Pavlov::Operation do
           end
           def authorized?; true; end
         end
-        x = dummy_class.new
-        x.check_authorization_was_called.must_equal :yes
-      end
-    end
+        operation = dummy_class.new
 
-    it 'creates attribute readers' do
-      dummy_class = Class.new do
-        include Pavlov::Operation
-        arguments :foo
-        def authorized?; true; end
+        expect( operation.check_authorization_was_called ).to equal :yes
       end
-      x = dummy_class.new 'value for foo'
-      x.foo.must_equal 'value for foo'
     end
   end
 
   describe '.check_authority' do
+    before do
+      stub_const 'Pavlov::AccessDenied', StandardError
+    end
+
     it "raises no error when .authorized? returns true" do
       dummy_class = Class.new do
         include Pavlov::Operation
@@ -81,7 +77,9 @@ describe Pavlov::Operation do
           true
         end
       end
-      dummy_class.new # wont_raise
+      expect {
+        dummy_class.new 
+      }.to_not raise_error
     end
 
     it "raises an error when .authorized? returns false" do
@@ -91,7 +89,9 @@ describe Pavlov::Operation do
           false
         end
       end
-      -> {dummy_class.new}.must_raise Pavlov::AccessDenied
+      expect {
+        dummy_class.new
+      }.to raise_error Pavlov::AccessDenied
     end
   end
 end
