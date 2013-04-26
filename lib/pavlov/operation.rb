@@ -1,4 +1,6 @@
 require 'active_support/concern'
+require 'pavlov/validations'
+require 'pavlov/helpers'
 
 module Pavlov
   module Operation
