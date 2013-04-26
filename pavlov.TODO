@@ -10,13 +10,14 @@ http://www.rubyinside.com/a-minitestspec-tutorial-elegant-spec-style-testing-tha
  ✔ automate tasks in rake file. @done (13-01-03 14:38)
 Steps before public availability:
  ✔ put on travis ci. @done (13-01-07 15:35)
- ☐ Fix the readme.
+ ✔ Fix the readme. @done (13-04-26 10:30)
  ✔ check commit messages. @done (13-01-07 14:35)
  ✔ add big warning to todo that this is very beta. @done (13-01-07 14:35)
  ✔ update names in license to company name. @done (13-01-07 14:38)
  ✔ tag release to correct version and think about how to do this in the feature. @done (13-01-07 14:42)
 Steps before publicizing:
  ✔ rails compatability branch merge into default @done (13-04-26 10:17)
+ ✔ Add it to rubygems.org @done (13-02-13 10:56)
  ☐ convert minitest => rspec
  ☐ remove or move to mixin controversial/unused functionality 
     (block initializaties, immutable, oude initializatie support)
@@ -29,7 +30,7 @@ Steps before publicizing:
  ☐ There should be a nested validation option (argument should response to valid? and be valid.
  ☐ Add inline documentation like rails has.
  ☐ create event source mixin that overwrites execute with data mutate and side-effects.
- ✔ Add it to rubygems.org @done (13-02-13 10:56)
+ ☐ Add patterns and usages to readme.
  ☐ website
  ☐ release gem with 0.x++.y
  ☐ blog post
