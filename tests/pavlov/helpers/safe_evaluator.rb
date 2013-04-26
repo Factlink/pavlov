@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-
+require_relative '../../test_helper'
 require_relative '../../../lib/pavlov/helpers/safe_evaluator'
 
 describe Pavlov::Helpers::SafeEvaluator do
