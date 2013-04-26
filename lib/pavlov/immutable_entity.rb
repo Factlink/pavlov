@@ -1,4 +1,5 @@
 require_relative 'entity'
+require_relative 'errors/immutable_error'
 
 module Pavlov
   class ImmutableEntity < Pavlov::Entity
@@ -21,7 +22,7 @@ module Pavlov
         copy_hash_values hash
         safely_evaluate_against(&block) if block_given?
       end
-      valid? if respond_to? :valid?
+      raise Pavlov::Errors::Immutable.new unless valid?
       self
     end
 
