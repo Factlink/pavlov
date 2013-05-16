@@ -1,9 +1,12 @@
 require 'active_support/concern'
 
 module Pavlov
+  class AccessDenied < StandardError; end
+
   module Operation
     extend ActiveSupport::Concern
     include Pavlov::Helpers
+
 
     def initialize(args = {})
       set_instance_variables(args)
@@ -25,11 +28,8 @@ module Pavlov
     end
 
     def validate
-      if respond_to? :valid?
-        valid?
-      else
-        true
-      end
+      return valid? if respond_to? :valid?
+      true
     end
 
     def call(*args, &block)
