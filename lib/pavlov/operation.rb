@@ -28,7 +28,7 @@ module Pavlov
       end
 
       self.class.callbacks.each do |key, options|
-        if value = args[key]
+        if value = args["on_#{key}".to_sym]
           @callbacks[key] ||= []
           @callbacks[key] << value
         end
@@ -75,6 +75,12 @@ module Pavlov
       def callback key, options = {}
         @callbacks ||= {}
         @callbacks[key] = options
+        class_eval <<-END
+          def on_#{key}(&block)
+            @callbacks[#{key.to_sym.inspect}] ||= []
+            @callbacks[#{key.to_sym.inspect}] << block
+          end
+        END
       end
 
       def arguments

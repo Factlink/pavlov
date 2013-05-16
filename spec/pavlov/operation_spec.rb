@@ -78,7 +78,45 @@ describe Pavlov::Operation do
         end
       end
 
-      operation.new(success: ->{ block.call }).call
+      operation.new(on_success: ->{ block.call }).call
+    end
+
+    it 'can add callbacks after initialization' do
+      block = stub
+      block.should_receive(:call).once
+
+      operation = Class.new do
+        include Pavlov::Operation
+
+        callback :success
+
+        def execute
+          execute_callbacks_for(:success)
+        end
+      end
+
+      op = operation.new
+      op.on_success { block.call }
+      op.call
+    end
+
+    it 'supports multiple callbacks' do
+      block = stub
+      block.should_receive(:call).twice
+
+      operation = Class.new do
+        include Pavlov::Operation
+
+        callback :success
+
+        def execute
+          execute_callbacks_for(:success)
+        end
+      end
+
+      op = operation.new(on_success: -> { block.call })
+      op.on_success { block.call }
+      op.call
     end
   end
 
