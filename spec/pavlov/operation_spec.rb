@@ -63,6 +63,25 @@ describe Pavlov::Operation do
     end
   end
 
+  describe '.callback' do
+    it 'defines a callback' do
+      block = stub
+      block.should_receive(:call).once
+
+      operation = Class.new do
+        include Pavlov::Operation
+
+        callback :success
+
+        def execute
+          execute_callbacks_for(:success)
+        end
+      end
+
+      operation.new(success: ->{ block.call }).call
+    end
+  end
+
   describe '.check_authority' do
     it "raises no error when .authorized? returns true" do
       dummy_class = Class.new do

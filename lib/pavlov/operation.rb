@@ -9,6 +9,7 @@ module Pavlov
 
 
     def initialize(args = {})
+      @callbacks = {}
       set_instance_variables(args)
       validate
       check_authorization
@@ -24,6 +25,13 @@ module Pavlov
         end
 
         instance_variable_set("@#{key}", value)
+      end
+
+      self.class.callbacks.each do |key, options|
+        if value = args[key]
+          @callbacks[key] ||= []
+          @callbacks[key] << value
+        end
       end
     end
 
@@ -50,6 +58,13 @@ module Pavlov
       raise_unauthorized if respond_to? :authorized? and not authorized?
     end
 
+    def execute_callbacks_for(key, *args)
+      @callbacks[key] ||= []
+      @callbacks[key].each do |callback|
+        callback.call(*args)
+      end
+    end
+
     module ClassMethods
       def argument key, options = {}
         @arguments ||= {}
@@ -57,8 +72,17 @@ module Pavlov
         class_eval { attr_reader key }
       end
 
+      def callback key, options = {}
+        @callbacks ||= {}
+        @callbacks[key] = options
+      end
+
       def arguments
         @arguments || {}
+      end
+
+      def callbacks
+        @callbacks || {}
       end
 
       # make our interactors behave as Resque jobs
