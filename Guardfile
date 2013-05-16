@@ -3,12 +3,10 @@
 
 guard :bundler do
   watch('Gemfile')
-  # Uncomment next line if Gemfile contain `gemspec' command
   watch(/^.+\.gemspec/)
 end
 
-guard :minitest, test_folders: 'test', test_file_patterns: '*.rb' do
-  watch(%r{^test/.+\.rb$})
-  watch(%r{^lib/(.+)\.rb$}) { |m| "test/#{m[1]}.rb" }
-  watch(%r|^test/pavlov\.rb|)    { "test" }
+guard :rspec do
+  watch(%r{^spec/.+_spec\.rb$})
+  watch(%r{^lib/(.+)\.rb$})                           { |m| "spec/#{m[1]}_spec.rb" }
 end
