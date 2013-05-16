@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require_relative '../../lib/pavlov.rb'
+require 'pavlov'
 
 describe Pavlov::Interactor do
   it 'should have a class which has a queue method which returns a default queue' do
@@ -7,13 +6,13 @@ describe Pavlov::Interactor do
 
     i.send(:include, Pavlov::Interactor)
 
-    i.queue.must_equal :interactor_operations
+    i.queue.should == :interactor_operations
   end
 
   it "raises an error when .authorized? does not exist" do
     dummy_class = Class.new do
       include Pavlov::Interactor
     end
-    -> {dummy_class.new}.must_raise NotImplementedError
+    expect(-> {dummy_class.new}).to raise_error(NotImplementedError)
   end
 end

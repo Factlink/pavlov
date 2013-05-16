@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require_relative '../../lib/pavlov.rb'
+require 'pavlov'
 
 describe Pavlov::Operation do
 
@@ -16,7 +15,7 @@ describe Pavlov::Operation do
         def authorized?; true; end
       end
       x = dummy_class.new
-      x.validate_was_called.must_equal :validate_was_called
+      x.validate_was_called.should == :validate_was_called
     end
 
     it "calls check_authority" do
@@ -31,36 +30,36 @@ describe Pavlov::Operation do
         def authorized?; true; end
       end
       x = dummy_class.new
-      x.check_authorization_was_called.must_equal :yes
+      x.check_authorization_was_called.should == :yes
     end
   end
 
   describe '.argument' do
     it 'defines an argument' do
       op = operation { argument :first }
-      op.new(first: 'first argument').first.must_equal 'first argument'
+      op.new(first: 'first argument').first.should == 'first argument'
     end
 
     it 'assigns a default value if given' do
       op = operation { argument :first, default: 'default value' }
-      op.new(first: 'given value').first.must_equal 'given value'
-      op.new.first.must_equal 'default value'
+      op.new(first: 'given value').first.should == 'given value'
+      op.new.first.should == 'default value'
     end
 
     it 'raises when an argument without a default value is missing' do
       op = operation { argument :first }
-      op.new(first: 'given value').first.must_equal 'given value'
-      proc { op.new }.must_raise ArgumentError, "Missing argument: first"
+      op.new(first: 'given value').first.should == 'given value'
+      expect(-> { op.new }).to raise_error(ArgumentError, "Missing argument: first")
     end
 
     it 'can have a default value that is nil' do
       op = operation { argument :first, default: nil }
-      op.new.first.must_equal nil
+      op.new.first.should == nil
     end
 
     it 'can have arguments passed that are nil' do
       op = operation { argument :first, default: 'default value' }
-      op.new(first: nil).first.must_equal nil
+      op.new(first: nil).first.should == nil
     end
   end
 
@@ -82,7 +81,7 @@ describe Pavlov::Operation do
           false
         end
       end
-      -> {dummy_class.new}.must_raise Pavlov::AccessDenied
+      expect(-> {dummy_class.new}).to raise_error(Pavlov::AccessDenied)
     end
   end
 
