@@ -44,8 +44,8 @@ class InvitationsController < ApplicationController
   def send_email
     invitation = query :find_invitation, id: params[:id]
     command :send_invitation_by_email, invitation: invitation,
-            on_success -> { flash[:success] = "Mail was sent!" },
-            on_failure -> { flash[:failure] = "Could not send email :(" }
+            on_success: -> { flash[:success] = "Mail was sent!" },
+            on_failure: -> { flash[:failure] = "Could not send email :(" }
   end
 end
 
