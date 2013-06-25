@@ -1,18 +1,18 @@
 module Pavlov
   module Helpers
-    def interactor name, *args
-      args = add_pavlov_options args
-      Pavlov.interactor name, *args
+    def interactor name, options = {}
+      options = add_pavlov_options(options)
+      Pavlov.interactor name, options
     end
 
-    def query name, *args
-      args = add_pavlov_options args
-      Pavlov.query name, *args
+    def query name, options = {}
+      options = add_pavlov_options(options)
+      Pavlov.query name, options
     end
 
-    def command name, *args
-      args = add_pavlov_options args
-      Pavlov.command name, *args
+    def command name, options = {}
+      options = add_pavlov_options(options)
+      Pavlov.command name, options
     end
 
     def pavlov_options
@@ -20,14 +20,9 @@ module Pavlov
     end
 
     private
-    def add_pavlov_options args
-      # TODO: we should do this at a point where we know how many arguments we need
-      # so we can decide if we need to merge with another options object or
-      # just add it.
-      if pavlov_options != {}
-        args << pavlov_options
-      end
-      args
+
+    def add_pavlov_options options
+      pavlov_options.merge(options)
     end
   end
 end

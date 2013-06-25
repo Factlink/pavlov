@@ -1,8 +1,11 @@
 # Pavlov [![Build Status](https://api.travis-ci.org/Factlink/pavlov.png)](http://travis-ci.org/Factlink/pavlov) [![Gem Version](https://badge.fury.io/rb/pavlov.png)](http://badge.fury.io/rb/pavlov) [![Dependency Status](https://gemnasium.com/Factlink/pavlov.png)](https://gemnasium.com/Factlink/pavlov) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/Factlink/pavlov)
 
-Gem that provides infrastructure for ruby.
-
-### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
+The Pavlov gem provides a Command/Query/Interactor framework. In our usage, we
+have found this to be a good solution for things that cut across multiple
+domain models.  It allows you to keep your ActiveRecord models focussed on
+their own table.  It also allows you to keep your controller actions short and
+focussed. Anything beyond one or two lines could be turned into Command
+objects, without the Fat Model problem.
 
 ## Installation
 
@@ -20,6 +23,7 @@ Or install it yourself as:
 
 
 ## Commands, Queries and Interactors
+
 Inspiration:
 http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years
 http://martinfowler.com/bliki/CQRS.html
@@ -31,7 +35,34 @@ But keep your design _simple_ (KISS).
 
 ### Usage
 
-TODO
+#### Callbacks
+
+Any operation can define a set of callbacks that will be executed.
+
+```ruby
+class InvitationsController < ApplicationController
+  def send_email
+    invitation = query :find_invitation, id: params[:id]
+    command :send_invitation_by_email, invitation: invitation,
+            on_success: -> { flash[:success] = "Mail was sent!" },
+            on_failure: -> { flash[:failure] = "Could not send email :(" }
+  end
+end
+
+class Commands::SendInvitationByEmail
+  argument :invitation
+  callback :success
+  callback :failure
+
+  def execute
+    if rand > 0.5
+      execute_callbacks_for :success
+    else
+      execute_callbacks_for :failure
+    end
+  end
+end
+```
 
 ### Authorization
 
@@ -42,34 +73,16 @@ There are multiple facets to whether a user is authorized:
 
 We decided that the best way to handle this is:
 
-The interactors check whether an operation is authorized before running the execution code, but not in the initialization. This is not implemented yet, but will mean an interactor has something like run which does authorize; execute.
+The interactors check whether an operation is authorized before running the
+execution code, but not in the initialization. This is not implemented yet, but
+will mean an interactor has something like run which does authorize; execute.
 
-When a operation is executed on one object and this is not authorized, this is clearly an exceptional situation (in the sense that it shouldn't happen), and an exception is thrown.
+When a operation is executed on one object and this is not authorized, this is
+clearly an exceptional situation (in the sense that it shouldn't happen), and
+an exception is thrown.
 
-When a operation is executed on a set of objects, the operation will only execute on the subset the user is authorized for.
-
-## Immutable objects
-These objects can be used to simplify your design by making sure your object is always valid.
-### Usage
-```ruby
-class User < Pavlov::Entity do
-  attributes :name, :username, :email
-end
-
-my_entitiy = User.new do
-  self.name = 'jan'
-  self.username = 'jjoos'
-  self.email = 'jan@deelstra.org'
-end
-
-or
-
-my_entitiy = User.new({name: 'jan', username: 'jjoos', email: 'jan@deelstra.org'})
-
-my_entity = my_entity.update({name: 'joop', email: 'joop@deelstra.org'})
-
-puts my_entity.username
-```
+When a operation is executed on a set of objects, the operation will only
+execute on the subset the user is authorized for.
 
 ## Contributing
 

@@ -16,5 +16,9 @@ module Pavlov
         @queue ||= :interactor_operations
       end
     end
+
+    def authorized?
+      raise NotImplementedError
+    end
   end
 end
