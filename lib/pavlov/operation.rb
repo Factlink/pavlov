@@ -20,9 +20,9 @@ module Pavlov
 
     def validate
       if respond_to? :valid?
-        valid?
+        raise Pavlov::ValidationError, "an argument is invalid" unless valid?
       else
-        true
+        true # noop
       end
     end
 
