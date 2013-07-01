@@ -1,5 +1,4 @@
-require 'spec_helper'
-
+require_relative 'spec_helper'
 require 'pavlov/immutable_entity'
 
 describe Pavlov::ImmutableEntity do

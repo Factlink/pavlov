@@ -1,5 +1,4 @@
-require 'spec_helper'
-
+require_relative 'spec_helper'
 require 'pavlov/entity'
 
 describe Pavlov::Entity do
