@@ -1,5 +1,5 @@
-require 'minitest/autorun'
-require_relative '../../../lib/pavlov/validations/hexadecimal_string_validator'
+require_relative '../spec_helper'
+require 'pavlov'
 
 describe ActiveModel::Validations::HexadecimalStringValidator do
   describe '#valid?' do
@@ -13,25 +13,25 @@ describe ActiveModel::Validations::HexadecimalStringValidator do
     it 'returns false when the attribute is not set' do
       entity = test_class.new
 
-      entity.valid?.must_equal false
+      expect(entity.valid?).to eq false
     end
 
     it 'returns false when attribute id is nil' do
       entity = test_class.new id: nil
 
-      entity.valid?.must_equal false
+      expect(entity.valid?).to eq false
     end
 
     it 'returns false when attribute id is a non-hexidecimal string' do
       entity = test_class.new id: 'ghjkl'
 
-      entity.valid?.must_equal false
+      expect(entity.valid?).to eq false
     end
 
     it 'returns true when attribute id is a valid hexadecimal string' do
       entity = test_class.new id: '9876543210abcdef'
 
-      entity.valid?.must_equal true
+      expect(entity.valid?).to eq true
     end
   end
 
@@ -46,9 +46,9 @@ describe ActiveModel::Validations::HexadecimalStringValidator do
     it 'errors contains correct error message' do
       entity = test_class.new id: 'ghjk'
 
-      assert entity.invalid?
-      entity.errors.size.must_equal 1
-      entity.errors[:id].must_equal ['should be an hexadecimal string.']
+      expect(entity.invalid?).to eq true
+      expect(entity.errors.size).to eq 1
+      expect(entity.errors[:id]).to eq ['should be an hexadecimal string.']
     end
   end
 
@@ -63,12 +63,12 @@ describe ActiveModel::Validations::HexadecimalStringValidator do
     it 'works with multiple arguments' do
       entity = test_class_with_multiple_arguments.new
 
-      assert entity.invalid?
-      entity.errors.size.must_equal 2
+      expect(entity.invalid?).to eq true
+      expect(entity.errors.size).to eq 2
 
       entity.update id: '9876543210abcdef', parentid: '9876543210abcdef'
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
     end
 
     let('test_class_with_array_arguments') do
@@ -81,12 +81,12 @@ describe ActiveModel::Validations::HexadecimalStringValidator do
     it 'accepts array as argument' do
       entity = test_class_with_array_arguments.new
 
-      assert entity.invalid?
-      entity.errors.size.must_equal 2
+      expect(entity.invalid?).to eq true
+      expect(entity.errors.size).to eq 2
 
       entity.update id: '9876543210abcdef', parentid: '9876543210abcdef'
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
     end
 
     let('test_class_with_allow_blank') do
@@ -99,11 +99,11 @@ describe ActiveModel::Validations::HexadecimalStringValidator do
     it 'accepts allow blank' do
       entity = test_class_with_allow_blank.new
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
 
       entity.update id: 'ghijklmnopq'
 
-      assert entity.invalid?
+      expect(entity.invalid?).to eq true
     end
   end
 end

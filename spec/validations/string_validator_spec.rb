@@ -1,5 +1,5 @@
-require 'minitest/autorun'
-require_relative '../../../lib/pavlov/validations/string_validator'
+require_relative '../spec_helper'
+require 'pavlov'
 
 describe ActiveModel::Validations::StringValidator do
   describe '#valid?' do
@@ -13,31 +13,31 @@ describe ActiveModel::Validations::StringValidator do
     it 'returns false when the attribute is not set' do
       entity = test_class.new
 
-      assert entity.invalid?
+      expect(entity.invalid?).to eq true
     end
 
     it 'returns false when attribute id is nil' do
       entity = test_class.new id: nil
 
-      assert entity.invalid?
+      expect(entity.invalid?).to eq true
     end
 
     it 'returns false when attribute id is a number' do
       entity = test_class.new id: 1234567890
 
-      assert entity.invalid?
+      expect(entity.invalid?).to eq true
     end
 
     it 'returns true when attribute id is a empty string' do
       entity = test_class.new id: ''
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
     end
 
     it 'returns true when attribute id is a string' do
       entity = test_class.new id: 'abcdefgh'
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
     end
   end
 
@@ -52,9 +52,9 @@ describe ActiveModel::Validations::StringValidator do
     it 'errors contains correct error message' do
       entity = test_class.new id: 1234567890
 
-      assert entity.invalid?
-      entity.errors.size.must_equal 1
-      entity.errors[:id].must_equal ['should be a string.']
+      expect(entity.invalid?).to eq true
+      expect(entity.errors.size).to eq 1
+      expect(entity.errors[:id]).to eq ['should be a string.']
     end
   end
 
@@ -69,12 +69,12 @@ describe ActiveModel::Validations::StringValidator do
     it 'works with multiple arguments' do
       entity = test_class_with_multiple_arguments.new
 
-      assert entity.invalid?
-      entity.errors.size.must_equal 2
+      expect(entity.invalid?).to eq true
+      expect(entity.errors.size).to eq 2
 
       entity.update id: 'abcdef', parentid: 'abcdef'
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
     end
 
     let('test_class_with_array_arguments') do
@@ -87,12 +87,12 @@ describe ActiveModel::Validations::StringValidator do
     it 'accepts array as argument' do
       entity = test_class_with_array_arguments.new
 
-      assert entity.invalid?
-      entity.errors.size.must_equal 2
+      expect(entity.invalid?).to eq true
+      expect(entity.errors.size).to eq 2
 
       entity.update id: 'abcdef', parentid: 'abcdef'
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
     end
 
     let('test_class_with_allow_blank') do
@@ -105,21 +105,21 @@ describe ActiveModel::Validations::StringValidator do
     it 'accepts allow blank when value is not set' do
       entity = test_class_with_allow_blank.new
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
 
       entity.update id: 1234567890
 
-      assert entity.invalid?
+      expect(entity.invalid?).to eq true
     end
 
     it 'accepts allow blank when value is a empty string' do
       entity = test_class_with_allow_blank.new id: ''
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
 
       entity.update id: 1234567890
 
-      assert entity.invalid?
+      expect(entity.invalid?).to eq true
     end
 
     let('test_class_with_non_empty') do
@@ -132,11 +132,11 @@ describe ActiveModel::Validations::StringValidator do
     it 'does not accept empty string when non_empty is set' do
       entity = test_class_with_non_empty.new id: ''
 
-      assert entity.invalid?
+      expect(entity.invalid?).to eq true
 
       entity.update id: 'test'
 
-      assert entity.valid?
+      expect(entity.valid?).to eq true
     end
   end
 end

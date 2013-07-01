@@ -21,11 +21,9 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'activemodel', rails_version
 
   gem.add_development_dependency 'rspec'
-  gem.add_development_dependency 'minitest'
-  gem.add_development_dependency 'minitest-stub-const'
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-bundler'
-  gem.add_development_dependency 'guard-minitest'
+  gem.add_development_dependency 'guard-rspec'
   gem.add_development_dependency 'rb-fsevent'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'benchmark-ips'

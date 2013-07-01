@@ -1,6 +1,5 @@
-require 'minitest/autorun'
-require_relative '../test_helper'
-require_relative '../../lib/pavlov.rb'
+require_relative 'spec_helper'
+require 'pavlov.rb'
 
 describe Pavlov::Helpers do
   describe 'interactor' do
@@ -13,17 +12,11 @@ describe Pavlov::Helpers do
         end
       end
       instance = dummy_class.new
-      mock = MiniTest::Mock.new
 
-      original = Pavlov.send(:const_get, :Pavlov)
-      Pavlov.send(:const_set, :Pavlov, mock)
-
-      mock.expect :interactor, nil, [:interactor_name, 'argument1', 'argument2']
+      Pavlov.should_receive(:interactor)
+        .with(:interactor_name, 'argument1', 'argument2')
 
       instance.test
-
-      mock.verify
-      Pavlov.send(:const_set, :Pavlov, original)
     end
 
     it 'calls an interactor with pavlov_options' do
@@ -40,16 +33,11 @@ describe Pavlov::Helpers do
         end
       end
       instance = dummy_class.new
-      mock = MiniTest::Mock.new
-      original = Pavlov.send(:const_get, :Pavlov)
-      Pavlov.send(:const_set, :Pavlov, mock)
-
-      mock.expect :interactor, nil, [:interactor_name, 'argument1', 'argument2', hash]
+      
+      Pavlov.should_receive(:interactor)
+        .with(:interactor_name, 'argument1', 'argument2', hash)
 
       instance.test
-
-      mock.verify
-      Pavlov.send(:const_set, :Pavlov, original)
     end
   end
 end

@@ -1,12 +1,8 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
+require 'rspec/core/rake_task'
 
-Rake::TestTask.new do |t|
-  t.libs = ['lib']
-  t.warning = false
-  t.verbose = false
-  t.test_files = FileList['tests/**/*.rb']
-end
+RSpec::Core::RakeTask.new
 
 desc "Run the benchmarks for pavlov."
 task :benchmark do
@@ -21,4 +17,4 @@ task :todo do
 end
 
 # Make running the tests the default task.
-task(default: :test)
+task(default: :spec)
