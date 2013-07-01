@@ -1,7 +1,7 @@
-require_relative '../../lib/pavlov/immutable_entity'
-
 require 'benchmark/ips'
 require 'benchmark'
+
+require_relative '../../lib/pavlov/immutable_entity'
 
 class User < Pavlov::ImmutableEntity
   attributes :username, :bla, :bla2, :bla3
@@ -12,13 +12,13 @@ class User2
 end
 
 Benchmark.ips do |r|
-  r.report("immutable create hash") do |times|
+  r.report("create immutable entity with hash") do |times|
     user = User.new username: times.to_s, bla: 'eouaou', bla2: 'ouaoue', bla3: 'ouaeuao'
 
     user = user.update username: user.bla + user.bla2+user.bla3+user.username+times.to_s
   end
 
-  r.report("immutable create block") do |times|
+  r.report("create immutable entity with block") do |times|
     user = User.new do
       self.username = times.to_s
       self.bla = 'eouaou'
@@ -31,7 +31,7 @@ Benchmark.ips do |r|
     end
   end
 
-  r.report("normal create") do |times|
+  r.report("create normal class instance") do |times|
     user2 = User2.new
     user2.username = times.to_s
     user2.bla = 'eouaou'

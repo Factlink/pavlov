@@ -11,6 +11,7 @@ end
 desc "Run the benchmarks for pavlov."
 task :benchmark do
   ruby "benchmark/pavlov/entity.rb"
+  ruby "benchmark/pavlov/immutable_entity.rb"
 end
 
 desc "Look for TODO, FIXME and TBD tags in the code. (not case sensitive)"
