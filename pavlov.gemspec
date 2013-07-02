@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Pavlov is a opinionated toolbox to help you architect your Ruby project.}
   gem.homepage      = 'https://github.com/Factlink/pavlov/'
   gem.files         = `git ls-files lib`.split($/)
-  gem.test_files    = gem.files.grep(%r{^(tests)/})
+  gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.require_paths = ['lib']
 
   rails_version = '>= 3.2.7'
