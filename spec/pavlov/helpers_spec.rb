@@ -1,5 +1,4 @@
-require_relative 'spec_helper'
-require 'pavlov.rb'
+require 'pavlov'
 
 describe Pavlov::Helpers do
   describe 'interactor' do
@@ -8,14 +7,12 @@ describe Pavlov::Helpers do
         include Pavlov::Helpers
 
         def test
-          interactor :interactor_name, 'argument1', 'argument2'
+          interactor :interactor_name, arg1: 'argument1', arg2: 'argument2'
         end
       end
       instance = dummy_class.new
 
-      Pavlov.should_receive(:interactor)
-        .with(:interactor_name, 'argument1', 'argument2')
-
+      Pavlov.should_receive(:interactor).with(:interactor_name, {arg1: 'argument1', arg2: 'argument2'})
       instance.test
     end
 
@@ -29,14 +26,12 @@ describe Pavlov::Helpers do
         end
 
         def test
-          interactor :interactor_name, 'argument1', 'argument2'
+          interactor :interactor_name, arg1: 'argument1', arg2: 'argument2'
         end
       end
       instance = dummy_class.new
-      
-      Pavlov.should_receive(:interactor)
-        .with(:interactor_name, 'argument1', 'argument2', hash)
 
+      Pavlov.should_receive(:interactor).with(:interactor_name, {arg1: 'argument1', arg2: 'argument2', key: 'value'})
       instance.test
     end
   end

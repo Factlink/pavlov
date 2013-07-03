@@ -1,29 +1,44 @@
 require 'active_support/concern'
-require 'pavlov/validations'
 require 'pavlov/helpers'
 
 module Pavlov
+  class AccessDenied < StandardError; end
+
   module Operation
     extend ActiveSupport::Concern
     include Pavlov::Helpers
-    include Pavlov::Validations
 
-    def initialize(*params)
-      keys, names, @options = extract_arguments(params)
-      set_instance_variables keys, names
+
+    def initialize(args = {})
+      @callbacks = {}
+      set_instance_variables(args)
       validate
-
       check_authorization
-
       finish_initialize if respond_to? :finish_initialize
     end
 
-    def validate
-      if respond_to? :valid?
-        valid?
-      else
-        true
+    def set_instance_variables(args)
+      self.class.arguments.each do |key, options|
+        value   = args.fetch(key) do
+          options.fetch(:default) do
+            raise ArgumentError, "Missing argument: #{key}" unless value or options.has_key?(:default)
+          end
+        end
+
+        instance_variable_set("@#{key}", value)
       end
+
+      self.class.callbacks.each do |key, options|
+        if value = args["on_#{key}".to_sym]
+          @callbacks[key] ||= []
+          @callbacks[key] << value
+        end
+      end
+    end
+
+    def validate
+      return valid? if respond_to? :valid?
+      true
     end
 
     def call(*args, &block)
@@ -33,30 +48,7 @@ module Pavlov
     private
 
     def pavlov_options
-      @options
-    end
-
-    def extract_arguments(params)
-      keys = (respond_to? :arguments) ? arguments : []
-      names = params.first(keys.length)
-
-      if params.length == keys.length + 1
-        options = params.last
-      elsif params.length == keys.length
-        options = {}
-      else
-        raise "wrong number of arguments."
-      end
-
-      [keys, names, options]
-    end
-
-    def set_instance_variables(keys, names)
-      (keys.zip names).each do |pair|
-        name = "@" + pair[0].to_s
-        value = pair[1]
-        instance_variable_set(name, value)
-      end
+      @options ||= {}
     end
 
     def raise_unauthorized(message='Unauthorized')
@@ -67,23 +59,37 @@ module Pavlov
       raise_unauthorized if respond_to? :authorized? and not authorized?
     end
 
-    module ClassMethods
-      # arguments :foo, :bar
-      #
-      # results in
-      #
-      # def initialize(foo, bar)
-      #   @foo = foo
-      #   @bar = bar
-      # end
-      def arguments *keys
-        define_method :arguments do
-          keys
-        end
+    def execute_callbacks_for(key, *args)
+      @callbacks[key] ||= []
+      @callbacks[key].each do |callback|
+        callback.call(*args)
+      end
+    end
 
-        class_eval do
-          attr_reader(*keys)
-        end
+    module ClassMethods
+      def argument key, options = {}
+        @arguments ||= {}
+        @arguments[key] = options
+        class_eval { attr_reader key }
+      end
+
+      def callback key, options = {}
+        @callbacks ||= {}
+        @callbacks[key] = options
+        class_eval <<-END
+          def on_#{key}(&block)
+            @callbacks[#{key.to_sym.inspect}] ||= []
+            @callbacks[#{key.to_sym.inspect}] << block
+          end
+        END
+      end
+
+      def arguments
+        @arguments || {}
+      end
+
+      def callbacks
+        @callbacks || {}
       end
 
       # make our interactors behave as Resque jobs
