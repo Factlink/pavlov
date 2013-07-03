@@ -1,5 +1,6 @@
 require 'active_support/concern'
 require 'active_support/inflector'
+require 'pavlov/operation'
 
 module Pavlov
   module Interactor
@@ -15,6 +16,10 @@ module Pavlov
       def queue
         @queue ||= :interactor_operations
       end
+    end
+
+    def authorized?
+      raise NotImplementedError
     end
   end
 end

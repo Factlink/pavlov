@@ -1,26 +1,30 @@
 require 'active_support/concern'
+require 'pavlov/validations'
+require 'pavlov/helpers'
+require_relative 'access_denied'
 
 module Pavlov
   module Operation
     extend ActiveSupport::Concern
     include Pavlov::Helpers
     include Pavlov::Validations
-    include Pavlov::Utils
 
     def initialize(*params)
       keys, names, @options = extract_arguments(params)
       set_instance_variables keys, names
       validate
-      check_authority
+
+      check_authorization
+
       finish_initialize if respond_to? :finish_initialize
     end
 
-    def authorized?
-      raise NotImplementedError
-    end
-
     def validate
-      true
+      if respond_to? :valid?
+        valid?
+      else
+        true
+      end
     end
 
     def call(*args, &block)
@@ -60,8 +64,8 @@ module Pavlov
       raise Pavlov::AccessDenied, message
     end
 
-    def check_authority
-      raise_unauthorized unless authorized?
+    def check_authorization
+      raise_unauthorized if respond_to? :authorized?, true and not authorized?
     end
 
     module ClassMethods
