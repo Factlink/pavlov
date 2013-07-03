@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Pavlov is a opinionated toolbox to help you architect your Ruby project.}
   gem.homepage      = 'https://github.com/Factlink/pavlov/'
   gem.files         = `git ls-files lib`.split($/)
-  gem.test_files    = gem.files.grep(%r{^(tests)/})
+  gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.require_paths = ['lib']
 
   rails_version = '>= 3.2.7'
@@ -21,11 +21,9 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'activemodel', rails_version
 
   gem.add_development_dependency 'rspec'
-  gem.add_development_dependency 'minitest'
-  gem.add_development_dependency 'minitest-stub-const'
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-bundler'
-  gem.add_development_dependency 'guard-minitest'
+  gem.add_development_dependency 'guard-rspec'
   gem.add_development_dependency 'rb-fsevent'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'benchmark-ips'
