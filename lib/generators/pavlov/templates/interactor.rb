@@ -2,10 +2,10 @@ module Interactors
   class <%= class_name %>
     include Pavlov::Interactor
 
+    private
+
     def execute
     end
-
-    private
 
     def authorized?
       raise NotImplementedError
