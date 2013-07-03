@@ -81,9 +81,6 @@ When a operation is executed on one object and this is not authorized, this is
 clearly an exceptional situation (in the sense that it shouldn't happen), and
 an exception is thrown.
 
-When a operation is executed on a set of objects, the operation will only
-execute on the subset the user is authorized for.
-
 ## Contributing
 
 1. Fork it
