@@ -1,6 +1,7 @@
 require 'active_support/concern'
 require 'pavlov/validations'
 require 'pavlov/helpers'
+require_relative 'access_denied'
 
 module Pavlov
   module Operation
@@ -64,7 +65,7 @@ module Pavlov
     end
 
     def check_authorization
-      raise_unauthorized if respond_to? :authorized? and not authorized?
+      raise_unauthorized if respond_to? :authorized?, true and not authorized?
     end
 
     module ClassMethods
