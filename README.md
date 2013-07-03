@@ -20,6 +20,7 @@ Or install it yourself as:
 
 
 ## Commands, Queries and Interactors
+
 Inspiration:
 http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years
 http://martinfowler.com/bliki/CQRS.html
@@ -47,29 +48,6 @@ The interactors check whether an operation is authorized before running the exec
 When a operation is executed on one object and this is not authorized, this is clearly an exceptional situation (in the sense that it shouldn't happen), and an exception is thrown.
 
 When a operation is executed on a set of objects, the operation will only execute on the subset the user is authorized for.
-
-## Immutable objects
-These objects can be used to simplify your design by making sure your object is always valid.
-### Usage
-```ruby
-class User < Pavlov::Entity
-  attributes :name, :username, :email
-end
-
-my_entitiy = User.new do
-  self.name = 'jan'
-  self.username = 'jjoos'
-  self.email = 'jan@deelstra.org'
-end
-
-or
-
-my_entitiy = User.new({name: 'jan', username: 'jjoos', email: 'jan@deelstra.org'})
-
-my_entity = my_entity.update({name: 'joop', email: 'joop@deelstra.org'})
-
-puts my_entity.username
-```
 
 ## Contributing
 
