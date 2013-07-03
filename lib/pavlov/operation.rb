@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'pavlov/helpers'
 
 module Pavlov
   class AccessDenied < StandardError; end
