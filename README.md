@@ -20,6 +20,7 @@ Or install it yourself as:
 
 
 ## Commands, Queries and Interactors
+
 Inspiration:
 http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years
 http://martinfowler.com/bliki/CQRS.html
