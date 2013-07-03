@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative '../spec_helper'
 require 'pavlov/operation'
 
 describe Pavlov::Operation do
