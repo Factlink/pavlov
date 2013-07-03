@@ -1,6 +1,7 @@
 require 'active_support/concern'
 require 'pavlov/validations'
 require 'pavlov/helpers'
+require_relative 'access_denied'
 
 module Pavlov
   module Operation
