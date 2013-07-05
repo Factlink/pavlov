@@ -9,9 +9,9 @@ describe Pavlov::Operation do
       it "saves arguments and retrieve via getter" do
         dummy_class = Class.new do
           include Pavlov::Operation
-          
+
           arguments :first_argument
-          
+
           def execute; end
         end
 
@@ -53,21 +53,22 @@ describe Pavlov::Operation do
         end.to raise_error Pavlov::ValidationError, "Unique error message"
       end
 
-      it "calls check_authority" do
+      it "calls check_authorization" do
         dummy_class = Class.new do
           include Pavlov::Operation
-          arguments
+
+          def execute; end
+
           def check_authorization
-            @was_check_authorization_called = :yes
+            raise Pavlov::AccessDenied.new("Unauthorized")
           end
-          def check_authorization_was_called
-            @was_check_authorization_called
-          end
-          def authorized?; true; end
         end
+
         operation = dummy_class.new
 
-        expect( operation.check_authorization_was_called ).to equal :yes
+        expect do
+          operation.call
+        end.to raise_error Pavlov::AccessDenied, "Unauthorized"
       end
     end
   end
@@ -84,9 +85,9 @@ describe Pavlov::Operation do
           true
         end
       end
-      expect {
-        dummy_class.new 
-      }.to_not raise_error
+      expect do
+        dummy_class.new
+      end.to_not raise_error
     end
 
     it "raises an error when .authorized? returns false" do
@@ -96,9 +97,12 @@ describe Pavlov::Operation do
           false
         end
       end
-      expect {
-        dummy_class.new
-      }.to raise_error Pavlov::AccessDenied
+
+      operation = dummy_class.new
+
+      expect do
+        operation.call
+      end.to raise_error Pavlov::AccessDenied
     end
   end
 end
