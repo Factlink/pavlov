@@ -1,5 +1,6 @@
 require_relative '../spec_helper'
 require 'pavlov/operation'
+require 'pavlov/validation_error'
 
 describe Pavlov::Operation do
 
@@ -8,8 +9,10 @@ describe Pavlov::Operation do
       it "saves arguments and retrieve via getter" do
         dummy_class = Class.new do
           include Pavlov::Operation
+          
           arguments :first_argument
-          def authorized?; true; end
+          
+          def execute; end
         end
 
         operation = dummy_class.new 'argument'
@@ -20,8 +23,10 @@ describe Pavlov::Operation do
       it "saves arguments and retrieves them via getters" do
         dummy_class = Class.new do
           include Pavlov::Operation
+
           arguments :var1, :var2
-          def authorized?; true; end
+
+          def execute; end
         end
 
         operation = dummy_class.new 'VAR1', 'VAR2'
@@ -30,20 +35,22 @@ describe Pavlov::Operation do
         expect( operation.var2 ).to eq 'VAR2'
       end
 
-      it "calls validate if it exists" do
+      it "throws error when validate doesn't validate" do
         dummy_class = Class.new do
           include Pavlov::Operation
-          arguments
+
+          def execute; end
+
           def validate
-            @x_val = :validate_was_called
+            raise Pavlov::ValidationError.new("Unique error message")
           end
-          def validate_was_called
-            @x_val
-          end
-          def authorized?; true; end
         end
+
         operation = dummy_class.new
-        expect( operation.validate_was_called ).to equal :validate_was_called
+
+        expect do
+          operation.call
+        end.to raise_error Pavlov::ValidationError, "Unique error message"
       end
 
       it "calls check_authority" do
