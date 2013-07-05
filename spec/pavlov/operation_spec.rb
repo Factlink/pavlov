@@ -73,6 +73,45 @@ describe Pavlov::Operation do
     end
   end
 
+  describe '.check_authentication' do
+    before do
+      stub_const 'Pavlov::AccessDenied', StandardError
+    end
+
+    it 'raises no error when .authenticated? returns true' do
+      dummy_class = Class.new do
+        include Pavlov::Operation
+
+        def execute; end
+
+        def authenticated?
+          true
+        end
+      end
+
+      operation = dummy_class.new
+
+      expect do
+        operation.call
+      end.to_not raise_error
+    end
+
+    it 'raises an error when .authenticated? returns false' do
+      dummy_class = Class.new do
+        include Pavlov::Operation
+        def authenticated?
+          false
+        end
+      end
+
+      operation = dummy_class.new
+
+      expect do
+        operation.call
+      end.to raise_error Pavlov::AccessDenied
+    end
+  end
+
   describe '.check_authorization' do
     before do
       stub_const 'Pavlov::AccessDenied', StandardError
