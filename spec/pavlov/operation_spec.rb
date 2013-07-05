@@ -81,12 +81,18 @@ describe Pavlov::Operation do
     it "raises no error when .authorized? returns true" do
       dummy_class = Class.new do
         include Pavlov::Operation
+
+        def execute; end
+
         def authorized?
           true
         end
       end
+
+      operation = dummy_class.new
+
       expect do
-        dummy_class.new
+        operation.call
       end.to_not raise_error
     end
 
