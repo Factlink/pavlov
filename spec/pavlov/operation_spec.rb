@@ -73,7 +73,7 @@ describe Pavlov::Operation do
     end
   end
 
-  describe '.check_authority' do
+  describe '.check_authentication' do
     before do
       stub_const 'Pavlov::AccessDenied', StandardError
     end
