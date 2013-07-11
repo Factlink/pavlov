@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.name          = 'pavlov'
   gem.version       = Pavlov::VERSION
   gem.platform      = Gem::Platform::RUBY
-  gem.authors       = ['Mark IJbema', 'Tom de Vries', 'Jan Paul Posma', 'Remon Oldenbeuving', 'Jan Deelstra']
+  gem.authors       = ['marten@veldthuis.com','Mark IJbema', 'Tom de Vries', 'Jan Paul Posma', 'Remon Oldenbeuving', 'Jan Deelstra']
   gem.email         = ['jan+pavlov@deelstra.org']
   gem.summary       = %q{Infrastructure for defining your Ruby architecture.}
   gem.description   = %q{Pavlov is a opinionated toolbox to help you architect your Ruby project.}
