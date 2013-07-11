@@ -22,20 +22,108 @@ Or install it yourself as:
     $ gem install pavlov
 
 
-## Commands, Queries and Interactors
+## Usage
 
-Inspiration:
-http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years
-http://martinfowler.com/bliki/CQRS.html
+```ruby
+class Commands::CreateBlogPost
+  include Pavlov::Command
 
-Frontend only calls interactors. Interactors call queries and commands.
-Queries never call commands, they can call queries.
-Commands can call commands and queries.
-But keep your design _simple_ (KISS).
+  attribute :id,        Integer
+  attribute :title,     String
+  attribute :body,      String
+  attribute :published, Boolean
 
-### Usage
+  private
 
-#### Callbacks
+  def validate
+    errors.add(:id, "can't contain spaces") if id.include?(" ")
+  end
+
+  def execute
+    $redis.hmset("blog_post:#{id}", title: title, body: body, published: published)
+    $redis.sadd("blog_post_list", id)
+  end
+end
+
+class Queries::AvailableId
+  include Pavlov::Query
+
+  private
+
+  def execute
+    generate_uuid
+  end
+
+  def generate_uuid
+    SecureRandom.hex(64) # TODO Look up actual implementation
+  end
+end
+
+class Interactors::CreateBlogPost
+  include Pavlov::Interactor
+
+  attribute :title,     String
+  attribute :body,      String
+  attribute :published, Boolean, default: true
+
+  private
+
+  def authorized?
+    context.current_user.is_admin?
+  end
+
+  def validate
+    errors.add(:body, "NO SHOUTING!!!!") if body.matches?(/\W[A-Z]{2,}\W/)
+  end
+
+  def execute
+    command :create_blog_post, id: available_id,
+                               title: title,
+                               body: body,
+                               published: published
+    Struct.new(:title, :body).new(title, body)
+  end
+
+  def available_id
+    query :available_id
+  end
+end
+
+class PostsController < ApplicationController
+  include Pavlov::Helpers
+
+  respond_to :json
+
+  def create
+    interaction = interactor :create_blog_post, post_params
+
+    if interaction.valid?
+      respond_with interaction.call
+    else
+      respond_with {errors: interaction.errors}
+    end
+  rescue AuthorizationError
+    flash[:error] = "Hacker, begone!"
+    redirect_to root_path
+  end
+
+  private
+
+  def post_params
+    params.require(:post).permit(:title, :body)
+  end
+end
+```
+
+### Attributes
+
+Attributes work mostly like Virtus does. Attributes are always required unless they have a default value.
+
+### Validations
+
+### Authorization
+
+### Callbacks
 
 Any operation can define a set of callbacks that will be executed.
 
@@ -80,6 +168,10 @@ will mean an interactor has something like run which does authorize; execute.
 When a operation is executed on one object and this is not authorized, this is
 clearly an exceptional situation (in the sense that it shouldn't happen), and
 an exception is thrown.
+
+## Is it any good?
+
+Yes.
 
 ## Contributing
 
