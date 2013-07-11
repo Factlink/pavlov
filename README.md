@@ -1,11 +1,13 @@
 # Pavlov [![Build Status](https://api.travis-ci.org/Factlink/pavlov.png)](http://travis-ci.org/Factlink/pavlov) [![Gem Version](https://badge.fury.io/rb/pavlov.png)](http://badge.fury.io/rb/pavlov) [![Dependency Status](https://gemnasium.com/Factlink/pavlov.png)](https://gemnasium.com/Factlink/pavlov) [![Code Climate](https://codeclimate.com/github/Factlink/pavlov.png)](https://codeclimate.com/github/Factlink/pavlov) [![Coverage Status](https://coveralls.io/repos/Factlink/pavlov/badge.png?branch=master)](https://coveralls.io/r/Factlink/pavlov)
 
-The Pavlov gem provides a Command/Query/Interactor framework. In our usage, we
-have found this to be a good solution for things that cut across multiple
-domain models.  It allows you to keep your ActiveRecord models focussed on
-their own table.  It also allows you to keep your controller actions short and
-focussed. Anything beyond one or two lines could be turned into Command
-objects, without the Fat Model problem.
+The Pavlov gem provides a Command/Query/Interactor framework.
+
+**Interactors** make up the API for your application's backend. In a Rails application, this means that your controllers would call out to interactors and handle rendering, flashes, redirections etc. The interactors perform business logic like authorization, input validation. Your interactors would also handle things like `after_create` callbacks to send an e-mail on signup. They only decide what to do, and call queries and commands to perform the actual work.
+
+**Queries** and **commands** are used to manipulate your data store. This has several advantages:
+
+  * You can have queries that return objects that don't map directly to a specific database table.
+  * You can replace your database from SQL-based to MongoDB, Redis or even a webservice without having to touch your business logic.
 
 ### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
 
