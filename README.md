@@ -86,7 +86,7 @@ class PostsController < ApplicationController
   respond_to :json
 
   def create
-    interaction = interactor :create_blog_post, post_params
+    interaction = interactor :create_blog_post, params[:post]
 
     if interaction.valid?
       respond_with interaction.call
@@ -96,12 +96,6 @@ class PostsController < ApplicationController
   rescue AuthorizationError
     flash[:error] = "Hacker, begone!"
     redirect_to root_path
-  end
-
-  private
-
-  def post_params
-    params.require(:post).permit(:title, :body)
   end
 end
 ```
