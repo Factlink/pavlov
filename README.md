@@ -108,20 +108,34 @@ Attributes work mostly like Virtus does. Attributes are always required unless t
 
 ### Authorization
 
-There are multiple facets to whether a user is authorized:
+Interactors must define a method `authorized?` that determines if the interaction is allowed. If this method returns a truthy value, Pavlov will allow the interaction to be executed. This check is performed when `interaction.call` is executed.
 
-1. Can this user execute this operation
-2. On which set of objects can this user execute this operation
+To help you determine whether operations are allowed, you can set up a global [interaction context](#context), which you can then access from your interactors:
 
-We decided that the best way to handle this is:
+```ruby
+class Interactors::CreateBlogPost
+  include Pavlov::Interactor
 
-The interactors check whether an operation is authorized before running the
-execution code, but not in the initialization. This is not implemented yet, but
-will mean an interactor has something like run which does authorize; execute.
+  def authorized?
+    context.current_user.is_admin?
+  end
+end
+```
 
-When a operation is executed on one object and this is not authorized, this is
-clearly an exceptional situation (in the sense that it shouldn't happen), and
-an exception is thrown.
+If the interaction is not authorized, a `Pavlov::AuthorizationError` exception will be thrown. In normal execution you wouldn't expect this to ever occur, so might be reasonable to set up a global catch for this exception that redirects users to your homepage:
+
+```ruby
+class ApplicationController
+  rescue_from Pavlov::AuthorizationError, with: :possible_hack_attempt
+
+  private
+
+  def possible_hack_attempt
+    logger.warn 'This might have been a hacker'
+    redirect_to root_path
+  end
+end
+```
 
 ### Context
 
