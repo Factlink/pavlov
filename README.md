@@ -123,6 +123,23 @@ When a operation is executed on one object and this is not authorized, this is
 clearly an exceptional situation (in the sense that it shouldn't happen), and
 an exception is thrown.
 
+### Context
+
+```ruby
+class ApplicationController < ActionController::Base
+  include Pavlov::Helpers
+
+  before_filter :set_pavlov_context
+
+  private
+
+  def set_pavlov_context
+    context.add(:current_user, current_user)
+  end
+end
+```
+
+
 ## Is it any good?
 
 Yes.
