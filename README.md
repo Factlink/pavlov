@@ -139,6 +139,8 @@ end
 
 ### Context
 
+You probably have certain aspects of your application that you always, or at least very often, want to pass into the interactors, so that they can check authorization, either in terms of blocking unauthorized executions, or automatically scoping queries so that e.g. users will only see data belonging to their account.
+
 ```ruby
 class ApplicationController < ActionController::Base
   include Pavlov::Helpers
@@ -153,6 +155,21 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+In your tests, you could write:
+
+```ruby
+describe CreateBlogPost do
+  include Pavlov::Helpers
+
+  let(:user) { mock("User", is_admin?: true) }
+  before { context.add(:current_user, user) }
+
+  it 'should create posts' do
+    interactor(:create_blog_post, title: 'Foo', body: 'Bar').call
+    # test for the creation
+  end
+end
+```
 
 ## Is it any good?
 
