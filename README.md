@@ -108,37 +108,6 @@ Attributes work mostly like Virtus does. Attributes are always required unless t
 
 ### Authorization
 
-### Callbacks
-
-Any operation can define a set of callbacks that will be executed.
-
-```ruby
-class InvitationsController < ApplicationController
-  def send_email
-    invitation = query :find_invitation, id: params[:id]
-    command :send_invitation_by_email, invitation: invitation,
-            on_success: -> { flash[:success] = "Mail was sent!" },
-            on_failure: -> { flash[:failure] = "Could not send email :(" }
-  end
-end
-
-class Commands::SendInvitationByEmail
-  argument :invitation
-  callback :success
-  callback :failure
-
-  def execute
-    if rand > 0.5
-      execute_callbacks_for :success
-    else
-      execute_callbacks_for :failure
-    end
-  end
-end
-```
-
-### Authorization
-
 There are multiple facets to whether a user is authorized:
 
 1. Can this user execute this operation
