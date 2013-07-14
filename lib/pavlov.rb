@@ -28,6 +28,8 @@ module Pavlov
   end
 end
 
+require_relative 'virtus_patch'
+
 require_relative 'pavlov/helpers'
 require_relative 'pavlov/access_denied'
 require_relative 'pavlov/validation_error'

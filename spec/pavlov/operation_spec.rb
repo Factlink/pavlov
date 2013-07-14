@@ -8,10 +8,10 @@ describe Pavlov::Operation do
       it "saves arguments and retrieve via getter" do
         dummy_class = Class.new do
           include Pavlov::Operation
-          arguments :first_argument
+          attribute :first_argument, String
         end
 
-        operation = dummy_class.new 'argument'
+        operation = dummy_class.new first_argument: 'argument'
 
         expect( operation.first_argument ).to eq 'argument'
       end
@@ -19,10 +19,11 @@ describe Pavlov::Operation do
       it "saves arguments and retrieves them via getters" do
         dummy_class = Class.new do
           include Pavlov::Operation
-          arguments :var1, :var2
+          attribute :var1, String
+          attribute :var2, String
         end
 
-        operation = dummy_class.new 'VAR1', 'VAR2'
+        operation = dummy_class.new var1: 'VAR1', var2: 'VAR2'
 
         expect( operation.var1 ).to eq 'VAR1'
         expect( operation.var2 ).to eq 'VAR2'
@@ -34,7 +35,8 @@ describe Pavlov::Operation do
     let(:dummy_class) do
       Class.new do
         include Pavlov::Operation
-        arguments :validation_check, :authorization_check
+        attribute :validation_check,    Object
+        attribute :authorization_check, Object
         def validate; validation_check.call; end
         def authorized?; authorization_check.call; end
         def execute; end
@@ -43,7 +45,8 @@ describe Pavlov::Operation do
 
     let(:validation_check)    { double(call: true) }
     let(:authorization_check) { double(call: true) }
-    let(:operation) { dummy_class.new(validation_check, authorization_check) }
+    let(:operation) { dummy_class.new(validation_check: validation_check,
+                                      authorization_check: authorization_check) }
 
     it "calls validate if it exists" do
       operation.call
