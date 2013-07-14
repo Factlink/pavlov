@@ -1,3 +1,4 @@
+require 'virtus'
 require 'virtus/version'
 
 # For newer versions, we have fixed this upstream. Until a new release is
