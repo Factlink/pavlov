@@ -12,10 +12,6 @@ module Pavlov
     def initialize(*params)
       keys, names, @options = extract_arguments(params)
       set_instance_variables keys, names
-      validate
-
-      check_authorization
-
       finish_initialize if respond_to? :finish_initialize
     end
 
@@ -28,6 +24,8 @@ module Pavlov
     end
 
     def call(*args, &block)
+      validate
+      check_authorization
       execute(*args, &block)
     end
 

@@ -10,7 +10,7 @@ describe Pavlov::Interactor do
 
   it "raises an error when .authorized? does not exist" do
     expect {
-      interactor_without_authorized?.new
+      interactor_without_authorized?.new.call
     }.to raise_error(NotImplementedError)
   end
 
@@ -27,7 +27,7 @@ describe Pavlov::Interactor do
 
   it "raises an error when private .authorized? returns false" do
     expect {
-      interactor_with_private_authorized?.new
+      interactor_with_private_authorized?.new.call
     }.to raise_error(Pavlov::AccessDenied)
   end
 end
