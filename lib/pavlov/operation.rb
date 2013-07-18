@@ -11,10 +11,6 @@ module Pavlov
     include Pavlov::Validations
     include Virtus
 
-    def initialize(*params)
-      finish_initialize if respond_to? :finish_initialize
-    end
-
     def validate
       if respond_to? :valid?
         valid?
