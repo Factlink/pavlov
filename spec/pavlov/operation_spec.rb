@@ -31,6 +31,36 @@ describe Pavlov::Operation do
     end
   end
 
+  describe 'validations' do
+    describe 'check if attributes without defaults have were given a value' do
+      it 'passes when given a value' do
+        dummy_class = Class.new do
+          include Pavlov::Operation
+          attribute :title, String
+        end
+        expect(dummy_class.new(title: 'Title').validate).to be_true
+      end
+
+      it 'passes when given a default' do
+        dummy_class = Class.new do
+          include Pavlov::Operation
+          attribute :title,   String, default: "A title"
+          attribute :date,    Time,   default: lambda { Time.now }
+          attribute :visible, String, default: nil
+        end
+        expect(dummy_class.new.validate).to be_true
+      end
+
+      it 'fails when not given a value' do
+        dummy_class = Class.new do
+          include Pavlov::Operation
+          attribute :title, String
+        end
+        expect(dummy_class.new.validate).to be_false
+      end
+    end
+  end
+
   describe '.check_authority' do
     before do
       stub_const 'Pavlov::AccessDenied', StandardError
