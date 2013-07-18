@@ -3,38 +3,12 @@ require 'pavlov/operation'
 
 describe Pavlov::Operation do
 
-  describe '#arguments' do
-    describe "creates an initializer which" do
-      it "saves arguments and retrieve via getter" do
-        dummy_class = Class.new do
-          include Pavlov::Operation
-          arguments :first_argument
-        end
-
-        operation = dummy_class.new 'argument'
-
-        expect( operation.first_argument ).to eq 'argument'
-      end
-
-      it "saves arguments and retrieves them via getters" do
-        dummy_class = Class.new do
-          include Pavlov::Operation
-          arguments :var1, :var2
-        end
-
-        operation = dummy_class.new 'VAR1', 'VAR2'
-
-        expect( operation.var1 ).to eq 'VAR1'
-        expect( operation.var2 ).to eq 'VAR2'
-      end
-    end
-  end
-
   describe '#call' do
     let(:dummy_class) do
       Class.new do
         include Pavlov::Operation
-        arguments :validation_check, :authorization_check
+        attribute :validation_check,    Object
+        attribute :authorization_check, Object
         def validate; validation_check.call; end
         def authorized?; authorization_check.call; end
         def execute; end
@@ -43,7 +17,8 @@ describe Pavlov::Operation do
 
     let(:validation_check)    { double(call: true) }
     let(:authorization_check) { double(call: true) }
-    let(:operation) { dummy_class.new(validation_check, authorization_check) }
+    let(:operation) { dummy_class.new(validation_check: validation_check,
+                                      authorization_check: authorization_check) }
 
     it "calls validate if it exists" do
       operation.call
