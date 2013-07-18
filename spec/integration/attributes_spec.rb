@@ -3,6 +3,7 @@ require 'pavlov'
 
 describe "Pavlov attributes" do
   before do
+    stub_const "Interactors", Module.new
     module Interactors
       class CreateBlogPost
         include Pavlov::Interactor
@@ -37,4 +38,5 @@ describe "Pavlov attributes" do
                                                   published: false
     expect(interaction.call).to eq 'Why you should use Pavlov'
   end
+
 end
