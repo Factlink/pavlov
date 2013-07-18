@@ -3,34 +3,6 @@ require 'pavlov/operation'
 
 describe Pavlov::Operation do
 
-  describe '#arguments' do
-    describe "creates an initializer which" do
-      it "saves arguments and retrieve via getter" do
-        dummy_class = Class.new do
-          include Pavlov::Operation
-          attribute :first_argument, String
-        end
-
-        operation = dummy_class.new first_argument: 'argument'
-
-        expect( operation.first_argument ).to eq 'argument'
-      end
-
-      it "saves arguments and retrieves them via getters" do
-        dummy_class = Class.new do
-          include Pavlov::Operation
-          attribute :var1, String
-          attribute :var2, String
-        end
-
-        operation = dummy_class.new var1: 'VAR1', var2: 'VAR2'
-
-        expect( operation.var1 ).to eq 'VAR1'
-        expect( operation.var2 ).to eq 'VAR2'
-      end
-    end
-  end
-
   describe '#call' do
     let(:dummy_class) do
       Class.new do
