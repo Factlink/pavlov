@@ -18,6 +18,10 @@ module Pavlov
       end
     end
 
+    def authenticated?
+      raise NotImplementedError
+    end
+
     def authorized?
       raise NotImplementedError
     end
