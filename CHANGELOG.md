@@ -12,6 +12,8 @@ This release brings forth lots and lots of incompatibilities. Where possible, we
 
 If you want to retain deprecated functionality, you can `require 'pavlov/alpha_compatibility'`.
 
+* Deprecated `Pavlov.query` etc.
+* Deprecated `Pavlov::Helpers`.
 * Deprecated `arguments` in operations.
 * Deprecated `pavlov_options` that were used by the helpers.
 
