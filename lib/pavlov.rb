@@ -8,24 +8,6 @@ module Pavlov
   def self.string_to_classname string
     string.to_s.camelize
   end
-
-  def self.command command_name, *args
-    class_name = "Commands::"+string_to_classname(command_name)
-    klass = get_class_by_string(class_name)
-    klass.new(*args).call
-  end
-
-  def self.interactor command_name, *args
-    class_name = "Interactors::"+string_to_classname(command_name)
-    klass = get_class_by_string class_name
-    klass.new(*args).call
-  end
-
-  def self.query command_name, *args
-    class_name = "Queries::"+string_to_classname(command_name)
-    klass = get_class_by_string class_name
-    klass.new(*args).call
-  end
 end
 
 require_relative 'pavlov/engine' if defined?(Rails)
