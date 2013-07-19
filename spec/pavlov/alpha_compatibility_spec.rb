@@ -1,5 +1,6 @@
 require_relative '../spec_helper'
-require 'pavlov.rb'
+require 'pavlov'
+require 'pavlov/alpha_compatibility'
 
 describe Pavlov::Helpers do
   describe 'interactor' do

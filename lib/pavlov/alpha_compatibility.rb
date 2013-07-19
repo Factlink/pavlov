@@ -1,5 +1,8 @@
 require 'pavlov'
 
+# Everything in this file should be considered deprecated. It will go away
+# sometime before 1.0
+
 module Pavlov
   def self.old_command command_name, *args
     class_name = "Commands::"+string_to_classname(command_name)
@@ -61,7 +64,41 @@ module Pavlov
     end
   end
 
+  module Helpers
+    def interactor name, *args
+      args = add_pavlov_options args
+      Pavlov.interactor name, *args
+    end
+
+    def query name, *args
+      args = add_pavlov_options args
+      Pavlov.query name, *args
+    end
+
+    def command name, *args
+      args = add_pavlov_options args
+      Pavlov.command name, *args
+    end
+
+    def pavlov_options
+      {}
+    end
+
+    private
+    def add_pavlov_options args
+      # TODO: we should do this at a point where we know how many arguments we need
+      # so we can decide if we need to merge with another options object or
+      # just add it.
+      if pavlov_options != {}
+        args << pavlov_options
+      end
+      args
+    end
+  end
+
   module Operation
+    include Pavlov::Helpers
+
     module ClassMethods
       def arguments(*args)
         # Add generic attribute for each argument
