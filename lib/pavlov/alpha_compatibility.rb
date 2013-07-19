@@ -37,7 +37,7 @@ module Pavlov
         end
 
         # Add attribute for pavlov_options
-        attribute :pavlov_options, Hash
+        attribute :pavlov_options, Hash, default: {}
       end
     end
   end
