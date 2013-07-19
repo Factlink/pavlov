@@ -3,50 +3,61 @@ require 'pavlov'
 require 'pavlov/alpha_compatibility'
 
 describe "Pavlov Alpha Compatibility" do
-  before do
-    stub_const "Queries",     Module.new
-    stub_const "Commands",    Module.new
-    stub_const "Interactors", Module.new
+  include Pavlov::Helpers
 
-    module Interactors
-      class OldStyleInteractor
+  describe 'retains .arguments' do
+    before do
+      stub_const "Interactors", Module.new
+
+      class Interactors::OldStyleInteractor
         include Pavlov::Interactor
-
         arguments :title, :published
 
-        private
-
         def authorized?
-          pavlov_options[:current_user].name == "John"
+          true
         end
 
         def execute
-          if published
-            title.upcase!
-          else
-            title
-          end
+          published ? title.upcase! : title
         end
       end
     end
+
+    it 'supports old-style arguments definition' do
+      expect(interactor(:old_style_interactor, 'foo', false)).to eq('foo')
+      expect(interactor(:old_style_interactor, 'foo', true)).to eq('FOO')
+    end
   end
 
-  include Pavlov::Helpers
+  describe 'retains pavlov_options' do
+    let(:current_user) { double("User", name: "John") }
+    def pavlov_options
+      {current_user: current_user}
+    end
 
-  let(:user) { double(name: "John") }
+    before do
+      stub_const "Queries", Module.new
+      stub_const "Interactors", Module.new
+      class Queries::FindUppercaseName
+        include Pavlov::Query
+        arguments
+        def execute
+          pavlov_options[:current_user].name.upcase
+        end
+      end
 
-  def pavlov_options
-    {current_user: user}
-  end
+      class Interactors::ShoutyGreeting
+        include Pavlov::Interactor
+        arguments
+        def authorized?; true; end
+        def execute
+          "OHAI, #{query :find_uppercase_name}"
+        end
+      end
+    end
 
-  it 'supports old-style arguments definition' do
-    expect(interactor(:old_style_interactor, 'foo', true)).to eq('FOO')
-  end
-
-  it 'passes the pavlov_options' do
-    user.stub(name: 'David')
-    expect {
-      interactor(:old_style_interactor, 'foo', true)
-    }.to raise_error(Pavlov::AccessDenied)
+    it 'passes the pavlov_options from operation to operation' do
+      expect(interactor :shouty_greeting).to eq("OHAI, JOHN")
+    end
   end
 end
