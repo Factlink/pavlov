@@ -86,15 +86,15 @@ class Interactors::CreateBlogPost
   end
 
   def execute
-    backend.command :create_blog_post, id: available_id,
-                                       title: title,
-                                       body: body,
-                                       published: published
+    commands.create_blog_post, id: available_id,
+                                   title: title,
+                                   body: body,
+                                   published: published
     Struct.new(:title, :body).new(title, body)
   end
 
   def available_id
-    backend.query :available_id
+    queries.available_id
   end
 end
 
