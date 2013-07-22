@@ -86,15 +86,15 @@ class Interactors::CreateBlogPost
   end
 
   def execute
-    command :create_blog_post, id: available_id,
-                               title: title,
-                               body: body,
-                               published: published
+    backend.command :create_blog_post, id: available_id,
+                                       title: title,
+                                       body: body,
+                                       published: published
     Struct.new(:title, :body).new(title, body)
   end
 
   def available_id
-    query :available_id
+    backend.query :available_id
   end
 end
 
@@ -104,7 +104,7 @@ class PostsController < ApplicationController
   respond_to :json
 
   def create
-    interaction = interactor :create_blog_post, params[:post]
+    interaction = backend.create_blog_post params[:post]
 
     if interaction.valid?
       respond_with interaction.call
@@ -135,7 +135,7 @@ class Interactors::CreateBlogPost
   include Pavlov::Interactor
 
   def authorized?
-    context.current_user.is_admin?
+    context[:current_user].is_admin?
   end
 end
 ```
@@ -161,14 +161,10 @@ You probably have certain aspects of your application that you always, or at lea
 
 ```ruby
 class ApplicationController < ActionController::Base
-  include Pavlov::Helpers
-
-  before_filter :set_pavlov_context
-
   private
 
-  def set_pavlov_context
-    context.add(:current_user, current_user)
+  def backend
+    @backend ||= Backend.new(current_user: current_user)
   end
 end
 ```
@@ -177,13 +173,11 @@ In your tests, you could write:
 
 ```ruby
 describe CreateBlogPost do
-  include Pavlov::Helpers
+  let(:user)    { double("User", is_admin?: true) }
+  let(:backend) { double }
 
-  let(:user) { mock("User", is_admin?: true) }
-  before { context.add(:current_user, user) }
-
-  it 'should create posts' do
-    interactor(:create_blog_post, title: 'Foo', body: 'Bar').call
+  it 'is testable in unit tests' do
+    backend.interactor(:create_blog_post, title: 'Foo', body: 'Bar', backend: backend).call
     # test for the creation
   end
 end
