@@ -9,7 +9,7 @@ module Pavlov
     end
 
     def method_missing(name, attributes = {})
-      klass    = namespace.constantize.const_get(name.to_s.camelize)
+      klass    = _find_klass(name)
       instance = klass.new(attributes.merge(backend: backend))
 
       if @autocall
