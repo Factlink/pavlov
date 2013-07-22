@@ -45,6 +45,7 @@ end
 require_relative 'pavlov/engine' if defined?(Rails)
 require_relative 'pavlov/helpers'
 require_relative 'pavlov/access_denied'
+require_relative 'pavlov/backend'
 require_relative 'pavlov/operation'
 require_relative 'pavlov/command'
 require_relative 'pavlov/query'
