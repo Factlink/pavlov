@@ -8,22 +8,16 @@ module Pavlov
       @context = context
     end
 
-    def interactor(name, attributes = {})
-      find_operation("Interactors", name).new(attributes.merge(backend: self))
+    def interactors
+      OperationFinder.new("Interactors", self, false)
     end
 
-    def query(name, attributes = {})
-      find_operation("Queries", name).new(attributes.merge(backend: self))
+    def queries
+      OperationFinder.new("Queries", self, true)
     end
 
-    def command(name, attributes = {})
-      find_operation("Commands", name).new(attributes.merge(backend: self))
-    end
-
-    private
-
-    def find_operation(namespace, name)
-      OperationFinder.new(namespace).find(name)
+    def commands
+      OperationFinder.new("Commands", self, true)
     end
   end
 end

@@ -30,7 +30,7 @@ describe "Pavlov backend" do
   let(:backend)      { Backend.new(current_user: current_user) }
 
   it "calls interactors" do
-    interaction = backend.interactor :create_blog_post, title: "Why you should use Pavlov"
+    interaction = backend.interactors.create_blog_post title: "Why you should use Pavlov"
     expect(interaction.call).to eq 'WHY YOU SHOULD USE PAVLOV'
   end
 end

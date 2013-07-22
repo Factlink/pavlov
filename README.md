@@ -86,10 +86,10 @@ class Interactors::CreateBlogPost
   end
 
   def execute
-    commands.create_blog_post, id: available_id,
-                                   title: title,
-                                   body: body,
-                                   published: published
+    commands.create_blog_post id: available_id,
+                              title: title,
+                              body: body,
+                              published: published
     Struct.new(:title, :body).new(title, body)
   end
 
@@ -104,7 +104,7 @@ class PostsController < ApplicationController
   respond_to :json
 
   def create
-    interaction = backend.create_blog_post params[:post]
+    interaction = backend.interactors.create_blog_post params[:post]
 
     if interaction.valid?
       respond_with interaction.call
