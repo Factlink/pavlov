@@ -13,6 +13,10 @@ Add this line to your application's Gemfile:
 
     gem 'pavlov'
 
+Then generate some initial files with:
+
+    rails generate pavlov:install
+
 ## Usage
 
 ```ruby
