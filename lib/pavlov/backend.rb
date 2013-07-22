@@ -1,4 +1,4 @@
-require 'active_support/inflector'
+require 'pavlov/operation_finder'
 
 module Pavlov
   class Backend
@@ -23,8 +23,7 @@ module Pavlov
     private
 
     def find_operation(namespace, name)
-      class_name = namespace + "::"+ name.to_s.camelize
-      class_name.constantize
+      OperationFinder.new(namespace).find(name)
     end
   end
 end

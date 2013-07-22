@@ -4,10 +4,13 @@ require 'pavlov/backend'
 describe Pavlov::Backend do
   let(:operation_instance) { double }
   let(:operation)          { double(new: operation_instance) }
-  let(:backend) { Pavlov::Backend.new }
+  let(:backend)            { Pavlov::Backend.new }
+  let(:finder)             { double.tap {|f| f.stub(:find).with(:foo).and_return(operation) } }
 
   describe '#interactor' do
-    before { stub_const("Interactors::Foo", operation) }
+    before do
+      Pavlov::OperationFinder.stub(:new).with("Interactors").and_return(finder)
+    end
 
     it 'finds interactors' do
       expect(backend.interactor(:foo)).to eq(operation_instance)
@@ -20,7 +23,9 @@ describe Pavlov::Backend do
   end
 
   describe '#command' do
-    before { stub_const("Commands::Foo", operation) }
+    before do
+      Pavlov::OperationFinder.stub(:new).with("Commands").and_return(finder)
+    end
 
     it 'finds commands' do
       expect(backend.command(:foo)).to eq(operation_instance)
@@ -33,7 +38,9 @@ describe Pavlov::Backend do
   end
 
   describe '#query' do
-    before { stub_const("Queries::Foo", operation) }
+    before do
+      Pavlov::OperationFinder.stub(:new).with("Queries").and_return(finder)
+    end
 
     it 'finds queries' do
       expect(backend.query(:foo)).to eq(operation_instance)
