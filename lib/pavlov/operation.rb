@@ -21,6 +21,7 @@ module Pavlov
       extend ActiveModel::Translation
 
       attribute :pavlov_options, Hash, default: {}
+      attribute :backend, Pavlov::Backend, default: nil
     end
 
     def errors
@@ -63,6 +64,10 @@ module Pavlov
 
     def validate
       # no-op, users should override this
+    end
+
+    def context
+      backend.context
     end
 
     module ClassMethods
