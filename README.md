@@ -179,6 +179,12 @@ end
 
 Yes.
 
+## Related
+
+If Pavlov happens not to be to your taste, you might look at these other libraries:
+
+* [Mutations](https://github.com/cypriss/mutations)
+
 ## Contributing
 
 1. Fork it
