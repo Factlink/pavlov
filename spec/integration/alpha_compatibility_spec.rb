@@ -24,8 +24,8 @@ describe "Pavlov Alpha Compatibility" do
     end
 
     it 'supports old-style arguments definition' do
-      expect(interactor(:old_style_interactor, 'foo', false)).to eq('foo')
-      expect(interactor(:old_style_interactor, 'foo', true)).to eq('FOO')
+      expect(old_interactor(:old_style_interactor, 'foo', false)).to eq('foo')
+      expect(old_interactor(:old_style_interactor, 'foo', true)).to eq('FOO')
     end
   end
 
@@ -51,13 +51,13 @@ describe "Pavlov Alpha Compatibility" do
         arguments
         def authorized?; true; end
         def execute
-          "OHAI, #{query :find_uppercase_name}"
+          "OHAI, #{old_query :find_uppercase_name}"
         end
       end
     end
 
     it 'passes the pavlov_options from operation to operation' do
-      expect(interactor :shouty_greeting).to eq("OHAI, JOHN")
+      expect(old_interactor :shouty_greeting).to eq("OHAI, JOHN")
     end
   end
 end
