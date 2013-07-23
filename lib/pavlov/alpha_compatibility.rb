@@ -1,3 +1,5 @@
+require 'active_support/concern'
+require 'active_support/inflector'
 require 'pavlov'
 
 # Everything in this file should be considered deprecated. It will go away
@@ -108,4 +110,35 @@ module Pavlov
       end
     end
   end
+
+  module Command
+    extend ActiveSupport::Concern
+    include Pavlov::Operation
+  end
+
+  module Query
+    extend ActiveSupport::Concern
+    include Pavlov::Operation
+  end
+
+  module Interactor
+    extend ActiveSupport::Concern
+    include Pavlov::Operation
+
+    module ClassMethods
+      # make our interactors behave as Resque jobs
+      def perform(*args)
+        new(*args).call
+      end
+
+      def queue
+        @queue ||= :interactor_operations
+      end
+    end
+
+    def authorized?
+      raise NotImplementedError
+    end
+  end
+
 end
