@@ -16,6 +16,9 @@ If you want to retain deprecated functionality, you can `require 'pavlov/alpha_c
 * Deprecated `Pavlov::Helpers`.
 * Deprecated `arguments` in operations.
 * Deprecated `pavlov_options` that were used by the helpers.
+* Deprecated `Pavlov::Interactor` in favor of the pre-generated `Interactor` class
+* Deprecated `Pavlov::Command` in favor of the pre-generated `Command` class
+* Deprecated `Pavlov::Query` in favor of the pre-generated `Query` class
 
 #### Completely removed:
 
