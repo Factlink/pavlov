@@ -9,7 +9,7 @@ describe Pavlov::Operation do
         include Pavlov::Operation
         attribute :validation_check,    Object
         attribute :authorization_check, Object
-        def validate; validation_check.call; end
+        def valid?; validation_check.call; end
         def authorized?; authorization_check.call; end
         def execute; end
       end
@@ -28,6 +28,11 @@ describe Pavlov::Operation do
     it "calls check_authority" do
       operation.call
       expect(authorization_check).to have_received(:call).once
+    end
+
+    it 'raises ValidationError when not valid' do
+      validation_check.stub(call: false)
+      expect { operation.call }.to raise_error(Pavlov::ValidationError)
     end
   end
 
