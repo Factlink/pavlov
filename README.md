@@ -37,7 +37,7 @@ Then generate some initial files with:
 class Commands::CreateBlogPost
   include Pavlov::Command
 
-  attribute :id,        Integer
+  attribute :id,        String
   attribute :title,     String
   attribute :body,      String
   attribute :published, Boolean
@@ -64,7 +64,7 @@ class Queries::AvailableId
   end
 
   def generate_uuid
-    SecureRandom.hex(64) # TODO Look up actual implementation
+    SecureRandom.uuid
   end
 end
 
