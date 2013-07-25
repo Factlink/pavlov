@@ -28,10 +28,6 @@ module Pavlov
 
     private
 
-    def pavlov_options
-      @options
-    end
-
     def raise_unauthorized(message='Unauthorized')
       raise Pavlov::AccessDenied, message
     end
