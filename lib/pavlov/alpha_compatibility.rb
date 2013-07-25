@@ -24,8 +24,13 @@ module Pavlov
 
   def self.arguments_to_attributes(operation_class, arguments)
     attribute_keys = operation_class.attribute_set.map(&:name)
-    attributes_and_arguments = attribute_keys.zip(arguments)
-    Hash[attributes_and_arguments]
+
+    # TODO: this can be done so much better, but I don't know how.
+    hash={}
+    arguments.each_with_index do |value, index|
+      hash[attribute_keys[index].to_sym] = value
+    end
+    return hash
   end
 
   module Helpers

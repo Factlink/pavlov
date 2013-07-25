@@ -40,7 +40,9 @@ describe "Pavlov Alpha Compatibility" do
       stub_const "Interactors", Module.new
       class Queries::FindUppercaseName
         include Pavlov::Query
-        arguments
+
+        attribute :pavlov_options, Hash, default: {}
+
         def execute
           pavlov_options[:current_user].name.upcase
         end
@@ -48,7 +50,9 @@ describe "Pavlov Alpha Compatibility" do
 
       class Interactors::ShoutyGreeting
         include Pavlov::Interactor
-        arguments
+
+        attribute :pavlov_options, Hash, default: {}
+
         def authorized?; true; end
         def execute
           "OHAI, #{old_query :find_uppercase_name}"
