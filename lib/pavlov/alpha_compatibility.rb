@@ -30,26 +30,22 @@ module Pavlov
 
   module Helpers
     def old_interactor name, *args
-      args = add_pavlov_options args
+      args = add_compatablity_pavlov_options args
       Pavlov.old_interactor name, *args
     end
 
     def old_query name, *args
-      args = add_pavlov_options args
+      args = add_compatablity_pavlov_options args
       Pavlov.old_query name, *args
     end
 
     def old_command name, *args
-      args = add_pavlov_options args
+      args = add_compatablity_pavlov_options args
       Pavlov.old_command name, *args
     end
 
-    def pavlov_options
-      {}
-    end
-
     private
-    def add_pavlov_options args
+    def add_compatablity_pavlov_options args
       # TODO: we should do this at a point where we know how many arguments we need
       # so we can decide if we need to merge with another options object or
       # just add it.
@@ -67,9 +63,6 @@ module Pavlov
         args.each do |argument|
           attribute argument, Object
         end
-
-        # Add attribute for pavlov_options
-        attribute :pavlov_options, Hash, default: {}
       end
     end
   end
