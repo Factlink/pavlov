@@ -20,8 +20,7 @@ Then generate some initial files with:
 ## Usage
 
 ```ruby
-class Commands::CreateBlogPost
-  include Pavlov::Command
+class Commands::CreateBlogPost < Command
 
   attribute :id,        Integer
   attribute :title,     String
@@ -40,8 +39,7 @@ class Commands::CreateBlogPost
   end
 end
 
-class Queries::AvailableId
-  include Pavlov::Query
+class Queries::AvailableId < Query
 
   private
 
@@ -54,8 +52,7 @@ class Queries::AvailableId
   end
 end
 
-class Interactors::CreateBlogPost
-  include Pavlov::Interactor
+class Interactors::CreateBlogPost < Interactor
 
   attribute :title,     String
   attribute :body,      String
@@ -117,8 +114,7 @@ Interactors must define a method `authorized?` that determines if the interactio
 To help you determine whether operations are allowed, you can set up a global [interaction context](#context), which you can then access from your interactors:
 
 ```ruby
-class Interactors::CreateBlogPost
-  include Pavlov::Interactor
+class Interactors::CreateBlogPost < Interactor
 
   def authorized?
     context.current_user.is_admin?

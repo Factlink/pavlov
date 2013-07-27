@@ -1,12 +1,15 @@
 require_relative '../spec_helper'
 require 'pavlov'
 
+require 'generators/pavlov/templates/backend/command'
+require 'generators/pavlov/templates/backend/query'
+require 'generators/pavlov/templates/backend/interactor'
+
 describe "Pavlov attributes" do
   before do
     stub_const "Interactors", Module.new
     module Interactors
-      class CreateBlogPost
-        include Pavlov::Interactor
+      class CreateBlogPost < Interactor
 
         attribute :title,     String
         attribute :published, Boolean, default: true

@@ -1,6 +1,14 @@
 # Pavlov Changelog
 
-## HEAD
+## 0.3.0
+
+#### Removed
+
+* Removed `Pavlov::Interactor`, `Pavlov::Command` and `Pavlov::Query` in favor of generated classes inside your own
+  application. Run `rails generate pavlov:install` and then find-and-replace `\n\s+include Pavlov::` for ` < ` to
+  rewrite your operations so that they inherit from the generated classes.
+
+## 0.2.0
 
 This release brings forth lots and lots of incompatibilities. Where possible, we've tried to keep a backwards-compatible API available. You can activate this by requiring `pavlov/alpha_compatibility'.
 
