@@ -2,6 +2,10 @@ require_relative '../spec_helper'
 require 'pavlov'
 require 'pavlov/alpha_compatibility'
 
+require 'generators/pavlov/templates/backend/command'
+require 'generators/pavlov/templates/backend/query'
+require 'generators/pavlov/templates/backend/interactor'
+
 describe "Pavlov Alpha Compatibility" do
   include Pavlov::Helpers
 
@@ -9,8 +13,7 @@ describe "Pavlov Alpha Compatibility" do
     before do
       stub_const "Interactors", Module.new
 
-      class Interactors::OldStyleInteractor
-        include Pavlov::Interactor
+      class Interactors::OldStyleInteractor < Interactor
         arguments :title, :published
 
         def authorized?
@@ -38,8 +41,7 @@ describe "Pavlov Alpha Compatibility" do
     before do
       stub_const "Queries", Module.new
       stub_const "Interactors", Module.new
-      class Queries::FindUppercaseName
-        include Pavlov::Query
+      class Queries::FindUppercaseName < Query
 
         attribute :pavlov_options, Hash, default: {}
 
@@ -48,8 +50,7 @@ describe "Pavlov Alpha Compatibility" do
         end
       end
 
-      class Interactors::ShoutyGreeting
-        include Pavlov::Interactor
+      class Interactors::ShoutyGreeting < Interactor
 
         attribute :pavlov_options, Hash, default: {}
 
