@@ -54,10 +54,11 @@ module Pavlov
       # TODO: we should do this at a point where we know how many arguments we need
       # so we can decide if we need to merge with another options object or
       # just add it.
+      new_args = Array(args)
       if pavlov_options != {}
-        args << pavlov_options
+        new_args << pavlov_options
       end
-      args
+      new_args
     end
   end
 
