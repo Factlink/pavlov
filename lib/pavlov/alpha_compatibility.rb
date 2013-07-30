@@ -68,6 +68,9 @@ module Pavlov
         args.each do |argument|
           attribute argument, Object
         end
+
+        # Add attribute for pavlov_options
+        attribute :pavlov_options, Hash, default: {}
       end
     end
   end
