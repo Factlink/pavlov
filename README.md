@@ -183,7 +183,9 @@ Yes.
 
 If Pavlov happens not to be to your taste, you might look at these other libraries:
 
-* [Mutations](https://github.com/cypriss/mutations)
+* [Mutations](https://github.com/cypriss/mutations) provides service objects
+* [Imperator](https://github.com/karmajunkie/imperator) provides command objects
+* [Wisper](https://github.com/krisleech/wisper) provides callbacks
 
 ## Contributing
 
