@@ -1,3 +1,5 @@
+require 'pavlov/validation_error'
+
 module Pavlov
   module Validations
     def validate_hexadecimal_string param_name, param
