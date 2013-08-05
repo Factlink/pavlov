@@ -9,7 +9,17 @@ The Pavlov gem provides a Command/Query/Interactor framework.
   * You can have queries that return objects that don't map directly to a specific database table.
   * You can replace your database from SQL-based to MongoDB, Redis or even a webservice without having to touch your business logic.
 
+## Warning
+
 ### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
+
+All versions < 0.2 are to be considered alpha. We're working towards a stable version 0.2, following the readme as defined here. For now, unfortunately we don't support all features described here yet.
+
+Currently unsupported functionality, which is already described below:
+
+* **Validating with an error object:** For now validate should throw an error when the operation isn't valid
+* **Context:** For now use alpha_compatibility, and pass in `pavlov_options` as arguments.
+* **Checking valid?** This can work, but only if you don't implement validate, and let it return a boolean. This API will probably change though.
 
 ## Installation
 
@@ -17,44 +27,179 @@ Add this line to your application's Gemfile:
 
     gem 'pavlov'
 
-And then execute:
+Then generate some initial files with:
 
-    $ bundle
+    rails generate pavlov:install
 
-Or install it yourself as:
+## Usage
 
-    $ gem install pavlov
+```ruby
+class Commands::CreateBlogPost
+  include Pavlov::Command
 
+  attribute :id,        Integer
+  attribute :title,     String
+  attribute :body,      String
+  attribute :published, Boolean
 
-## Commands, Queries and Interactors
+  private
 
-Inspiration:
-http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years
-http://martinfowler.com/bliki/CQRS.html
+  def validate
+    errors.add(:id, "can't contain spaces") if id.include?(" ")
+  end
 
-Frontend only calls interactors. Interactors call queries and commands.
-Queries never call commands, they can call queries.
-Commands can call commands and queries.
-But keep your design _simple_ (KISS).
+  def execute
+    $redis.hmset("blog_post:#{id}", title: title, body: body, published: published)
+    $redis.sadd("blog_post_list", id)
+  end
+end
 
-### Usage
+class Queries::AvailableId
+  include Pavlov::Query
 
-TODO
+  private
+
+  def execute
+    generate_uuid
+  end
+
+  def generate_uuid
+    SecureRandom.hex(64) # TODO Look up actual implementation
+  end
+end
+
+class Interactors::CreateBlogPost
+  include Pavlov::Interactor
+
+  attribute :title,     String
+  attribute :body,      String
+  attribute :published, Boolean, default: true
+
+  private
+
+  def authorized?
+    context.current_user.is_admin?
+  end
+
+  def validate
+    errors.add(:body, "NO SHOUTING!!!!") if body.matches?(/\W[A-Z]{2,}\W/)
+  end
+
+  def execute
+    command :create_blog_post, id: available_id,
+                               title: title,
+                               body: body,
+                               published: published
+    Struct.new(:title, :body).new(title, body)
+  end
+
+  def available_id
+    query :available_id
+  end
+end
+
+class PostsController < ApplicationController
+  include Pavlov::Helpers
+
+  respond_to :json
+
+  def create
+    interaction = interactor :create_blog_post, params[:post]
+
+    if interaction.valid?
+      respond_with interaction.call
+    else
+      respond_with {errors: interaction.errors}
+    end
+  rescue AuthorizationError
+    flash[:error] = "Hacker, begone!"
+    redirect_to root_path
+  end
+end
+```
+
+### Attributes
+
+Attributes work mostly like Virtus does. Attributes are always required unless they have a default value.
+
+### Validations
 
 ### Authorization
 
-There are multiple facets to whether a user is authorized:
+Interactors must define a method `authorized?` that determines if the interaction is allowed. If this method returns a truthy value, Pavlov will allow the interaction to be executed. This check is performed when `interaction.call` is executed.
 
-1. Can this user execute this operation
-2. On which set of objects can this user execute this operation
+To help you determine whether operations are allowed, you can set up a global [interaction context](#context), which you can then access from your interactors:
 
-We decided that the best way to handle this is:
+```ruby
+class Interactors::CreateBlogPost
+  include Pavlov::Interactor
 
-The interactors check whether an operation is authorized before running the execution code, but not in the initialization. This is not implemented yet, but will mean an interactor has something like run which does authorize; execute.
+  def authorized?
+    context.current_user.is_admin?
+  end
+end
+```
 
-When a operation is executed on one object and this is not authorized, this is clearly an exceptional situation (in the sense that it shouldn't happen), and an exception is thrown.
+If the interaction is not authorized, a `Pavlov::AuthorizationError` exception will be thrown. In normal execution you wouldn't expect this to ever occur, so might be reasonable to set up a global catch for this exception that redirects users to your homepage:
 
-When a operation is executed on a set of objects, the operation will only execute on the subset the user is authorized for.
+```ruby
+class ApplicationController
+  rescue_from Pavlov::AuthorizationError, with: :possible_hack_attempt
+
+  private
+
+  def possible_hack_attempt
+    logger.warn 'This might have been a hacker'
+    redirect_to root_path
+  end
+end
+```
+
+### Context
+
+You probably have certain aspects of your application that you always, or at least very often, want to pass into the interactors, so that they can check authorization, either in terms of blocking unauthorized executions, or automatically scoping queries so that e.g. users will only see data belonging to their account.
+
+```ruby
+class ApplicationController < ActionController::Base
+  include Pavlov::Helpers
+
+  before_filter :set_pavlov_context
+
+  private
+
+  def set_pavlov_context
+    context.add(:current_user, current_user)
+  end
+end
+```
+
+In your tests, you could write:
+
+```ruby
+describe CreateBlogPost do
+  include Pavlov::Helpers
+
+  let(:user) { mock("User", is_admin?: true) }
+  before { context.add(:current_user, user) }
+
+  it 'should create posts' do
+    interactor(:create_blog_post, title: 'Foo', body: 'Bar').call
+    # test for the creation
+  end
+end
+```
+
+## Is it any good?
+
+Yes.
+
+## Related
+
+If Pavlov happens not to be to your taste, you might look at these other libraries:
+
+* [Mutations](https://github.com/cypriss/mutations) provides service objects
+* [Imperator](https://github.com/karmajunkie/imperator) provides command objects
+* [Wisper](https://github.com/krisleech/wisper) provides callbacks
 
 ## Contributing
 
