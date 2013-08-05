@@ -8,12 +8,12 @@ describe Pavlov::Helpers do
         include Pavlov::Helpers
 
         def test
-          interactor :interactor_name, 'argument1', 'argument2'
+          old_interactor :interactor_name, 'argument1', 'argument2'
         end
       end
       instance = dummy_class.new
 
-      Pavlov.should_receive(:interactor)
+      Pavlov.should_receive(:old_interactor)
         .with(:interactor_name, 'argument1', 'argument2')
 
       instance.test
@@ -29,12 +29,12 @@ describe Pavlov::Helpers do
         end
 
         def test
-          interactor :interactor_name, 'argument1', 'argument2'
+          old_interactor :interactor_name, 'argument1', 'argument2'
         end
       end
       instance = dummy_class.new
-      
-      Pavlov.should_receive(:interactor)
+
+      Pavlov.should_receive(:old_interactor)
         .with(:interactor_name, 'argument1', 'argument2', hash)
 
       instance.test
