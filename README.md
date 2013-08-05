@@ -9,6 +9,18 @@ The Pavlov gem provides a Command/Query/Interactor framework.
   * You can have queries that return objects that don't map directly to a specific database table.
   * You can replace your database from SQL-based to MongoDB, Redis or even a webservice without having to touch your business logic.
 
+## Warning
+
+### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
+
+All versions < 0.2 are to be considered alpha. We're working towards a stable version 0.2, following the readme as defined here. For now, unfortunately we don't support all features described here yet.
+
+Currently unsupported functionality, which is already described below:
+
+* **Validating with an error object:** For now validate should throw an error when the operation isn't valid
+* **Context:** For now use alpha_compatibility, and pass in `pavlov_options` as arguments.
+* **Checking valid?** This can work, but only if you don't implement validate, and let it return a boolean. This API will probably change though.
+
 ## Installation
 
 Add this line to your application's Gemfile:
