@@ -4,6 +4,8 @@
 
 Added version to gemspec
 
+Deprecated Validations (now in alpha_compatibility)
+
 ## 0.1.3
 
 This release brings forth lots and lots of incompatibilities. Where possible, we've tried to keep a backwards-compatible API available. You can activate this by requiring `pavlov/alpha_compatibility'.
