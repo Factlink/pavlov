@@ -1,4 +1,4 @@
-require 'active_support/concern'
+require_relative 'concern'
 require 'pavlov/validations'
 require 'pavlov/helpers'
 require 'virtus'
@@ -6,7 +6,7 @@ require_relative 'access_denied'
 
 module Pavlov
   module Operation
-    extend ActiveSupport::Concern
+    extend Pavlov::Concern
     include Pavlov::Helpers
     include Pavlov::Validations
     include Virtus
