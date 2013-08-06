@@ -1,5 +1,4 @@
 require 'active_support/concern'
-require 'active_support/inflector'
 require 'pavlov/operation'
 
 module Pavlov
