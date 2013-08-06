@@ -20,12 +20,12 @@ describe Pavlov::Helpers do
     end
 
     it 'calls an interactor with pavlov_options' do
-      hash = {key:'value'}
+      hash = { key: 'value' }
       dummy_class = Class.new do
         include Pavlov::Helpers
 
         def pavlov_options
-          {key:'value'}
+          { key: 'value' }
         end
 
         def test
