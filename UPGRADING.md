@@ -1,9 +1,13 @@
+## 0.1.4
+
+* If you use validations, you must now either use alpha_compatibility, or copy them to your own codebase.
+
 ## 0.1.3
 
 * change all calls to the constructor of operations to construct with named parameters instead of positional parameters
 * change all tests for authorization and validation, since those now get called when invoking `#call` instead of on initialization
 
-## before 0.1.3
+## before HEAD
 
 * change tests which expect invocations of validations to tests which check whether an error has been thrown when you give it invalid input.
 * change tests where you check whether authorized? is called, to ones where you invoke the operation unauthorized, and check if an error is thrown.

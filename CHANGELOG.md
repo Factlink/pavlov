@@ -2,7 +2,11 @@
 
 ## HEAD
 
-Added version to gemspec
+## 0.1.4
+
+Added license to gemspec
+
+Removed dependencies on activemodel and activesupport.
 
 Deprecated Validations (now in alpha_compatibility)
 
