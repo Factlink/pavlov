@@ -1,10 +1,9 @@
-require 'active_support/concern'
-require 'active_support/inflector'
+require_relative 'concern'
 require 'pavlov/operation'
 
 module Pavlov
   module Interactor
-    extend ActiveSupport::Concern
+    extend Pavlov::Concern
     include Pavlov::Operation
 
     module ClassMethods
