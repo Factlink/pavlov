@@ -1,5 +1,4 @@
 require_relative 'concern'
-require 'pavlov/validations'
 require 'pavlov/helpers'
 require 'virtus'
 require_relative 'access_denied'
@@ -8,7 +7,6 @@ module Pavlov
   module Operation
     extend Pavlov::Concern
     include Pavlov::Helpers
-    include Pavlov::Validations
     include Virtus
 
     def validate
