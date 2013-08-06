@@ -2,21 +2,21 @@ require 'pavlov'
 
 module Pavlov
   def self.old_command command_name, *args
-    class_name = 'Commands::'+string_to_classname(command_name)
+    class_name = 'Commands::' + string_to_classname(command_name)
     klass = get_class_by_string(class_name)
     attributes = arguments_to_attributes(klass, args)
     klass.new(attributes).call
   end
 
   def self.old_interactor command_name, *args
-    class_name = 'Interactors::'+string_to_classname(command_name)
+    class_name = 'Interactors::' + string_to_classname(command_name)
     klass = get_class_by_string class_name
     attributes = arguments_to_attributes(klass, args)
     klass.new(attributes).call
   end
 
   def self.old_query command_name, *args
-    class_name = 'Queries::'+string_to_classname(command_name)
+    class_name = 'Queries::' + string_to_classname(command_name)
     klass = get_class_by_string class_name
     attributes = arguments_to_attributes(klass, args)
     klass.new(attributes).call
@@ -26,11 +26,11 @@ module Pavlov
     attribute_keys = operation_class.attribute_set.map(&:name)
 
     # TODO: this can be done so much better, but I don't know how.
-    hash={}
+    hash = {}
     arguments.each_with_index do |value, index|
       hash[attribute_keys[index].to_sym] = value
     end
-    return hash
+    hash
   end
 
   module Helpers
@@ -50,14 +50,13 @@ module Pavlov
     end
 
     private
+
     def add_compatibility_pavlov_options args
       # TODO: we should do this at a point where we know how many arguments we need
       # so we can decide if we need to merge with another options object or
       # just add it.
       new_args = Array(args)
-      if pavlov_options != {}
-        new_args << pavlov_options
-      end
+      new_args << pavlov_options unless pavlov_options == {}
       new_args
     end
   end
@@ -67,7 +66,7 @@ module Pavlov
 
   module Validations
     def validate_hexadecimal_string param_name, param
-      raise Pavlov::ValidationError,  "#{param_name.to_s} should be an hexadecimal string." unless param.is_a? String && /\A[\da-fA-F]+\Z/.match param
+      raise Pavlov::ValidationError,  "#{param_name.to_s} should be an hexadecimal string." unless param.is_a? String && /\A[\da-fA-F]+\Z/.match(param)
     end
 
     def validate_regex param_name, param, regex, message
@@ -88,11 +87,11 @@ module Pavlov
     end
 
     def validate_nonempty_string param_name, param
-      raise Pavlov::ValidationError, "#{param_name.to_s} should be a nonempty string." unless param.is_a?(String) && not(param.nil?) && not(param.empty?)
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be a nonempty string." unless param.is_a?(String) && !param.nil? && !param.empty?
     end
 
     def validate_integer_string param_name, param
-      raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer string." unless param.is_a? String && /\A\d+\Z/.match param
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer string." unless param.is_a? String && /\A\d+\Z/.match(param)
     end
 
     def validate_not_nil param_name, param
