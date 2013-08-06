@@ -20,6 +20,7 @@ module Pavlov
     end
 
     private
+
     def add_pavlov_options hash
       if pavlov_options != {}
         hash ||= {}
