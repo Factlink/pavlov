@@ -2,21 +2,21 @@ require 'pavlov'
 
 module Pavlov
   def self.old_command command_name, *args
-    class_name = "Commands::"+string_to_classname(command_name)
+    class_name = 'Commands::'+string_to_classname(command_name)
     klass = get_class_by_string(class_name)
     attributes = arguments_to_attributes(klass, args)
     klass.new(attributes).call
   end
 
   def self.old_interactor command_name, *args
-    class_name = "Interactors::"+string_to_classname(command_name)
+    class_name = 'Interactors::'+string_to_classname(command_name)
     klass = get_class_by_string class_name
     attributes = arguments_to_attributes(klass, args)
     klass.new(attributes).call
   end
 
   def self.old_query command_name, *args
-    class_name = "Queries::"+string_to_classname(command_name)
+    class_name = 'Queries::'+string_to_classname(command_name)
     klass = get_class_by_string class_name
     attributes = arguments_to_attributes(klass, args)
     klass.new(attributes).call
@@ -67,7 +67,7 @@ module Pavlov
 
   module Validations
     def validate_hexadecimal_string param_name, param
-      raise Pavlov::ValidationError,  "#{param_name.to_s} should be an hexadecimal string." unless param.is_a? String and /\A[\da-fA-F]+\Z/.match param
+      raise Pavlov::ValidationError,  "#{param_name.to_s} should be an hexadecimal string." unless param.is_a? String && /\A[\da-fA-F]+\Z/.match param
     end
 
     def validate_regex param_name, param, regex, message
@@ -92,7 +92,7 @@ module Pavlov
     end
 
     def validate_integer_string param_name, param
-      raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer string." unless param.is_a? String and /\A\d+\Z/.match param
+      raise Pavlov::ValidationError, "#{param_name.to_s} should be an integer string." unless param.is_a? String && /\A\d+\Z/.match param
     end
 
     def validate_not_nil param_name, param

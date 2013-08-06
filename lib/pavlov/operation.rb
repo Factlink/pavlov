@@ -12,7 +12,7 @@ module Pavlov
     def validate
       return false unless attributes_without_defaults_have_values
       if respond_to? :valid?
-        raise Pavlov::ValidationError, "an argument is invalid" unless valid?
+        raise Pavlov::ValidationError, 'an argument is invalid' unless valid?
       else
         true
       end
@@ -31,12 +31,12 @@ module Pavlov
     end
 
     def check_authorization
-      raise_unauthorized if respond_to? :authorized?, true and not authorized?
+      raise_unauthorized if respond_to? :authorized?, true && not authorized?
     end
 
     def attributes_without_defaults_have_values
       attributes_without_value = attribute_set.select do |attribute|
-        not attribute.options.has_key?(:default) and send(attribute.name).nil?
+        not attribute.options.has_key?(:default) && send(attribute.name).nil?
       end
       attributes_without_value.empty?
     end
