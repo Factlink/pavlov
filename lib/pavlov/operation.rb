@@ -26,17 +26,17 @@ module Pavlov
 
     private
 
-    def raise_unauthorized(message='Unauthorized')
+    def raise_unauthorized(message = 'Unauthorized')
       raise Pavlov::AccessDenied, message
     end
 
     def check_authorization
-      raise_unauthorized if respond_to? :authorized?, true && not authorized?
+      raise_unauthorized if respond_to?(:authorized?, true) && !authorized?
     end
 
     def attributes_without_defaults_have_values
       attributes_without_value = attribute_set.select do |attribute|
-        not attribute.options.has_key?(:default) && send(attribute.name).nil?
+        !attribute.options.has_key?(:default) && send(attribute.name).nil?
       end
       attributes_without_value.empty?
     end
