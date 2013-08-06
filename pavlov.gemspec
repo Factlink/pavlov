@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['jan+pavlov@deelstra.org']
   gem.summary       = %q{Infrastructure for defining your Ruby architecture.}
   gem.description   = %q{Pavlov is a opinionated toolbox to help you architect your Ruby project.}
+  gem.license       = 'MIT'
   gem.homepage      = 'https://github.com/Factlink/pavlov/'
   gem.files         = `git ls-files lib`.split($/)
   gem.test_files    = gem.files.grep(%r{^(spec)/})
