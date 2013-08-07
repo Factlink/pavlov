@@ -1,3 +1,7 @@
+## HEAD
+
+* Change your expectations to expect `Pavlov.command` with hash arguments instead of `Pavlov.old_command` with positional arguments. Same for `query` and `interactor`
+
 ## 0.1.4
 
 * If you use validations, you must now either use alpha_compatibility, or copy them to your own codebase.

@@ -2,24 +2,18 @@ require 'pavlov'
 
 module Pavlov
   def self.old_command command_name, *args
-    class_name = 'Commands::' + string_to_classname(command_name)
-    klass = get_class_by_string(class_name)
-    attributes = arguments_to_attributes(klass, args)
-    klass.new(attributes).call
+    klass = class_for_command(command_name)
+    command command_name, arguments_to_attributes(klass, args)
   end
 
-  def self.old_interactor command_name, *args
-    class_name = 'Interactors::' + string_to_classname(command_name)
-    klass = get_class_by_string class_name
-    attributes = arguments_to_attributes(klass, args)
-    klass.new(attributes).call
+  def self.old_interactor interactor_name, *args
+    klass = class_for_interactor(interactor_name)
+    interactor interactor_name, arguments_to_attributes(klass, args)
   end
 
-  def self.old_query command_name, *args
-    class_name = 'Queries::' + string_to_classname(command_name)
-    klass = get_class_by_string class_name
-    attributes = arguments_to_attributes(klass, args)
-    klass.new(attributes).call
+  def self.old_query query_name, *args
+    klass = class_for_query(query_name)
+    query query_name, arguments_to_attributes(klass, args)
   end
 
   def self.arguments_to_attributes(operation_class, arguments)

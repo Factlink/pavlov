@@ -65,4 +65,24 @@ describe 'Pavlov Alpha Compatibility' do
       expect(old_interactor :shouty_greeting).to eq('OHAI, JOHN')
     end
   end
+
+  describe 'old_command style helper' do
+    before do
+      stub_const 'Commands::Test', Class.new
+      class Commands::Test
+        include Pavlov::Command
+
+        arguments :test_string
+        def execute
+        end
+      end
+    end
+
+    it 'redirects to regular Pavlov.command etc' do
+      Pavlov.should_receive(:command)
+            .with(:test, test_string: 'test')
+
+      old_command :test, 'test'
+    end
+  end
 end
