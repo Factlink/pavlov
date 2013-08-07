@@ -3,6 +3,7 @@
 - Ensure all test pass.
 - Bump version number in `version.rb`
 - Update `CHANGELOG.md`
+- Update `UPGRADING.md`
 
 - Commit and push these changes.
 
