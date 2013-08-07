@@ -4,7 +4,7 @@
 - Bump version number in `version.rb`
 - Update `CHANGELOG.md`
 
-- Commit these changes.
+- Commit and push these changes.
 
 Build the gem:
 
