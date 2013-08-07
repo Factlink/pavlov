@@ -1,18 +1,15 @@
 module Pavlov
   module Helpers
     def interactor name, hash
-      hash = add_pavlov_options hash
-      Pavlov.interactor name, hash
+      Pavlov.interactor name, with_pavlov_options(hash)
     end
 
     def query name, hash
-      hash = add_pavlov_options hash
-      Pavlov.query name, hash
+      Pavlov.query name, with_pavlov_options(hash)
     end
 
     def command name, hash
-      hash = add_pavlov_options hash
-      Pavlov.command name, hash
+      Pavlov.command name, with_pavlov_options(hash)
     end
 
     def pavlov_options
@@ -21,7 +18,7 @@ module Pavlov
 
     private
 
-    def add_pavlov_options hash
+    def with_pavlov_options hash
       if pavlov_options != {}
         hash ||= {}
 
