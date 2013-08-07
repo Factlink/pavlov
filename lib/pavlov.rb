@@ -10,21 +10,35 @@ module Pavlov
   end
 
   def self.command command_name, *args
+    klass = class_for_command(command_name)
+    klass.new(*args).call
+  end
+
+  def self.interactor interactor_name, *args
+    klass = class_for_interactor(interactor_name)
+    klass.new(*args).call
+  end
+
+  def self.query query_name, *args
+    klass = class_for_query(query_name)
+    klass.new(*args).call
+  end
+
+  private
+
+  def self.class_for_command command_name
     class_name = 'Commands::' + string_to_classname(command_name)
-    klass = get_class_by_string(class_name)
-    klass.new(*args).call
+    get_class_by_string(class_name)
   end
 
-  def self.interactor command_name, *args
-    class_name = 'Interactors::' + string_to_classname(command_name)
-    klass = get_class_by_string class_name
-    klass.new(*args).call
+  def self.class_for_interactor interactor_name
+    class_name = 'Interactors::' + string_to_classname(interactor_name)
+    get_class_by_string(class_name)
   end
 
-  def self.query command_name, *args
-    class_name = 'Queries::' + string_to_classname(command_name)
-    klass = get_class_by_string class_name
-    klass.new(*args).call
+  def self.class_for_query query_name
+    class_name = 'Queries::' + string_to_classname(query_name)
+    get_class_by_string(class_name)
   end
 end
 
