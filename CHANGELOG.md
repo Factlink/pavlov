@@ -2,6 +2,8 @@
 
 ## HEAD
 
+Made `Pavlov.old_command`, `old_query` and `old_interactor` use `Pavlov.command`, `Pavlov.query` and `Pavlov.interactor` so you can upgrade expectations in a forward compatible manner.
+
 ## 0.1.4
 
 Added license to gemspec
