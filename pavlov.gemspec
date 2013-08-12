@@ -24,6 +24,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-bundler'
   gem.add_development_dependency 'guard-rspec'
+  gem.add_development_dependency 'guard-rubocop'
   gem.add_development_dependency 'terminal-notifier-guard'
   gem.add_development_dependency 'rb-fsevent'
   gem.add_development_dependency 'rake'

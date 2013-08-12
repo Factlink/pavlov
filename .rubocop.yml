@@ -11,3 +11,5 @@ Documentation:
 LineLength:
   Enabled: false
 
+Encoding:
+  Enabled: false
