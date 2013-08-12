@@ -14,8 +14,8 @@
 ## before 0.1.3
 
 * change tests which expect invocations of validations to tests which check whether an error has been thrown when you give it invalid input.
-* change tests where you check whether authorized? is called, to ones where you invoke the operation unauthorized, and check if an error is thrown.
-* always call arguments, also when the operation has no arguments. Then just invoke arguments without any arguments.
+* change tests where you check whether authorized? is called, to ones where you invoke the operation without any prior checks, and catch `Pavlov::AccessDenied` which is thrown when an operation is unauthorized.
+* always call arguments, also when the operation has no arguments. Then just invoke `arguments` without any arguments.
 
 ## 0.1.2
 
