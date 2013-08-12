@@ -1,14 +1,14 @@
 module Pavlov
   module Helpers
-    def interactor name, hash
+    def interactor name, hash = {}
       Pavlov.interactor name, with_pavlov_options(hash)
     end
 
-    def query name, hash
+    def query name, hash = {}
       Pavlov.query name, with_pavlov_options(hash)
     end
 
-    def command name, hash
+    def command name, hash = {}
       Pavlov.command name, with_pavlov_options(hash)
     end
 
