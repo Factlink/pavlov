@@ -4,6 +4,9 @@ require 'virtus'
 require_relative 'access_denied'
 
 module Pavlov
+  class ValidationError < StandardError
+  end
+
   module Operation
     extend Pavlov::Concern
     include Pavlov::Helpers
