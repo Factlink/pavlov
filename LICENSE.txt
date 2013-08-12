@@ -1,4 +1,4 @@
-Copyright (c) 2013 Factlink, Inc
+Copyright (c) 2013 Factlink, Inc and individual contributors
 
 MIT License
 
