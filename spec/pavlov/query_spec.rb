@@ -13,7 +13,7 @@ describe Pavlov::Query do
     end
   end
 
-  it 'raises an error when private .authorized? does not exist' do
+  it 'raises an error when private authorized method specifies that query is unauthorized' do
     expect do
       query_with_private_authorized?.new.call
     end.to raise_error(Pavlov::AccessDenied)

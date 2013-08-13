@@ -47,7 +47,7 @@ describe Pavlov::Interactor do
     end
   end
 
-  it 'executes without checking authorized or validate' do
+  it 'executes without exceptions when authorized, without validations defined' do
     expect(simple_interactor.new.call).to eq :executed
   end
 end
