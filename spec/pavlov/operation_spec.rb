@@ -44,6 +44,11 @@ describe Pavlov::Operation do
       validation_check.stub(call: false)
       expect { operation.call }.to raise_error(Pavlov::ValidationError)
     end
+
+    it 'raises ValidationError when not valid' do
+      authorization_check.stub(call: false)
+      expect { operation.call }.to raise_error(Pavlov::AccessDenied)
+    end
   end
 
   describe 'validations' do

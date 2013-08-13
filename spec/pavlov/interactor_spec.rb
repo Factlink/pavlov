@@ -30,4 +30,24 @@ describe Pavlov::Interactor do
       interactor_with_private_authorized?.new.call
     end.to raise_error(Pavlov::AccessDenied)
   end
+
+  let :simple_interactor do
+    Class.new do
+      include Pavlov::Interactor
+
+      private
+
+      def authorized?
+        true
+      end
+
+      def execute
+        :executed
+      end
+    end
+  end
+
+  it 'executes without checking authorized or validate' do
+    expect(simple_interactor.new.call).to eq :executed
+  end
 end
