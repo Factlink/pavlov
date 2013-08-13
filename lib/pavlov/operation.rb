@@ -3,6 +3,10 @@ require 'pavlov/helpers'
 require 'virtus'
 require_relative 'access_denied'
 
+require 'active_model'
+require 'active_model/naming'
+require 'active_model/errors'
+
 module Pavlov
   class ValidationError < StandardError
   end
@@ -10,17 +14,26 @@ module Pavlov
   module Operation
     extend Pavlov::Concern
     include Pavlov::Helpers
-    include Virtus
+
+    included do
+      include Virtus
+      extend ActiveModel::Naming
+      extend ActiveModel::Translation
+    end
+
+    def errors
+      @errors ||= ActiveModel::Errors.new(self)
+    end
 
     def valid?
       check_validation
-      true
+      errors.empty?
     rescue Pavlov::ValidationError
       false
     end
 
     def call(*args, &block)
-      check_validation
+      raise Pavlov::ValidationError, "Some validations fail, cannot execute" unless valid?
       check_authorization
       execute(*args, &block)
     end
@@ -33,6 +46,10 @@ module Pavlov
 
     def raise_unauthorized(message = 'Unauthorized')
       raise Pavlov::AccessDenied, message
+    end
+
+    def validate
+      true
     end
 
     def check_validation
