@@ -12,20 +12,12 @@ module Pavlov
     include Pavlov::Helpers
     include Virtus
 
-    def validate
-      return false if attributes_without_defaults_missing_values?
-
-      raise Pavlov::ValidationError, 'an argument is invalid' unless valid?
-
-      true
-    end
-
     def valid?
-      true
+      check_validation
     end
 
     def call(*args, &block)
-      validate
+      check_validation
       check_authorization
       execute(*args, &block)
     end
@@ -38,6 +30,16 @@ module Pavlov
 
     def check_authorization
       raise_unauthorized unless authorized?
+    end
+
+    def check_validation
+      return false if attributes_without_defaults_missing_values?
+      raise Pavlov::ValidationError, 'an argument is invalid' unless validate
+      true
+    end
+
+    def validate
+      true # no-op, users should override this
     end
 
     def attributes_without_defaults_missing_values?
