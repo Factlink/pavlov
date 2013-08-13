@@ -2,6 +2,14 @@
 
 ## HEAD
 
+## 0.1.6
+
+Fixed default argument for helpers with named arguments
+
+Bugfixes and refactorings
+
+Removed generators for commands, queries and interactors.
+
 ## 0.1.5
 
 Made `Pavlov.old_command`, `old_query` and `old_interactor` use `Pavlov.command`, `Pavlov.query` and `Pavlov.interactor` so you can upgrade expectations in a forward compatible manner.
