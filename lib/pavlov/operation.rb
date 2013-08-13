@@ -41,7 +41,7 @@ module Pavlov
     end
 
     def authorized?
-      true
+      raise NotImplementedError
     end
 
     def attributes_without_defaults_have_values
