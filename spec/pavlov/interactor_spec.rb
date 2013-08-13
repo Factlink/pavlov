@@ -11,7 +11,7 @@ describe Pavlov::Interactor do
   it 'raises an error when .authorized? does not exist' do
     expect do
       interactor_without_authorized?.new.call
-    end.to raise_error(NotImplementedError)
+    end.to raise_error
   end
 
   let 'interactor_with_private_authorized?' do

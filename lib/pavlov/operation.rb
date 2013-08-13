@@ -40,10 +40,6 @@ module Pavlov
       raise_unauthorized unless authorized?
     end
 
-    def authorized?
-      raise NotImplementedError
-    end
-
     def attributes_without_defaults_have_values
       attributes_without_value = attribute_set.select do |attribute|
         !attribute.options.has_key?(:default) && send(attribute.name).nil?
