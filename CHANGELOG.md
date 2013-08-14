@@ -2,7 +2,7 @@
 
 ## HEAD
 
-* For the sake of consistency and future-proofness, we've changed the names of the methods you should implement. This was `valid?` and `execute`, and it is now `validate` and `execute`. Like `execute`, these methods should not be called directly. The `valid?` method is now provided by Pavlov as wrapper around `validate`. This allows us to add default validations without you having to remember to call `super`.
+* In preparation for changes to the validation system, we've changed the name of the method you should implement that performs the validations. This was `valid?`, and it is now `validate`. Like `execute`, this method should not be called directly, instead Pavlov provides a wrapper method called `valid?`. This allows us to add default validations without you having to remember to call `super`.
 
 ## 0.1.6
 
