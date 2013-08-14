@@ -24,12 +24,12 @@ module Pavlov
 
     private
 
-    def raise_unauthorized(message = 'Unauthorized')
-      raise Pavlov::AccessDenied, message
-    end
-
     def check_authorization
       raise_unauthorized unless authorized?
+    end
+
+    def raise_unauthorized(message = 'Unauthorized')
+      raise Pavlov::AccessDenied, message
     end
 
     def check_validation
@@ -38,14 +38,14 @@ module Pavlov
       true
     end
 
-    def validate
-      true # no-op, users should override this
-    end
-
     def attributes_without_defaults_missing_values?
       attribute_set.find_index do |attribute|
         !attribute.options.has_key?(:default) && send(attribute.name).nil?
       end
+    end
+
+    def validate
+      true # no-op, users should override this
     end
 
     module ClassMethods
