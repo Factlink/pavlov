@@ -2,6 +2,8 @@
 
 ## HEAD
 
+* In preparation for changes to the validation system, we've changed the name of the method you should implement that performs the validations. This was `valid?`, and it is now `validate`. Like `execute`, this method should not be called directly, instead Pavlov provides a wrapper method called `valid?`. This allows us to add default validations without you having to remember to call `super`.
+
 ## 0.1.6
 
 Fixed default argument for helpers with named arguments

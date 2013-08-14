@@ -1,6 +1,8 @@
 ## HEAD
 
-# 0.1.6
+* Rename all your `valid?` methods to `validate`. If you called `valid?` on your operations, you can continue to do so.
+
+## 0.1.6
 
 -
 
