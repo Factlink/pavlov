@@ -14,6 +14,8 @@ module Pavlov
 
     def valid?
       check_validation
+    rescue Pavlov::ValidationError
+      false
     end
 
     def call(*args, &block)
@@ -33,7 +35,7 @@ module Pavlov
     end
 
     def check_validation
-      return false if attributes_without_defaults_missing_values?
+      raise Pavlov::ValidationError, 'some arguments were not given' if attributes_without_defaults_missing_values?
       raise Pavlov::ValidationError, 'an argument is invalid' unless validate
       true
     end
