@@ -10,7 +10,7 @@ describe Pavlov::Operation do
         attribute :validation_check,    Object
         attribute :authorization_check, Object
 
-        def valid?
+        def validate
           validation_check.call
         end
 
@@ -58,7 +58,7 @@ describe Pavlov::Operation do
           include Pavlov::Operation
           attribute :title, String
         end
-        expect(dummy_class.new(title: 'Title').validate).to be_true
+        expect(dummy_class.new(title: 'Title').valid?).to be_true
       end
 
       it 'passes when given a default' do
@@ -68,7 +68,7 @@ describe Pavlov::Operation do
           attribute :date,    Time,   default: -> { Time.now }
           attribute :visible, String, default: nil
         end
-        expect(dummy_class.new.validate).to be_true
+        expect(dummy_class.new.valid?).to be_true
       end
 
       it 'fails when not given a value' do
@@ -76,7 +76,7 @@ describe Pavlov::Operation do
           include Pavlov::Operation
           attribute :title, String
         end
-        expect(dummy_class.new.validate).to be_false
+        expect(dummy_class.new.valid?).to be_false
       end
     end
   end
