@@ -20,8 +20,6 @@ module Pavlov
 
     def with_pavlov_options hash
       if pavlov_options != {}
-        hash ||= {}
-
         if hash.has_key? 'pavlov_options'
           hash[:pavlov_options] = pavlov_options.merge(hash[:pavlov_options])
         else
