@@ -24,8 +24,10 @@ describe 'Pavlov Alpha Compatibility' do
     end
 
     it 'supports old-style arguments definition' do
-      expect(old_interactor(:old_style_interactor, 'foo', false)).to eq('foo')
-      expect(old_interactor(:old_style_interactor, 'foo', true)).to eq('FOO')
+      result1 = interactor(:old_style_interactor, title: 'foo', published: false)
+      expect(result1).to eq('foo')
+      result2 = interactor(:old_style_interactor, title: 'foo', published: true)
+      expect(result2).to eq('FOO')
     end
   end
 
@@ -56,33 +58,13 @@ describe 'Pavlov Alpha Compatibility' do
         end
 
         def execute
-          "OHAI, #{old_query :find_uppercase_name}"
+          "OHAI, #{query :find_uppercase_name}"
         end
       end
     end
 
     it 'passes the pavlov_options from operation to operation' do
-      expect(old_interactor :shouty_greeting).to eq('OHAI, JOHN')
-    end
-  end
-
-  describe 'old_command style helper' do
-    before do
-      stub_const 'Commands::Test', Class.new
-      class Commands::Test
-        include Pavlov::Command
-
-        arguments :test_string
-        def execute
-        end
-      end
-    end
-
-    it 'redirects to regular Pavlov.command etc' do
-      Pavlov.should_receive(:command)
-            .with(:test, test_string: 'test')
-
-      old_command :test, 'test'
+      expect(interactor :shouty_greeting).to eq('OHAI, JOHN')
     end
   end
 end
