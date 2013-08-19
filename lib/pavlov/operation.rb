@@ -36,12 +36,12 @@ module Pavlov
     end
 
     def check_validation
-      raise Pavlov::ValidationError, 'some arguments were not given' if attributes_without_defaults_missing_values?
+      raise Pavlov::ValidationError, "Missing arguments: #{missing_arguments.inspect}" if missing_arguments.any?
       validate
     end
 
-    def attributes_without_defaults_missing_values?
-      attribute_set.find_index do |attribute|
+    def missing_arguments
+      attribute_set.select do |attribute|
         !attribute.options.has_key?(:default) && send(attribute.name).nil?
       end
     end
