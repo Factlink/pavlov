@@ -4,7 +4,7 @@ require 'pavlov'
 describe 'Pavlov interactors' do
   before do
     stub_const 'SecureRandom', double(uuid: '1234')
-    $redis = double(hmset: nil, sadd: nil)
+    stub_const 'REDIS', double(hmset: nil, sadd: nil)
 
     stub_const 'Commands', Module.new
     class Commands::CreateBlogPost
@@ -21,8 +21,8 @@ describe 'Pavlov interactors' do
       end
 
       def execute
-        $redis.hmset("blog_post:#{id}", title: title, body: body, published: published)
-        $redis.sadd('blog_post_list', id)
+        REDIS.hmset("blog_post:#{id}", title: title, body: body, published: published)
+        REDIS.sadd('blog_post_list', id)
       end
     end
 
