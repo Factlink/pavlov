@@ -61,7 +61,7 @@ module Pavlov
       def arguments(*args)
         # Add generic attribute for each argument
         args.each do |argument|
-          attribute argument, Object
+          attribute argument, Object, default: nil
         end
 
         # Add attribute for pavlov_options
