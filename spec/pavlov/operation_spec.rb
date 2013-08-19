@@ -41,7 +41,7 @@ describe Pavlov::Operation do
     end
 
     it 'raises ValidationError when not valid' do
-      validation_check.stub(call: false)
+      validation_check.stub(:call).and_raise(Pavlov::ValidationError)
       expect { operation.call }.to raise_error(Pavlov::ValidationError)
     end
 
