@@ -1,16 +1,6 @@
 require 'pavlov/support/inflector'
 
 module Pavlov
-  # this method is also available as constantize in Rails,
-  # but we want to be able to write classes and/or tests without Rails
-  def self.get_class_by_string classname
-    Inflector.constantize(classname)
-  end
-
-  def self.string_to_classname string
-    Inflector.camelize(string.to_s)
-  end
-
   def self.command command_name, *args
     klass = class_for_command(command_name)
     klass.new(*args).call
@@ -29,18 +19,15 @@ module Pavlov
   private
 
   def self.class_for_command command_name
-    class_name = 'Commands::' + string_to_classname(command_name)
-    get_class_by_string(class_name)
+    OperationFinder.find(Commands, command_name)
   end
 
   def self.class_for_interactor interactor_name
-    class_name = 'Interactors::' + string_to_classname(interactor_name)
-    get_class_by_string(class_name)
+    OperationFinder.find(Interactors, interactor_name)
   end
 
   def self.class_for_query query_name
-    class_name = 'Queries::' + string_to_classname(query_name)
-    get_class_by_string(class_name)
+    OperationFinder.find(Queries, query_name)
   end
 end
 
