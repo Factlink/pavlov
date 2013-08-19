@@ -46,12 +46,6 @@ module Pavlov
       end
     end
 
-    def attributes_without_defaults_missing_values?
-      attribute_set.find_index do |attribute|
-        !attribute.options.has_key?(:default) && send(attribute.name).nil?
-      end
-    end
-
     def validate
       # no-op, users should override this
     end
