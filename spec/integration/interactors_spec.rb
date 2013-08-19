@@ -1,12 +1,12 @@
 require_relative '../spec_helper'
 require 'pavlov'
 
-describe "Pavlov interactors" do
+describe 'Pavlov interactors' do
   before do
-    stub_const "SecureRandom", double(uuid: '1234')
+    stub_const 'SecureRandom', double(uuid: '1234')
     $redis = double(hmset: nil, sadd: nil)
 
-    stub_const "Commands", Module.new
+    stub_const 'Commands', Module.new
     class Commands::CreateBlogPost
       include Pavlov::Command
 
@@ -22,11 +22,11 @@ describe "Pavlov interactors" do
 
       def execute
         $redis.hmset("blog_post:#{id}", title: title, body: body, published: published)
-        $redis.sadd("blog_post_list", id)
+        $redis.sadd('blog_post_list', id)
       end
     end
 
-    stub_const "Queries", Module.new
+    stub_const 'Queries', Module.new
     class Queries::AvailableId
       include Pavlov::Query
 
@@ -41,7 +41,7 @@ describe "Pavlov interactors" do
       end
     end
 
-    stub_const "Interactors", Module.new
+    stub_const 'Interactors', Module.new
     class Interactors::CreateBlogPost
       include Pavlov::Interactor
 
@@ -76,9 +76,9 @@ describe "Pavlov interactors" do
 
   include Pavlov::Helpers
 
-  it "can call commands and queries" do
-    blog_post = interactor :create_blog_post, title: "Why you should use Pavlov", body: "Because it is really cool."
-    expect(blog_post.title).to eq("Why you should use Pavlov")
-    expect(blog_post.body).to eq("Because it is really cool.")
+  it 'can call commands and queries' do
+    blog_post = interactor :create_blog_post, title: 'Why you should use Pavlov', body: 'Because it is really cool.'
+    expect(blog_post.title).to eq('Why you should use Pavlov')
+    expect(blog_post.body).to eq('Because it is really cool.')
   end
 end
