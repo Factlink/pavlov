@@ -18,7 +18,6 @@ describe "Pavlov interactors" do
       private
 
       def validate
-        errors.add(:id, "can't contain spaces") if id.include?(" ")
       end
 
       def execute
@@ -57,7 +56,6 @@ describe "Pavlov interactors" do
       end
 
       def validate
-        errors.add(:body, "NO SHOUTING!!!!") if body.match(/\W[A-Z]{2,}\W/)
       end
 
       def execute
