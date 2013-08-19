@@ -2,6 +2,10 @@
 
 ## HEAD
 
+## 0.1.7.1
+
+Fixed regressions in validation logic
+
 ## 0.1.7
 
 * Removed the methods `old_interactor`, `old_command`, and `old_query` from both Pavlov module and Helpers.
