@@ -16,16 +16,16 @@ module Pavlov
     end
 
     def method_missing(name, attributes = {})
-      _find_klass(name)
+      find_klass(name)
     end
 
     def respond_to_missing?(name, include_private = false)
-      _find_klass(name)
+      find_klass(name)
     end
 
     private
 
-    def _find_klass(name)
+    def find_klass(name)
       namespace.const_get(Inflector.camelize(name.to_s))
     end
   end
