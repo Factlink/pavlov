@@ -1,12 +1,14 @@
+require 'pavlov/support/inflector'
+
 module Pavlov
   # this method is also available as constantize in Rails,
   # but we want to be able to write classes and/or tests without Rails
   def self.get_class_by_string classname
-    classname.constantize
+    Inflector.constantize(classname)
   end
 
   def self.string_to_classname string
-    string.to_s.camelize
+    Inflector.camelize(string.to_s)
   end
 
   def self.command command_name, *args
