@@ -7,7 +7,7 @@ module Pavlov
     def self.find(namespace, operation_name)
       operation_lookup_list = Inflector.camelize(operation_name.to_s).split('::')
       operation_lookup_list.reduce(namespace) do |current_namespace, namespace_or_operation_name|
-        self.new(current_namespace).send(namespace_or_operation_name)
+        new(current_namespace).send(namespace_or_operation_name)
       end
     end
 
