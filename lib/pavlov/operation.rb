@@ -1,46 +1,53 @@
-require 'active_support/concern'
-require 'pavlov/validations'
+require_relative 'concern'
 require 'pavlov/helpers'
 require 'virtus'
 require_relative 'access_denied'
 
 module Pavlov
+  class ValidationError < StandardError
+  end
+
   module Operation
-    extend ActiveSupport::Concern
+    extend Pavlov::Concern
     include Pavlov::Helpers
-    include Pavlov::Validations
     include Virtus
 
-    def validate
-      return false unless attributes_without_defaults_have_values
-      if respond_to? :valid?
-        raise Pavlov::ValidationError, "an argument is invalid" unless valid?
-      else
-        true
-      end
+    def valid?
+      check_validation
+      true
+    rescue Pavlov::ValidationError
+      false
     end
 
     def call(*args, &block)
-      validate
+      check_validation
       check_authorization
       execute(*args, &block)
     end
 
     private
 
-    def raise_unauthorized(message='Unauthorized')
+    def check_authorization
+      raise_unauthorized unless authorized?
+    end
+
+    def raise_unauthorized(message = 'Unauthorized')
       raise Pavlov::AccessDenied, message
     end
 
-    def check_authorization
-      raise_unauthorized if respond_to? :authorized?, true and not authorized?
+    def check_validation
+      raise Pavlov::ValidationError, "Missing arguments: #{missing_arguments.inspect}" if missing_arguments.any?
+      validate
     end
 
-    def attributes_without_defaults_have_values
-      attributes_without_value = attribute_set.select do |attribute|
-        not attribute.options.has_key?(:default) and send(attribute.name).nil?
+    def missing_arguments
+      attribute_set.select do |attribute|
+        !attribute.options.has_key?(:default) && send(attribute.name).nil?
       end
-      attributes_without_value.empty?
+    end
+
+    def validate
+      # no-op, users should override this
     end
 
     module ClassMethods

@@ -1,10 +1,9 @@
-require 'active_support/concern'
-require 'active_support/inflector'
+require_relative 'concern'
 require 'pavlov/operation'
 
 module Pavlov
   module Interactor
-    extend ActiveSupport::Concern
+    extend Pavlov::Concern
     include Pavlov::Operation
 
     module ClassMethods
@@ -16,10 +15,6 @@ module Pavlov
       def queue
         @queue ||= :interactor_operations
       end
-    end
-
-    def authorized?
-      raise NotImplementedError
     end
   end
 end

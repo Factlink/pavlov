@@ -8,34 +8,34 @@ describe Pavlov::Helpers do
         include Pavlov::Helpers
 
         def test
-          old_interactor :interactor_name, 'argument1', 'argument2'
+          interactor :interactor_name, arg1: 'argument1', arg2: 'argument2'
         end
       end
       instance = dummy_class.new
 
-      Pavlov.should_receive(:old_interactor)
-        .with(:interactor_name, 'argument1', 'argument2')
+      Pavlov.should_receive(:interactor)
+        .with(:interactor_name, arg1: 'argument1', arg2: 'argument2')
 
       instance.test
     end
 
     it 'calls an interactor with pavlov_options' do
-      hash = {key:'value'}
+      hash = { key: 'value' }
       dummy_class = Class.new do
         include Pavlov::Helpers
 
         def pavlov_options
-          {key:'value'}
+          { key: 'value' }
         end
 
         def test
-          old_interactor :interactor_name, 'argument1', 'argument2'
+          interactor :interactor_name, arg1: 'argument1', arg2: 'argument2'
         end
       end
       instance = dummy_class.new
 
-      Pavlov.should_receive(:old_interactor)
-        .with(:interactor_name, 'argument1', 'argument2', hash)
+      Pavlov.should_receive(:interactor)
+        .with(:interactor_name, arg1: 'argument1', arg2: 'argument2', pavlov_options: hash)
 
       instance.test
     end

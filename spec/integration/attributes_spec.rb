@@ -1,9 +1,9 @@
 require_relative '../spec_helper'
 require 'pavlov'
 
-describe "Pavlov attributes" do
+describe 'Pavlov attributes' do
   before do
-    stub_const "Interactors", Module.new
+    stub_const 'Interactors', Module.new
     module Interactors
       class CreateBlogPost
         include Pavlov::Interactor
@@ -28,13 +28,13 @@ describe "Pavlov attributes" do
     end
   end
 
-  it "saves attributes given during initialization" do
-    interaction = Interactors::CreateBlogPost.new title: "Why you should use Pavlov"
+  it 'saves attributes given during initialization' do
+    interaction = Interactors::CreateBlogPost.new title: 'Why you should use Pavlov'
     expect(interaction.call).to eq 'WHY YOU SHOULD USE PAVLOV'
   end
 
-  it "overrides default attributes" do
-    interaction = Interactors::CreateBlogPost.new title: "Why you should use Pavlov",
+  it 'overrides default attributes' do
+    interaction = Interactors::CreateBlogPost.new title: 'Why you should use Pavlov',
                                                   published: false
     expect(interaction.call).to eq 'Why you should use Pavlov'
   end

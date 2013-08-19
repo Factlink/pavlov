@@ -1,11 +1,25 @@
 # Pavlov [![Build Status](https://api.travis-ci.org/Factlink/pavlov.png)](http://travis-ci.org/Factlink/pavlov) [![Gem Version](https://badge.fury.io/rb/pavlov.png)](http://badge.fury.io/rb/pavlov) [![Dependency Status](https://gemnasium.com/Factlink/pavlov.png)](https://gemnasium.com/Factlink/pavlov) [![Code Climate](https://codeclimate.com/github/Factlink/pavlov.png)](https://codeclimate.com/github/Factlink/pavlov) [![Coverage Status](https://coveralls.io/repos/Factlink/pavlov/badge.png?branch=master)](https://coveralls.io/r/Factlink/pavlov)
 
-The Pavlov gem provides a Command/Query/Interactor framework. In our usage, we
-have found this to be a good solution for things that cut across multiple
-domain models.  It allows you to keep your ActiveRecord models focussed on
-their own table.  It also allows you to keep your controller actions short and
-focussed. Anything beyond one or two lines could be turned into Command
-objects, without the Fat Model problem.
+The Pavlov gem provides a Command/Query/Interactor framework.
+
+**Interactors** make up the API for your application's backend. In a Rails application, this means that your controllers would call out to interactors and handle rendering, flashes, redirections etc. The interactors perform business logic like authorization, input validation. Your interactors would also handle things like `after_create` callbacks to send an e-mail on signup. They only decide what to do, and call queries and commands to perform the actual work.
+
+**Queries** and **commands** are used to manipulate your data store. This has several advantages:
+
+  * You can have queries that return objects that don't map directly to a specific database table.
+  * You can replace your database from SQL-based to MongoDB, Redis or even a webservice without having to touch your business logic.
+
+## Warning
+
+### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
+
+All versions < 0.2 are to be considered alpha. We're working towards a stable version 0.2, following the readme as defined here. For now, unfortunately we don't support all features described here yet.
+
+Currently unsupported functionality, which is already described below:
+
+* **Validating with an error object:** For now validate should throw an error when the operation isn't valid
+* **Context:** For now use alpha_compatibility, and pass in `pavlov_options` as arguments.
+* **Checking valid?** This can work, but only if you don't implement validate, and let it return a boolean. This API will probably change though.
 
 ## Installation
 
@@ -23,7 +37,7 @@ Then generate some initial files with:
 class Commands::CreateBlogPost
   include Pavlov::Command
 
-  attribute :id,        Integer
+  attribute :id,        String
   attribute :title,     String
   attribute :body,      String
   attribute :published, Boolean
@@ -50,7 +64,7 @@ class Queries::AvailableId
   end
 
   def generate_uuid
-    SecureRandom.hex(64) # TODO Look up actual implementation
+    SecureRandom.uuid
   end
 end
 
@@ -72,15 +86,15 @@ class Interactors::CreateBlogPost
   end
 
   def execute
-    command :create_blog_post, id: available_id,
-                               title: title,
-                               body: body,
-                               published: published
+    commands.create_blog_post id: available_id,
+                              title: title,
+                              body: body,
+                              published: published
     Struct.new(:title, :body).new(title, body)
   end
 
   def available_id
-    query :available_id
+    queries.available_id
   end
 end
 
@@ -90,7 +104,7 @@ class PostsController < ApplicationController
   respond_to :json
 
   def create
-    interaction = interactor :create_blog_post, params[:post]
+    interaction = backend.interactors.create_blog_post params[:post]
 
     if interaction.valid?
       respond_with interaction.call
@@ -121,7 +135,7 @@ class Interactors::CreateBlogPost
   include Pavlov::Interactor
 
   def authorized?
-    context.current_user.is_admin?
+    context[:current_user].is_admin?
   end
 end
 ```
@@ -147,14 +161,10 @@ You probably have certain aspects of your application that you always, or at lea
 
 ```ruby
 class ApplicationController < ActionController::Base
-  include Pavlov::Helpers
-
-  before_filter :set_pavlov_context
-
   private
 
-  def set_pavlov_context
-    context.add(:current_user, current_user)
+  def backend
+    @backend ||= Backend.new(current_user: current_user)
   end
 end
 ```
@@ -163,13 +173,11 @@ In your tests, you could write:
 
 ```ruby
 describe CreateBlogPost do
-  include Pavlov::Helpers
+  let(:user)    { double("User", is_admin?: true) }
+  let(:backend) { double }
 
-  let(:user) { mock("User", is_admin?: true) }
-  before { context.add(:current_user, user) }
-
-  it 'should create posts' do
-    interactor(:create_blog_post, title: 'Foo', body: 'Bar').call
+  it 'is testable in unit tests' do
+    backend.interactor(:create_blog_post, title: 'Foo', body: 'Bar', backend: backend).call
     # test for the creation
   end
 end

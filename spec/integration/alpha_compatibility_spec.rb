@@ -2,12 +2,12 @@ require_relative '../spec_helper'
 require 'pavlov'
 require 'pavlov/alpha_compatibility'
 
-describe "Pavlov Alpha Compatibility" do
+describe 'Pavlov Alpha Compatibility' do
   include Pavlov::Helpers
 
   describe 'retains .arguments' do
     before do
-      stub_const "Interactors", Module.new
+      stub_const 'Interactors', Module.new
 
       class Interactors::OldStyleInteractor
         include Pavlov::Interactor
@@ -24,20 +24,22 @@ describe "Pavlov Alpha Compatibility" do
     end
 
     it 'supports old-style arguments definition' do
-      expect(old_interactor(:old_style_interactor, 'foo', false)).to eq('foo')
-      expect(old_interactor(:old_style_interactor, 'foo', true)).to eq('FOO')
+      result1 = interactor(:old_style_interactor, title: 'foo', published: false)
+      expect(result1).to eq('foo')
+      result2 = interactor(:old_style_interactor, title: 'foo', published: true)
+      expect(result2).to eq('FOO')
     end
   end
 
   describe 'retains pavlov_options' do
-    let(:current_user) { double("User", name: "John") }
+    let(:current_user) { double('User', name: 'John') }
     def pavlov_options
-      {current_user: current_user}
+      { current_user: current_user }
     end
 
     before do
-      stub_const "Queries", Module.new
-      stub_const "Interactors", Module.new
+      stub_const 'Queries', Module.new
+      stub_const 'Interactors', Module.new
       class Queries::FindUppercaseName
         include Pavlov::Query
         arguments
@@ -51,15 +53,18 @@ describe "Pavlov Alpha Compatibility" do
         include Pavlov::Interactor
         arguments
 
-        def authorized?; true; end
+        def authorized?
+          true
+        end
+
         def execute
-          "OHAI, #{old_query :find_uppercase_name}"
+          "OHAI, #{query :find_uppercase_name}"
         end
       end
     end
 
     it 'passes the pavlov_options from operation to operation' do
-      expect(old_interactor :shouty_greeting).to eq("OHAI, JOHN")
+      expect(interactor :shouty_greeting).to eq('OHAI, JOHN')
     end
   end
 end
