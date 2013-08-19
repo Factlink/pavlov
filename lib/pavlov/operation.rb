@@ -37,7 +37,7 @@ module Pavlov
 
     def check_validation
       raise Pavlov::ValidationError, 'some arguments were not given' if attributes_without_defaults_missing_values?
-      raise Pavlov::ValidationError, 'an argument is invalid' unless validate
+      validate
     end
 
     def attributes_without_defaults_missing_values?
@@ -47,7 +47,7 @@ module Pavlov
     end
 
     def validate
-      true # no-op, users should override this
+      # no-op, users should override this
     end
 
     module ClassMethods
