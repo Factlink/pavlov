@@ -18,10 +18,6 @@ describe 'Pavlov interactors' do
       private
 
       def validate
-<<<<<<< HEAD
-=======
-        errors.add(:id, "can't contain spaces") if id.include?(" ")
->>>>>>> Add integration between commands/queries and interactors
       end
 
       def execute
