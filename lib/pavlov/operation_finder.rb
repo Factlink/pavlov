@@ -26,7 +26,7 @@ module Pavlov
     private
 
     def find_klass(name)
-      namespace.const_get(Inflector.camelize(name.to_s))
+      namespace.const_get(Inflector.camelize(name.to_s), false)
     end
   end
 end
