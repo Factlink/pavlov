@@ -36,7 +36,7 @@ module Pavlov
     end
 
     def respond_to_missing?(name, include_private = false)
-      find_klass(name)
+      find_method(name) || find_klass(name)
     end
 
     private
