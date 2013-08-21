@@ -1,6 +1,22 @@
 require 'pavlov/support/inflector'
 
 module Pavlov
+  class MethodOperation
+    def initialize(klass, method)
+      @klass  = klass
+      @method = method
+    end
+
+    def new(attributes = {})
+      @attributes = attributes
+      self
+    end
+
+    def call
+      @klass.public_send(@method, @attributes)
+    end
+  end
+
   class OperationFinder
     attr_reader :namespace
 
@@ -16,7 +32,7 @@ module Pavlov
     end
 
     def method_missing(name, attributes = {})
-      find_klass(name)
+      find_method(name) || find_klass(name)
     end
 
     def respond_to_missing?(name, include_private = false)
@@ -24,6 +40,13 @@ module Pavlov
     end
 
     private
+
+    def find_method(name)
+      method_name = Inflector.underscore(name.to_s)
+      if namespace.respond_to?(method_name)
+        MethodOperation.new(namespace, method_name)
+      end
+    end
 
     def find_klass(name)
       namespace.const_get(Inflector.camelize(name.to_s), false)

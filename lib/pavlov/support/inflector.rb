@@ -11,5 +11,9 @@ module Pavlov
       # Feel free to reimplement if you want to get rid of backports dependency.
       string.constantize
     end
+
+    def self.underscore(string)
+      string.underscore
+    end
   end
 end
