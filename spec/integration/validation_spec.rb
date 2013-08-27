@@ -32,7 +32,7 @@ describe 'Pavlov validations' do
     expect(interaction.call).to eq 'WHY YOU SHOULD USE PAVLOV'
   end
 
-  it 'overrides default attributes' do
+  it 'fails for invalid attributes' do
     interaction = Interactors::CreateBlogPost.new title: 'Why you should eat ice cream'
     expect(interaction.valid?).to be_false
     expect(interaction.errors[:title]).to eq ['must mention Pavlov']
