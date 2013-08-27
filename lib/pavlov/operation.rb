@@ -42,7 +42,7 @@ module Pavlov
 
     def missing_arguments
       attribute_set.select do |attribute|
-        !attribute.options.has_key?(:default) && send(attribute.name).nil?
+        !attribute.options.key?(:default) && send(attribute.name).nil?
       end
     end
 
