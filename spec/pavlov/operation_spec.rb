@@ -51,6 +51,27 @@ describe Pavlov::Operation do
     end
   end
 
+  describe 'pavlov options' do
+    let(:dummy_class) do
+      Class.new do
+        include Pavlov::Operation
+
+        def authorized?
+          true
+        end
+
+        def execute
+          "Hello, #{pavlov_options[:current_user]}"
+        end
+      end
+    end
+
+    it 'has a default pavlov_options attribute' do
+      operation = dummy_class.new(pavlov_options: { current_user: 'John' })
+      expect(operation.call).to eq('Hello, John')
+    end
+  end
+
   describe 'validations' do
     describe 'check if attributes without defaults have were given a value' do
       it 'passes when given a value' do
