@@ -7,6 +7,7 @@ describe Pavlov::Query do
       include Pavlov::Query
 
       private
+
       def authorized?
         false
       end
@@ -24,6 +25,7 @@ describe Pavlov::Query do
       include Pavlov::Query
 
       private
+
       def execute
         :executed
       end

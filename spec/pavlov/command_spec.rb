@@ -7,6 +7,7 @@ describe Pavlov::Command do
       include Pavlov::Command
 
       private
+
       def authorized?
         false
       end
@@ -24,6 +25,7 @@ describe Pavlov::Command do
       include Pavlov::Command
 
       private
+
       def execute
         :executed
       end

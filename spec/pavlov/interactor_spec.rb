@@ -19,6 +19,7 @@ describe Pavlov::Interactor do
       include Pavlov::Interactor
 
       private
+
       def authorized?
         false
       end
