@@ -79,6 +79,33 @@ describe Pavlov::Operation do
         expect(dummy_class.new.valid?).to be_false
       end
     end
+
+    describe 'check if custom validations pass' do
+      it 'returns false if errors exist' do
+        dummy_class = Class.new do
+          include Pavlov::Operation
+          attribute :title, String
+
+          def validate
+            errors.add(:title, 'Is never valid')
+          end
+        end
+
+        expect(dummy_class.new(title: 'a title').valid?).to be_false
+      end
+
+      it 'returns true if no errors exist' do
+        dummy_class = Class.new do
+          include Pavlov::Operation
+          attribute :title, String
+
+          def validate
+          end
+        end
+
+        expect(dummy_class.new(title: 'a title').valid?).to be_true
+      end
+    end
   end
 
   describe '.check_authority' do
