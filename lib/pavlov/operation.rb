@@ -48,10 +48,6 @@ module Pavlov
       raise Pavlov::AccessDenied, message
     end
 
-    def validate
-      true
-    end
-
     def check_validation
       raise Pavlov::ValidationError, "Missing arguments: #{missing_arguments.inspect}" if missing_arguments.any?
       validate
