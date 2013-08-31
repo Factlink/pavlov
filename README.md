@@ -198,6 +198,8 @@ Yes.
 If Pavlov happens not to be to your taste, you might look at these other libraries:
 
 * [Mutations](https://github.com/cypriss/mutations) provides service objects
+* [LightService](https://github.com/adomokos/light-service) provides service objects with shared context
+* [Interactor](https://github.com/collectiveidea/interactor) Like light-service, but also adds rollbacks
 * [Imperator](https://github.com/karmajunkie/imperator) provides command objects
 * [Wisper](https://github.com/krisleech/wisper) provides callbacks
 
