@@ -7,9 +7,9 @@ describe Pavlov::Backend do
   let(:backend)            { Pavlov::Backend.new }
 
   before do
-    stub_const "Queries", Module.new
-    stub_const "Commands", Module.new
-    stub_const "Interactors", Module.new
+    stub_const 'Queries', Module.new
+    stub_const 'Commands', Module.new
+    stub_const 'Interactors', Module.new
   end
 
   describe '#interactor' do
