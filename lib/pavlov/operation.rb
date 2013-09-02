@@ -66,10 +66,6 @@ module Pavlov
       # no-op, users should override this
     end
 
-    def context
-      backend.context
-    end
-
     module ClassMethods
       # make our interactors behave as Resque jobs
       def perform(*args)

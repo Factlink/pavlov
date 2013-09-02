@@ -19,15 +19,15 @@ module Pavlov
   private
 
   def self.class_for_command command_name
-    OperationFinder.find(Commands, command_name)
+    Pavlov::OperationFinder.find(Commands, command_name)
   end
 
   def self.class_for_interactor interactor_name
-    OperationFinder.find(Interactors, interactor_name)
+    Pavlov::OperationFinder.find(Interactors, interactor_name)
   end
 
   def self.class_for_query query_name
-    OperationFinder.find(Queries, query_name)
+    Pavlov::OperationFinder.find(Queries, query_name)
   end
 end
 

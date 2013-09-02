@@ -14,7 +14,7 @@ describe 'Pavlov backend' do
         private
 
         def authorized?
-          context[:current_user].is_admin?
+          pavlov_options[:current_user].is_admin?
         end
 
         def execute
@@ -27,10 +27,10 @@ describe 'Pavlov backend' do
   end
 
   let(:current_user) { double(is_admin?: true) }
-  let(:backend)      { Backend.new(context: { current_user: current_user }) }
+  let(:backend)      { Backend.new(pavlov_options: { current_user: current_user }) }
 
   it 'calls interactors' do
-    interaction = backend.interactor :create_blog_post, title: 'Why you should use Pavlov'
-    expect(interaction.call).to eq 'WHY YOU SHOULD USE PAVLOV'
+    interaction_result = backend.interactor :create_blog_post, title: 'Why you should use Pavlov'
+    expect(interaction_result).to eq 'WHY YOU SHOULD USE PAVLOV'
   end
 end

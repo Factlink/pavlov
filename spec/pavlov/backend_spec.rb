@@ -2,7 +2,8 @@ require 'spec_helper'
 require 'pavlov/backend'
 
 describe Pavlov::Backend do
-  let(:operation_instance) { double('operation instance') }
+  let(:operation_result)   { double('operation result') }
+  let(:operation_instance) { double('operation instance', call: operation_result) }
   let(:operation)          { double('operation class', new: operation_instance) }
   let(:backend)            { Pavlov::Backend.new }
 
@@ -12,10 +13,10 @@ describe Pavlov::Backend do
     stub_const 'Interactors', Module.new
   end
 
-  it 'stores a context' do
-    context = double('Context')
-    backend = Pavlov::Backend.new(context: context)
-    expect(backend.context).to eq(context)
+  it 'stores pavlov_options' do
+    pavlov_options = double('Pavlov Options')
+    backend = Pavlov::Backend.new(pavlov_options: pavlov_options)
+    expect(backend.pavlov_options).to eq(pavlov_options)
   end
 
   describe '#interactor' do
@@ -24,7 +25,7 @@ describe Pavlov::Backend do
     end
 
     it 'finds interactors' do
-      expect(backend.interactor(:foo)).to eq(operation_instance)
+      expect(backend.interactor(:foo)).to eq(operation_result)
     end
 
     it 'passes itself as backend-attribute to interactor' do
@@ -39,7 +40,7 @@ describe Pavlov::Backend do
     end
 
     it 'finds commands' do
-      expect(backend.command(:foo)).to eq(operation_instance)
+      expect(backend.command(:foo)).to eq(operation_result)
     end
 
     it 'passes itself as backend-attribute to command' do
@@ -54,7 +55,7 @@ describe Pavlov::Backend do
     end
 
     it 'finds queries' do
-      expect(backend.query(:foo)).to eq(operation_instance)
+      expect(backend.query(:foo)).to eq(operation_result)
     end
 
     it 'passes itself as backend-attribute to query' do
