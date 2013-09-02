@@ -21,7 +21,7 @@ module Pavlov
       extend ActiveModel::Translation
 
       attribute :pavlov_options, Hash, default: {}
-      attribute :backend, Pavlov::Backend, default: nil
+      attribute :backend, Pavlov::Backend, default: Pavlov
     end
 
     def errors
