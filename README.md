@@ -17,9 +17,8 @@ All versions < 0.2 are to be considered alpha. We're working towards a stable ve
 
 Currently unsupported functionality, which is already described below:
 
-* **Validating with an error object:** For now validate should throw an error when the operation isn't valid
 * **Context:** For now use alpha_compatibility, and pass in `pavlov_options` as arguments.
-* **Checking valid?** This can work, but only if you don't implement validate, and let it return a boolean. This API will probably change though.
+* **Interactions:** Right now the `interactor` helper calls the interactor immediately, and doesn't return an interaction object.
 
 ## Installation
 
