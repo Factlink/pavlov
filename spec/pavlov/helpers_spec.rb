@@ -14,7 +14,7 @@ describe Pavlov::Helpers do
       instance = dummy_class.new
 
       Pavlov.should_receive(:interactor)
-            .with(:interactor_name, arg1: 'argument1', arg2: 'argument2')
+            .with(:interactor_name, arg1: 'argument1', arg2: 'argument2', pavlov_options: {})
 
       instance.test
     end
