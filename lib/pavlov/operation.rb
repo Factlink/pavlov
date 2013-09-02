@@ -19,6 +19,8 @@ module Pavlov
       include Virtus
       extend ActiveModel::Naming
       extend ActiveModel::Translation
+
+      attribute :pavlov_options, Hash, default: {}
     end
 
     def errors
