@@ -4,8 +4,8 @@ module Pavlov
   class Backend
     attr_reader :context
 
-    def initialize(context = {})
-      @context = context
+    def initialize(options = {})
+      @context = options.fetch(:context, {})
     end
 
     def interactor(name, attributes = {})

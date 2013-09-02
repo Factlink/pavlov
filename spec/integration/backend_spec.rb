@@ -27,7 +27,7 @@ describe 'Pavlov backend' do
   end
 
   let(:current_user) { double(is_admin?: true) }
-  let(:backend)      { Backend.new(current_user: current_user) }
+  let(:backend)      { Backend.new(context: { current_user: current_user }) }
 
   it 'calls interactors' do
     interaction = backend.interactor :create_blog_post, title: 'Why you should use Pavlov'

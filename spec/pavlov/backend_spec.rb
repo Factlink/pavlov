@@ -12,6 +12,12 @@ describe Pavlov::Backend do
     stub_const 'Interactors', Module.new
   end
 
+  it 'stores a context' do
+    context = double('Context')
+    backend = Pavlov::Backend.new(context: context)
+    expect(backend.context).to eq(context)
+  end
+
   describe '#interactor' do
     before do
       Pavlov::OperationFinder.stub(:find).with(Interactors, :foo).and_return(operation)
