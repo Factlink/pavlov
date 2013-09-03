@@ -23,7 +23,13 @@ module Pavlov
     private
 
     def with_pavlov_options hash
-      hash[:pavlov_options] = pavlov_options.merge(hash.fetch(:pavlov_options, {}))
+      if pavlov_options != {}
+        if hash.key? 'pavlov_options'
+          hash[:pavlov_options] = pavlov_options.merge(hash[:pavlov_options])
+        else
+          hash[:pavlov_options] = pavlov_options
+        end
+      end
       hash
     end
   end

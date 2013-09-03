@@ -30,7 +30,7 @@ describe Pavlov::Backend do
 
     it 'passes itself as backend-attribute to interactor' do
       backend.interactor(:foo)
-      expect(operation).to have_received(:new).with(backend: backend, pavlov_options: {})
+      expect(operation).to have_received(:new).with(backend: backend)
     end
   end
 
@@ -45,7 +45,7 @@ describe Pavlov::Backend do
 
     it 'passes itself as backend-attribute to command' do
       backend.command(:foo)
-      expect(operation).to have_received(:new).with(backend: backend, pavlov_options: {})
+      expect(operation).to have_received(:new).with(backend: backend)
     end
   end
 
@@ -60,7 +60,7 @@ describe Pavlov::Backend do
 
     it 'passes itself as backend-attribute to query' do
       backend.query(:foo)
-      expect(operation).to have_received(:new).with(backend: backend, pavlov_options: {})
+      expect(operation).to have_received(:new).with(backend: backend)
     end
   end
 end
