@@ -17,7 +17,6 @@ All versions < 0.2 are to be considered alpha. We're working towards a stable ve
 
 Currently unsupported functionality, which is already described below:
 
-* **Context:** For now use alpha_compatibility, and pass in `pavlov_options` as arguments.
 * **Interactions:** Right now the `interactor` helper calls the interactor immediately, and doesn't return an interaction object.
 
 ## Installation
@@ -77,7 +76,7 @@ class Interactors::CreateBlogPost
   private
 
   def authorized?
-    context.current_user.is_admin?
+    pavlov_options[:current_user].is_admin?
   end
 
   def validate
@@ -98,12 +97,10 @@ class Interactors::CreateBlogPost
 end
 
 class PostsController < ApplicationController
-  include Pavlov::Helpers
-
   respond_to :json
 
   def create
-    interaction = interactor :create_blog_post, params[:post]
+    interaction = backend.interactor :create_blog_post, params[:post]
 
     if interaction.valid?
       respond_with interaction.call
@@ -113,6 +110,12 @@ class PostsController < ApplicationController
   rescue AuthorizationError
     flash[:error] = "Hacker, begone!"
     redirect_to root_path
+  end
+
+  private
+
+  def backend
+    Backend.new(pavlov_options: {current_user: current_user})
   end
 end
 ```
@@ -160,14 +163,12 @@ You probably have certain aspects of your application that you always, or at lea
 
 ```ruby
 class ApplicationController < ActionController::Base
-  include Pavlov::Helpers
-
   before_filter :set_pavlov_context
 
   private
 
-  def set_pavlov_context
-    context.add(:current_user, current_user)
+  def backend
+    @backend = Backend.new(pavlov_options: {current_user: current_user})
   end
 end
 ```
@@ -176,13 +177,11 @@ In your tests, you could write:
 
 ```ruby
 describe CreateBlogPost do
-  include Pavlov::Helpers
-
   let(:user) { mock("User", is_admin?: true) }
-  before { context.add(:current_user, user) }
+  let(:backend) { Backend.new(pavlov_options: {current_user: user}) }
 
   it 'should create posts' do
-    interactor(:create_blog_post, title: 'Foo', body: 'Bar').call
+    backend.interactor(:create_blog_post, title: 'Foo', body: 'Bar').call
     # test for the creation
   end
 end
