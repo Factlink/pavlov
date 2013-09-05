@@ -9,6 +9,9 @@ The Pavlov gem provides a Command/Query/Interactor framework.
   * You can have queries that return objects that don't map directly to a specific database table.
   * You can replace your database from SQL-based to MongoDB, Redis or even a webservice without having to touch your business logic.
 
+For discussion about this gem, join `#pavlov` on `irc.freenode.net`.  For convenience you can talk in [#pavlov using webchat.freenode.net/](http://webchat.freenode.net/?channels=#pavlov&uio=d4).
+
+
 ## Warning
 
 ### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
