@@ -1,5 +1,17 @@
 ## HEAD
 
+* Update Pavlov, tests should still pass
+* Add a backend class with `rails g pavlov:install`
+* For each operation's specs
+  * Remove `include Pavlov::Helpers`
+  * Add `let(:backend) { Backend.new(pavlov_options: pavlov_options) }`. Leave out the pavlov_options if this test didn't use them.
+  * Change `Pavlov.should_receive` to `backend.should_receive`
+  * Change `interactor` to `backend.interactor` etc.
+* For each controller
+  * Add `def backend; @backend = Backend.new; end`
+  * Change `Pavlov.should_receive` to `backend.should_receive`
+
+
 # 0.1.7.1
 
 * Rename all your `valid?` methods to `validate`. If you called `valid?` on your operations, you can continue to do so.

@@ -2,6 +2,8 @@
 
 ## HEAD
 
+* Introduce Backend. In time, this is intended to replace the Pavlov::Helpers.
+
 ## 0.1.7.1
 
 Fixed regressions in validation logic

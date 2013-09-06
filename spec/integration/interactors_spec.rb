@@ -6,6 +6,8 @@ describe 'Pavlov interactors' do
     stub_const 'SecureRandom', double(uuid: '1234')
     stub_const 'REDIS', double(hmset: nil, sadd: nil)
 
+    stub_const 'Backend', Class.new(Pavlov::Backend)
+
     stub_const 'Commands', Module.new
     class Commands::CreateBlogPost
       include Pavlov::Command
@@ -37,7 +39,7 @@ describe 'Pavlov interactors' do
       end
 
       def generate_uuid
-        SecureRandom.uuid
+        [pavlov_options[:uuid_prefix], SecureRandom.uuid].join('_')
       end
     end
 
@@ -63,7 +65,7 @@ describe 'Pavlov interactors' do
                                    title: title,
                                    body: body,
                                    published: published
-        Struct.new(:title, :body).new(title, body)
+        Struct.new(:id, :title, :body).new(available_id, title, body)
       end
 
       def available_id
@@ -76,8 +78,21 @@ describe 'Pavlov interactors' do
 
   include Pavlov::Helpers
 
-  it 'can call commands and queries' do
+  def pavlov_options
+    { uuid_prefix: 'helper_based_prefix' }
+  end
+
+  it 'can call commands and queries with helpers' do
     blog_post = interactor :create_blog_post, title: 'Why you should use Pavlov', body: 'Because it is really cool.'
+    expect(blog_post.id).to eq('helper_based_prefix_1234')
+    expect(blog_post.title).to eq('Why you should use Pavlov')
+    expect(blog_post.body).to eq('Because it is really cool.')
+  end
+
+  it 'can call commands and queries with backend' do
+    backend = Backend.new(pavlov_options: { uuid_prefix: 'backend_based_prefix' })
+    blog_post = backend.interactor :create_blog_post, title: 'Why you should use Pavlov', body: 'Because it is really cool.'
+    expect(blog_post.id).to eq('backend_based_prefix_1234')
     expect(blog_post.title).to eq('Why you should use Pavlov')
     expect(blog_post.body).to eq('Because it is really cool.')
   end
