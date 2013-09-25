@@ -2,6 +2,9 @@
 
 ## HEAD
 
+* Added validations and an errors object. See the updated README for usage instructions.
+* Changed the way operations are found. New way should be 100% compatible.
+
 ## 0.1.7.1
 
 Fixed regressions in validation logic
