@@ -1,5 +1,9 @@
 # Pavlov Changelog
 
+## 0.1.8.1
+
+* Fixed regression in alpha_compatibility validation helper (validate_in_set)
+
 ## 0.1.8
 
 * Added validations and an errors object. See the updated README for usage instructions.

@@ -27,7 +27,7 @@ module Pavlov
     def validate_in_set param_name, param, set
       return if set.include? param
 
-      errors.add param_name, 'should be on of these values: #{set.inspect}.'
+      errors.add param_name, "should be on of these values: #{set.inspect}."
     end
 
     def validate_string param_name, param
