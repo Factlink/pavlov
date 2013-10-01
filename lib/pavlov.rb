@@ -3,17 +3,32 @@ require 'pavlov/support/inflector'
 module Pavlov
   def self.command command_name, *args
     klass = class_for_command(command_name)
-    klass.new(*args).call
+    operation = klass.new(*args)
+    if block_given?
+      yield operation
+    else
+      operation.call
+    end
   end
 
   def self.interactor interactor_name, *args
     klass = class_for_interactor(interactor_name)
-    klass.new(*args).call
+    operation = klass.new(*args)
+    if block_given?
+      yield operation
+    else
+      operation.call
+    end
   end
 
   def self.query query_name, *args
     klass = class_for_query(query_name)
-    klass.new(*args).call
+    operation = klass.new(*args)
+    if block_given?
+      yield operation
+    else
+      operation.call
+    end
   end
 
   private
