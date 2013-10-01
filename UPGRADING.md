@@ -1,5 +1,10 @@
 ## HEAD
 
+# 0.1.8
+
+* Let custom validations use errors.add instead of raising exceptions
+* Let your test check errors after calling valid, instead of checking whether calling call raises exceptions (we advise you wrap the old tests in a helper, before upgrading, so you only need to update your helper)
+
 # 0.1.7.1
 
 * Rename all your `valid?` methods to `validate`. If you called `valid?` on your operations, you can continue to do so.
