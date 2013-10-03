@@ -16,7 +16,7 @@ describe Commands::CreateActivity do
   include PavlovSupport
 
   let(:current_user) { double('current_user', id: 2) }
-  let(:user)   { double('user', id: 1, user_id: current_user.id) }
+  let(:user)         { double('user', id: 1, user_id: current_user.id) }
   let(:other_user)   { double('user', id: 1, user_id: current_user.id + 1)  }
 
   before do
@@ -24,7 +24,7 @@ describe Commands::CreateActivity do
   end
 
   describe '#call' do
-    it 'correctly' do
+    it 'should call an external library' do
       action = :test
       activity_subject = double
       activity_object = double

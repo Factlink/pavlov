@@ -39,7 +39,7 @@ describe Commands::ExampleModule::CleanList do
   end
 
   describe '#call' do
-    it 'should delete nil activities' do
+    it 'should call some helper methods' do
       key, keyname = double, double
       nil_activity = nil
       activities_by_id = {
@@ -61,7 +61,7 @@ describe Commands::ExampleModule::CleanList do
       command.call
     end
 
-    it 'should delete activities which are invalid' do
+    it 'should do an other flow with helper methods' do
       key, keyname = double, double
       unshowable_activity = double :activity, still_valid?: false
       activities_by_id = {

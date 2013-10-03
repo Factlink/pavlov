@@ -71,7 +71,7 @@ describe Interactors::ExampleModule::Followers do
       described_class.any_instance.stub(authorized?: true, validate: true)
     end
 
-    it 'it calls the query to get a list of followed users' do
+    it 'with a more complex #execute' do
       user_name = double
       skip = double
       take = double

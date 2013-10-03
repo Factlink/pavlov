@@ -78,7 +78,7 @@ describe Interactors::ExampleModule::FollowUser do
       described_class.any_instance.stub(authorized?: true, validate: true)
     end
 
-    it 'calls a command to follow user' do
+    it 'calls multiple commands' do
       user = double(id: double, user_id: double, username: double)
       user_to_follow = double(id: double, user: double, username: double)
       options = { current_user: user }
@@ -112,7 +112,7 @@ describe Interactors::ExampleModule::FollowUser do
         .to fail_validation('user_to_follow_user_name should be a nonempty string.')
     end
 
-    it 'you don\'t try to follow yourself' do
+    it 'with some custom validation' do
       expect_validating(user_name: 'karel', user_to_follow_user_name: 'karel')
         .to fail_validation('user_name You cannot follow yourself.')
     end

@@ -22,7 +22,7 @@ describe Interactors::ExampleModule::Count do
   include PavlovSupport
 
   describe '#call' do
-    it 'correctly' do
+    it 'call\'s a query' do
       id = double
       timestamp = double
       count = double
