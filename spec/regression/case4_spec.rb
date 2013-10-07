@@ -26,7 +26,6 @@ module Interactors
         command(:'example_module/follow_user', user_id: user.id, user_to_follow_user_id: user_to_follow.id)
         command(:'create_activity', user: user, action: :followed_user, subject: user_to_follow, object: nil)
 
-        # This command still depends on user == current_user
         command(:'example_module/add_activities_to_stream', user_id: user_to_follow.id)
 
         nil
@@ -102,12 +101,12 @@ describe Interactors::ExampleModule::FollowUser do
   end
 
   describe 'validations' do
-    it 'with a invalid user_name doesn\t validate' do
+    it 'with a invalid user_name doesn\'t validate' do
       expect_validating(user_name: 12, user_to_follow_user_name: 'karel')
         .to fail_validation('user_name should be a nonempty string.')
     end
 
-    it 'with a invalid user_to_follow_user_name doesn\t validate' do
+    it 'with a invalid user_to_follow_user_name doesn\'t validate' do
       expect_validating(user_name: 'karel', user_to_follow_user_name: 12)
         .to fail_validation('user_to_follow_user_name should be a nonempty string.')
     end
