@@ -23,7 +23,7 @@ describe 'Interactors::ExampleModule::FollowUser' do
       end
 
       def execute
-        raise Pavlov::ValidationError, 'User does not exist any more.' unless user
+        fail Pavlov::ValidationError, 'User does not exist any more.' unless user
 
         unless user.id.to_s == pavlov_options[:current_user].id.to_s
           throw 'Only supporting user == current_user when following user'
