@@ -1,33 +1,36 @@
 require 'pavlov/support/inflector'
 
 module Pavlov
-  def self.command command_name, *args
-    klass = class_for_command(command_name)
-    klass.new(*args).call
+  def self.command command_name, *args, &block
+    command = get_instance(Commands, command_name, *args)
+
+    call_or_yield_instance command, &block
   end
 
-  def self.interactor interactor_name, *args
-    klass = class_for_interactor(interactor_name)
-    klass.new(*args).call
+  def self.interactor interactor_name, *args, &block
+    interactor = get_instance(Interactors, interactor_name, *args)
+
+    call_or_yield_instance interactor, &block
   end
 
-  def self.query query_name, *args
-    klass = class_for_query(query_name)
-    klass.new(*args).call
+  def self.query query_name, *args, &block
+    query = get_instance(Queries, query_name, *args)
+
+    call_or_yield_instance query, &block
   end
 
   private
 
-  def self.class_for_command command_name
-    OperationFinder.find(Commands, command_name)
+  def self.get_instance(klass, name, *args)
+    OperationFinder.find(klass, name).new(*args)
   end
 
-  def self.class_for_interactor interactor_name
-    OperationFinder.find(Interactors, interactor_name)
-  end
-
-  def self.class_for_query query_name
-    OperationFinder.find(Queries, query_name)
+  def self.call_or_yield_instance operation, &block
+    if block.nil?
+      operation.call
+    else
+      block.call operation
+    end
   end
 end
 
