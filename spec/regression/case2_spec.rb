@@ -2,6 +2,9 @@ require_relative 'pavlov_helper'
 
 describe 'Commands::ExampleModule::CleanList' do
   include PavlovSupport
+
+  let(:described_class){ Commands::ExampleModule::CleanList }
+
   before do
     stub_const 'Commands', Module.new
     stub_const 'Commands::ExampleModule', Module.new
@@ -56,7 +59,7 @@ describe 'Commands::ExampleModule::CleanList' do
       key.should_receive(:zrem)
          .with activities_by_id.key(nil_activity)
 
-      command = Commands::ExampleModule::CleanList.new list_key: keyname
+      command = described_class.new list_key: keyname
       command.call
     end
 
@@ -78,7 +81,7 @@ describe 'Commands::ExampleModule::CleanList' do
       key.should_receive(:zrem)
          .with activities_by_id.key(unshowable_activity)
 
-      command = Commands::ExampleModule::CleanList.new list_key: keyname
+      command = described_class.new list_key: keyname
       command.execute
     end
   end

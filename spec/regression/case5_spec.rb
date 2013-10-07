@@ -1,8 +1,15 @@
 require_relative 'pavlov_helper'
 
-module Interactors
-  module ExampleModule
-    class Followers
+describe "Interactors::ExampleModule::Followers" do
+  include PavlovSupport
+
+  let(:described_class){ Interactors::ExampleModule::Followers }
+
+  before do
+    stub_const 'Interactors', Module.new
+    stub_const 'Interactors::ExampleModule', Module.new
+
+    class Interactors::ExampleModule::Followers
       include Pavlov::Interactor
 
       arguments :user_name, :skip, :take
@@ -32,10 +39,6 @@ module Interactors
       end
     end
   end
-end
-
-describe Interactors::ExampleModule::Followers do
-  include PavlovSupport
 
   describe '#authorized?' do
     before do
