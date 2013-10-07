@@ -106,12 +106,12 @@ class PostsController < ApplicationController
   respond_to :json
 
   def create
-    interaction = interactor :create_blog_post, params[:post]
-
-    if interaction.valid?
-      respond_with interaction.call
-    else
-      respond_with {errors: interaction.errors}
+    interactor :create_blog_post, params[:post] do |interaction|
+      if interaction.valid?
+        respond_with interaction.call
+      else
+        respond_with { errors: interaction.errors }
+      end
     end
   rescue AuthorizationError
     flash[:error] = "Hacker, begone!"
