@@ -2,8 +2,8 @@ require_relative 'pavlov_helper'
 
 describe 'Interactors::ExampleModule::Count' do
   include PavlovSupport
-  
-  let(:described_class){ Interactors::ExampleModule::Count }
+
+  let(:described_class) { Interactors::ExampleModule::Count }
 
   before do
     stub_const 'Interactors', Module.new
@@ -52,7 +52,7 @@ describe 'Interactors::ExampleModule::Count' do
     it 'returns true when the :no_current_user option is true' do
       options = { no_current_user: true }
       interactor = described_class.new(id: double, timestamp: double,
-                                                         pavlov_options: options)
+                                       pavlov_options: options)
 
       expect(interactor.authorized?).to eq true
     end

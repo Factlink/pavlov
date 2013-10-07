@@ -3,7 +3,7 @@ require_relative 'pavlov_helper'
 describe 'Commands::CreateActivity' do
   include PavlovSupport
 
-  let(:described_class){ Commands::CreateActivity }
+  let(:described_class) { Commands::CreateActivity }
 
   let(:current_user) { double('current_user', id: 2) }
   let(:user)         { double('user', id: 1, user_id: current_user.id) }
@@ -31,7 +31,7 @@ describe 'Commands::CreateActivity' do
       activity_subject = double
       activity_object = double
       command = described_class.new user: user, action: action,
-                                             subject: activity_subject, object: activity_object
+                                    subject: activity_subject, object: activity_object
       Activity.should_receive(:create).with(user: user, action: action, subject: activity_subject, object: activity_object)
 
       command.call

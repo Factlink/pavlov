@@ -3,7 +3,7 @@ require_relative 'pavlov_helper'
 describe 'Commands::ExampleModule::CleanList' do
   include PavlovSupport
 
-  let(:described_class){ Commands::ExampleModule::CleanList }
+  let(:described_class) { Commands::ExampleModule::CleanList }
 
   before do
     stub_const 'Commands', Module.new

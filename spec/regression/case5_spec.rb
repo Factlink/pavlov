@@ -1,9 +1,9 @@
 require_relative 'pavlov_helper'
 
-describe "Interactors::ExampleModule::Followers" do
+describe 'Interactors::ExampleModule::Followers' do
   include PavlovSupport
 
-  let(:described_class){ Interactors::ExampleModule::Followers }
+  let(:described_class) { Interactors::ExampleModule::Followers }
 
   before do
     stub_const 'Interactors', Module.new
