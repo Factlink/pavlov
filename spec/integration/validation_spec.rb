@@ -39,4 +39,29 @@ describe 'Pavlov validations' do
     expect { interaction.call }.to raise_error(Pavlov::ValidationError)
   end
 
+  it 'With block and interaction#valid? is false' do
+    render = nil
+    Pavlov.interactor :create_blog_post, title: 'Why you should eat ice cream' do |interaction|
+      if interaction.valid?
+        render = interaction.call
+      else
+        render = :error
+      end
+    end
+
+    expect(render).to eq :error
+  end
+
+  it 'With block and interaction#valid? is true' do
+    render = nil
+    Pavlov.interactor :create_blog_post, title: 'Why you should use Pavlov' do |interaction|
+      if interaction.valid?
+        render = interaction.call
+      else
+        render = :error
+      end
+    end
+
+    expect(render).to eq 'WHY YOU SHOULD USE PAVLOV'
+  end
 end
