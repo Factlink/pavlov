@@ -35,7 +35,7 @@ module Pavlov
     end
 
     def call(*args, &block)
-      raise Pavlov::ValidationError, 'Some validations fail, cannot execute' unless valid?
+      fail Pavlov::ValidationError, 'Some validations fail, cannot execute' unless valid?
       check_authorization
       execute(*args, &block)
     end
@@ -47,11 +47,11 @@ module Pavlov
     end
 
     def raise_unauthorized(message = 'Unauthorized')
-      raise Pavlov::AccessDenied, message
+      fail Pavlov::AccessDenied, message
     end
 
     def check_validation
-      raise Pavlov::ValidationError, "Missing arguments: #{missing_arguments.inspect}" if missing_arguments.any?
+      fail Pavlov::ValidationError, "Missing arguments: #{missing_arguments.inspect}" if missing_arguments.any?
       validate
     end
 
