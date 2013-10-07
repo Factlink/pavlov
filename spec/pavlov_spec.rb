@@ -10,7 +10,9 @@ describe Pavlov do
     stub_const 'Pavlov::OperationFinder', Class.new
   end
 
-  [{ type: 'command', namespace: Commands }, { type: 'query', namespace: Queries }, { type: 'interactor', namespace: Interactors }].each do |operation|
+  [{ type: 'command',    namespace: Commands },
+   { type: 'query',      namespace: Queries },
+   { type: 'interactor', namespace: Interactors }].each do |operation|
     type = operation[:type]
     namespace = operation[:namespace]
 

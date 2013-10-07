@@ -76,8 +76,21 @@ describe 'Pavlov interactors' do
 
   include Pavlov::Helpers
 
-  it 'can call commands and queries' do
+  it 'can call commands and queries without a block' do
     blog_post = interactor :create_blog_post, title: 'Why you should use Pavlov', body: 'Because it is really cool.'
+    expect(blog_post.title).to eq('Why you should use Pavlov')
+    expect(blog_post.body).to eq('Because it is really cool.')
+  end
+
+  it 'can call commands and queries with a block' do
+    blog_post = interactor :create_blog_post, title: 'Why you should use Pavlov', body: 'Because it is really cool.' do |interaction|
+      if interaction.valid?
+        interaction.call
+      else
+        interaction
+      end
+    end
+
     expect(blog_post.title).to eq('Why you should use Pavlov')
     expect(blog_post.body).to eq('Because it is really cool.')
   end
