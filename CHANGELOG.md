@@ -1,5 +1,10 @@
 # Pavlov Changelog
 
+## 0.1.9.0
+
+* Added block syntax for `Pavlov.command`, `Pavlov.interactor` and `Pavlov.query`.
+* Added regression tests, to improve detection of breaking changes.
+
 ## 0.1.8.1
 
 * Fixed regression in alpha_compatibility validation helper (validate_in_set)
