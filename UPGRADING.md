@@ -1,5 +1,7 @@
 ## HEAD
 
+* No longer raises `Pavlov::ValidationError, "Missing arguments:` when an argument is nil but adds an error.
+
 # 0.1.8
 
 * Let custom validations use errors.add instead of raising exceptions
