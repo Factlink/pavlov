@@ -51,13 +51,15 @@ module Pavlov
     end
 
     def check_validation
-      fail Pavlov::ValidationError, "Missing arguments: #{missing_arguments.inspect}" if missing_arguments.any?
+      check_missing_arguments
       validate
     end
 
-    def missing_arguments
-      attribute_set.select do |attribute|
-        !attribute.options.key?(:default) && send(attribute.name).nil?
+    def check_missing_arguments
+      attribute_set.each do |attribute|
+        if !attribute.options.key?(:default) && send(attribute.name).nil?
+          errors.add(attribute.name.to_s, "can't be blank")
+        end
       end
     end
 
