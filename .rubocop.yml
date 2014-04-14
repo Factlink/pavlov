@@ -16,3 +16,13 @@ Encoding:
 
 SymbolName:
   Enabled: false
+
+TrailingComma:
+  Enabled: false
+  EnforcedStyleForMultiline: comma
+
+ClassAndModuleChildren:
+  Enabled: false
+
+DoubleNegation:
+  Enabled: false
