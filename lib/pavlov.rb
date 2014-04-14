@@ -1,19 +1,19 @@
 require 'pavlov/support/inflector'
 
 module Pavlov
-  def self.command command_name, *args, &block
+  def self.command(command_name, *args, &block)
     command = get_instance(Commands, command_name, *args)
 
     call_or_yield_instance command, &block
   end
 
-  def self.interactor interactor_name, *args, &block
+  def self.interactor(interactor_name, *args, &block)
     interactor = get_instance(Interactors, interactor_name, *args)
 
     call_or_yield_instance interactor, &block
   end
 
-  def self.query query_name, *args, &block
+  def self.query(query_name, *args, &block)
     query = get_instance(Queries, query_name, *args)
 
     call_or_yield_instance query, &block
@@ -25,7 +25,7 @@ module Pavlov
     OperationFinder.find(klass, name).new(*args)
   end
 
-  def self.call_or_yield_instance operation, &block
+  def self.call_or_yield_instance(operation, &block)
     if block.nil?
       operation.call
     else

@@ -32,7 +32,7 @@ describe 'Commands::ExampleModule::CleanList' do
         end
       end
 
-      def valid activity
+      def valid(activity)
         activity && activity.still_valid?
       end
     end

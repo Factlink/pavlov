@@ -3,13 +3,13 @@ require 'pavlov/alpha_compatibility'
 require 'pavlov/helpers'
 
 module PavlovSupport
-  def stub_classes *classnames
+  def stub_classes(*classnames)
     classnames.each do |classname|
       stub_const classname, Class.new
     end
   end
 
-  def expect_validating hash
+  def expect_validating(hash)
     hash[:pavlov_options] ||= {}
     hash[:pavlov_options][:ability] ||= double(can?: true)
     instance = described_class.new(hash)
@@ -20,7 +20,7 @@ module PavlovSupport
     expect(error_messages)
   end
 
-  def fail_validation message
+  def fail_validation(message)
     include message
   end
 
@@ -31,12 +31,12 @@ module PavlovSupport
       Util::PavlovContextSerialization.pavlov_context_by_user user
     end
 
-    def execute &block
+    def execute(&block)
       yield self
     end
   end
 
-  def as user, &block
+  def as(user, &block)
     @execute_as_user ||= {}
     @execute_as_user[user] ||= ExecuteAsUser.new(user)
     @execute_as_user[user].execute(&block)
