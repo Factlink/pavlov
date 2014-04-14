@@ -15,7 +15,7 @@ describe 'Interactors::ExampleModule::FollowUser' do
       arguments :user_name, :user_to_follow_user_name
 
       def authorized?
-        (!! pavlov_options[:current_user]) && (pavlov_options[:current_user].username == user_name)
+        (!!pavlov_options[:current_user]) && (pavlov_options[:current_user].username == user_name)
       end
 
       def user

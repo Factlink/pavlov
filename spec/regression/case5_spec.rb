@@ -15,7 +15,7 @@ describe 'Interactors::ExampleModule::Followers' do
       arguments :user_name, :skip, :take
 
       def authorized?
-        !! pavlov_options[:current_user]
+        !!pavlov_options[:current_user]
       end
 
       def validate
