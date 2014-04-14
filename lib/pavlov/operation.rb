@@ -35,7 +35,8 @@ module Pavlov
     end
 
     def call(*args, &block)
-      fail Pavlov::ValidationError, 'Some validations fail, cannot execute' unless valid?
+      fail Pavlov::ValidationError, "Some validations fail, cannot execute:\n  #{errors.to_a.join "\n  "}" unless valid?
+
       check_authorization
       execute(*args, &block)
     end
