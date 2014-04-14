@@ -28,7 +28,7 @@ describe 'Commands::ExampleModule::CleanList' do
       def members_to_remove
         list.zrange(0, -1).select do |id|
           activity = Activity[id]
-          ! valid(activity)
+          !valid(activity)
         end
       end
 
