@@ -1,5 +1,13 @@
 ## HEAD
 
+# 0.1.10
+
+* Report more detailed error messages in exceptions about validation failures.
+
+# 0.1.9
+
+?
+
 # 0.1.8
 
 * Let custom validations use errors.add instead of raising exceptions
