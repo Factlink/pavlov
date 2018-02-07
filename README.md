@@ -14,7 +14,7 @@ For discussion about this gem, join `#pavlov` on `irc.freenode.net`.  For conven
 
 ## Warning
 
-### Use at your own risk, this is _EXTREMELY_ alpha and subject to changes without notice.
+### This software is no longer maintained and depends on vulnerable packages; it remains here as an historical artifact.
 
 All versions < 0.2 are to be considered alpha. We're working towards a stable version 0.2, following the readme as defined here. For now, unfortunately we don't support all features described here yet.
 
